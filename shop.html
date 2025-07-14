@@ -3,90 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Discosuluulu – Garden de La Selva</title>
-
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
-
+  <title>Shop – Discosuluulu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      width: 100%;
       height: 100%;
-      overflow: hidden;
       font-family: sans-serif;
-      color: white;
-      background: transparent;
+      overflow: hidden;
     }
 
-    video#bg-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
+    video.background-video {
+      position: absolute;
+      top: -10%;
+      left: 0;
+      width: 100%;
+      height: 120%;
       object-fit: cover;
-      z-index: -2;
+      z-index: -1;
     }
 
     .swiper {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100%;
+      height: 100%;
     }
 
     .swiper-slide {
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
+    }
+
+    .player-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 700px;
+      margin: auto;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background video -->
-  <video id="bg-video" autoplay muted loop playsinline>
-    <source src="shop.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-
-  <!-- Swiper container -->
   <div class="swiper">
     <div class="swiper-wrapper">
+
+      <!-- Slide 1: shop.html -->
       <div class="swiper-slide">
-        <!-- Audio player will load here -->
-        <div id="audio-player-container"></div>
+        <video class="background-video" autoplay muted loop playsinline>
+          <source src="shop.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <div class="player-container">
+          <!-- gardendelaselva.js will render the player here -->
+        </div>
       </div>
+
+      <!-- Slide 2: shop2.html placeholder -->
+      <div class="swiper-slide"></div>
+
+      <!-- Slide 3: index.html placeholder -->
+      <div class="swiper-slide"></div>
+
     </div>
   </div>
 
   <!-- Swiper JS -->
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-  <!-- Swipe navigation -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     const swiper = new Swiper('.swiper', {
       direction: 'horizontal',
-      threshold: 20,
+      loop: false,
+      allowTouchMove: true,
       on: {
-        slideNextTransitionStart: () => {
-          window.location.href = 'shop2.html'; // swipe right
-        },
-        slidePrevTransitionStart: () => {
-          window.location.href = 'index.html'; // swipe left
+        slideChange: function () {
+          if (swiper.activeIndex === 1) {
+            window.location.href = 'shop2.html';
+          } else if (swiper.activeIndex === 2) {
+            window.location.href = 'index.html';
+          }
         }
       }
     });
   </script>
 
-  <!-- Audio player JS -->
+  <!-- Custom player logic -->
   <script src="gardendelaselva.js"></script>
+
 </body>
 </html>
