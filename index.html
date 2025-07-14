@@ -1,27 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Discos Uluulu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
-      padding: 0;
       font-family: sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #f4f0e6;
+      background: #fdfcf7;
+      overflow-x: hidden;
+      position: relative;
     }
-    h1 {
-      font-size: 2rem;
-      color: #3a2e20;
+
+    .content {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .swipe-hint {
+      position: fixed;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      font-size: 48px;
+      opacity: 0.7;
+      color: #999;
+      z-index: 9999;
+      animation: fadeOut 4s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 0.7; }
+      80% { opacity: 0.7; }
+      100% { opacity: 0; display: none; }
     }
   </style>
 </head>
 <body>
-  <h1>Welcome to Discos Uluulu</h1>
+
+  <div class="swipe-hint">←</div>
+
+  <div class="content">
+    <h1>Discos Uluulu</h1>
+    <p>Swipe left or right to navigate.</p>
+    <!-- Add your custom content or homepage intro here -->
+  </div>
+
+  <script>
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function handleGesture() {
+      const threshold = 50;
+      if (touchEndX < touchStartX - threshold) {
+        window.location.href = "https://shop.discosuluulu.com";
+      } else if (touchEndX > touchStartX + threshold) {
+        window.location.href = "https://info.discosuluulu.com";
+      }
+    }
+
+    document.addEventListener("touchstart", e => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener("touchend", e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleGesture();
+    });
+  </script>
+
 </body>
 </html>
