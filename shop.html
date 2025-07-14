@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Shop – Discosuluulu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link
@@ -14,8 +14,8 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background: black;
       font-family: sans-serif;
+      color: white;
     }
 
     video#bgvid {
@@ -38,6 +38,21 @@
       align-items: center;
       justify-content: center;
     }
+
+    #info-link {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
@@ -48,7 +63,10 @@
     Your browser does not support the video tag.
   </video>
 
-  <!-- Swiper Container -->
+  <!-- +info Link -->
+  <a id="info-link" href="info.html">+info</a>
+
+  <!-- Swiper Swipe Zones -->
   <div class="swiper">
     <div class="swiper-wrapper">
       <div class="swiper-slide" data-direction="backward"></div>
@@ -57,10 +75,10 @@
     </div>
   </div>
 
-  <!-- Your Audio Player -->
+  <!-- Audio Player Script -->
   <script src="gardendelaselva.js"></script>
 
-  <!-- Swiper JS and Swipe Logic -->
+  <!-- Swiper Script -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     const swiper = new Swiper('.swiper', {
@@ -69,4 +87,19 @@
       threshold: 50,
       on: {
         slideChange: function () {
-          const activeIndex =
+          const slides = document.querySelectorAll('.swiper-slide');
+          const direction = slides[this.activeIndex].dataset.direction;
+          if (direction === 'forward') {
+            window.location.href = 'shop2.html';
+          } else if (direction === 'backward') {
+            window.location.href = 'index.html';
+          } else {
+            this.slideTo(1, 0);
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
