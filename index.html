@@ -2,32 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Discosuluulu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body, html {
       height: 100%;
       font-family: sans-serif;
       overflow: hidden;
     }
 
-    video.bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
+    video.background-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       z-index: -1;
     }
 
-    .centered-content {
+    .content {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -36,38 +31,86 @@
       color: white;
     }
 
-    .centered-content img {
-      max-width: 300px;
-      width: 80%;
+    .content img {
+      width: 180px;
+      max-width: 80%;
       margin-bottom: 2rem;
     }
 
     .explore-button {
-      padding: 12px 28px;
-      font-size: 1.1rem;
+      padding: 12px 24px;
+      font-size: 1rem;
       background: rgba(255, 255, 255, 0.15);
       color: white;
-      border: 2px solid white;
-      border-radius: 30px;
+      border: 1px solid white;
+      border-radius: 4px;
       cursor: pointer;
+      backdrop-filter: blur(4px);
       transition: all 0.3s ease;
-      text-decoration: none;
     }
 
     .explore-button:hover {
       background: white;
       color: black;
     }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
-  <video class="bg" autoplay muted loop playsinline>
-    <source src="background.mp4" type="video/mp4" />
-  </video>
 
-  <div class="centered-content">
-    <img src="logo.png" alt="Discosuluulu Logo" />
-    <a href="https://discosuluulu.com/shop" class="explore-button">Explore Music</a>
+  <div class="swiper">
+    <div class="swiper-wrapper">
+
+      <!-- Slide 1: Landing Page -->
+      <div class="swiper-slide">
+        <video class="background-video" autoplay muted loop playsinline>
+          <source src="background.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <div class="content">
+          <img src="logo.png" alt="Discosuluulu Logo" />
+          <br />
+          <a href="shop.html" class="explore-button">Explore Music</a>
+        </div>
+      </div>
+
+      <!-- Slide 2: shop.html placeholder -->
+      <div class="swiper-slide"></div>
+
+      <!-- Slide 3: info.html placeholder -->
+      <div class="swiper-slide"></div>
+
+    </div>
   </div>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper('.swiper', {
+      direction: 'horizontal',
+      loop: false,
+      allowTouchMove: true,
+      on: {
+        slideChange: function () {
+          if (swiper.activeIndex === 1) {
+            window.location.href = 'shop.html';
+          } else if (swiper.activeIndex === 2) {
+            window.location.href = 'info.html';
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>
