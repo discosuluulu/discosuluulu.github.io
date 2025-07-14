@@ -5,10 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Garden de La Selva</title>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100%;
       font-family: system-ui, sans-serif;
       background: transparent;
+      overflow-x: hidden;
+    }
+
+    video.bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .info-button {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      z-index: 10000;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .info-button:hover {
+      background: rgba(0, 0, 0, 0.8);
     }
 
     .floating-player {
@@ -109,18 +140,31 @@
       .floating-player {
         font-size: 13px;
       }
+
+      .info-button {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Your page content goes here -->
-  <div style="padding: 20px;">
-    <h1>Garden de La Selva</h1>
-    <p>Streaming audio player with tracklist below</p>
-    <!-- Optionally include content like cover art, description, etc. -->
+
+  <!-- Background video -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="shop.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Info button -->
+  <div class="info-button" onclick="window.location.href='https://info.discosuluulu.com'">
+    info
   </div>
 
-  <!-- Include the custom audio player JavaScript -->
+  <!-- Floating audio player loads below -->
+
+  <!-- JavaScript player logic -->
   <script src="gardendelaselva.js"></script>
+
 </body>
 </html>
