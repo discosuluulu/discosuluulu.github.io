@@ -1,14 +1,72 @@
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
-    background: black; /* Temporary fallback */
-  }
-  video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shop – Discosuluulu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+  />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+      font-family: sans-serif;
+    }
+
+    video#bgvid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video id="bgvid" autoplay muted loop playsinline>
+    <source src="shop.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Swiper Container -->
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" data-direction="backward"></div>
+      <div class="swiper-slide" data-direction="stay"></div>
+      <div class="swiper-slide" data-direction="forward"></div>
+    </div>
+  </div>
+
+  <!-- Your Audio Player -->
+  <script src="gardendelaselva.js"></script>
+
+  <!-- Swiper JS and Swipe Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper('.swiper', {
+      initialSlide: 1,
+      allowTouchMove: true,
+      threshold: 50,
+      on: {
+        slideChange: function () {
+          const activeIndex =
