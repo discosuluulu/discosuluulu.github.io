@@ -3,95 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Discosuluulu</title>
-
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-
-  <!-- Custom styles -->
+  <title>Discos Suluulu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body, html {
-      width: 100%;
-      height: 100%;
       overflow: hidden;
+      height: 100%;
       font-family: sans-serif;
     }
 
-    video#bg-video {
-      position: fixed;
+    .video-bg {
+      position: absolute;
       top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       z-index: -1;
     }
 
-    .swiper {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .swiper-slide {
+    .center-content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
       text-align: center;
       color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
     }
 
-    .logo {
+    .center-content img {
       width: 200px;
-      max-width: 60%;
+      max-width: 80%;
       margin-bottom: 20px;
     }
 
-    .explore {
-      font-size: 1.2em;
-      letter-spacing: 1px;
-      opacity: 0.85;
+    .swiper {
+      width: 100%;
+      height: 100%;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Video -->
-  <video id="bg-video" autoplay muted loop playsinline>
-    <source src="background.mp4" type="video/mp4" />
-    Your browser does not support HTML5 video.
-  </video>
-
-  <!-- Swiper Container -->
+  <!-- Swiper container -->
   <div class="swiper">
     <div class="swiper-wrapper">
+      <!-- Slide 1: Landing -->
       <div class="swiper-slide">
-        <img src="logo.png" alt="Discosuluulu Logo" class="logo" />
-        <div class="explore">Explore Music</div>
+        <video class="video-bg" autoplay muted loop playsinline>
+          <source src="assets/background.mp4" type="video/mp4" />
+        </video>
+        <div class="center-content">
+          <img src="assets/logo.png" alt="Discos Suluulu Logo" />
+          <h2>Explore Music</h2>
+        </div>
       </div>
+
+      <!-- Slide 2: Shop (loads separate HTML) -->
+      <div class="swiper-slide" data-url="shop.html"></div>
     </div>
   </div>
 
-  <!-- Swiper & Routing -->
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     const swiper = new Swiper('.swiper', {
       direction: 'horizontal',
-      threshold: 20,
+      allowTouchMove: true,
+      effect: 'slide',
       on: {
-        slideNextTransitionStart: () => {
-          window.location.href = 'shop.html'; // swipe right
-        },
-        slidePrevTransitionStart: () => {
-          window.location.href = 'info.html'; // swipe left
+        slideChangeTransitionStart: function () {
+          const activeSlide = swiper.slides[swiper.activeIndex];
+          const url = activeSlide.getAttribute('data-url');
+          if (url) {
+            window.location.href = url;
+          }
         }
       }
     });
