@@ -1,65 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Garden de La Selva</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      font-family: system-ui, sans-serif;
-      background: transparent;
-      overflow-x: hidden;
+      font-family: sans-serif;
+      background: black;
+      color: white;
+      overflow: hidden;
     }
 
-    video.bg-video {
+    /* Background video */
+    #background-video {
       position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       z-index: -1;
     }
 
-    .info-button {
-      position: fixed;
+    /* +info link */
+    .info-link {
+      position: absolute;
       top: 16px;
-      right: 16px;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      padding: 10px 14px;
-      border-radius: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 14px;
-      z-index: 10000;
-      cursor: pointer;
-      transition: background 0.3s;
+      color: white;
+      opacity: 0.7;
+      text-decoration: none;
+      z-index: 10;
     }
 
-    .info-button:hover {
-      background: rgba(0, 0, 0, 0.8);
+    .info-link:hover {
+      opacity: 1;
     }
 
+    /* Floating audio player */
     .floating-player {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: rgba(255, 255, 255, 0.9);
-      color: #000;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.4); /* very transparent */
+      color: white;
       font-size: 14px;
-      z-index: 9999;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      z-index: 1000;
+      transition: all 0.3s ease;
     }
 
     .floating-player.minimized {
-      height: auto;
-      padding: 8px 12px;
-      background: rgba(255, 255, 255, 0.6);
+      height: 36px;
+      background: rgba(0, 0, 0, 0.25);
     }
 
     .floating-player.minimized .player-body {
@@ -70,101 +66,111 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px;
-      font-weight: 500;
+      padding: 6px 16px;
       cursor: pointer;
+      font-weight: bold;
     }
 
-    .player-header span#playerTitle {
-      font-size: 14px;
-    }
-
-    .player-header span#toggleButton {
-      font-size: 20px;
-      line-height: 1;
-      padding: 0 6px;
+    #playerTitle {
+      flex: 1;
+      text-align: center;
     }
 
     .player-body {
-      padding: 10px 16px;
+      padding: 12px 16px;
     }
 
     .centered-play-button {
       display: flex;
       justify-content: center;
-      margin-bottom: 8px;
+      align-items: center;
+      margin-bottom: 12px;
     }
 
     .progress-container {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
     }
 
     .progress-bar {
-      flex-grow: 1;
+      flex: 1;
+      height: 4px;
+      background: #888;
+      border-radius: 2px;
+      cursor: pointer;
     }
 
     .tracklist {
-      max-height: 200px;
+      max-height: 120px;
       overflow-y: auto;
-      border-top: 1px solid #ccc;
-      padding-top: 8px;
+      padding-right: 4px;
+    }
+
+    .tracklist::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .tracklist::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
     }
 
     .tracklist div {
+      margin: 4px 0;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
       display: flex;
       justify-content: space-between;
-      padding: 6px 0;
       cursor: pointer;
     }
 
-    .tracklist div.active-track {
+    .tracklist div:hover {
+      color: #e2e2e2;
+    }
+
+    .active-track {
+      color: #fff;
       font-weight: bold;
-      color: #000;
-    }
-
-    .tracklist div span {
-      color: #888;
-      font-size: 13px;
-      margin-left: 12px;
-      white-space: nowrap;
-    }
-
-    svg {
-      cursor: pointer;
-    }
-
-    @media (max-width: 600px) {
-      .floating-player {
-        font-size: 13px;
-      }
-
-      .info-button {
-        font-size: 13px;
-        padding: 8px 12px;
-      }
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      padding: 2px 4px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background video -->
-  <video class="bg-video" autoplay muted loop playsinline>
-    <source src="shop.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+<video autoplay muted loop playsinline id="background-video">
+  <source src="shop.mp4" type="video/mp4">
+</video>
 
-  <!-- Info button -->
-  <div class="info-button" onclick="window.location.href='https://info.discosuluulu.com'">
-    info
+<a href="https://info.discosuluulu.com" class="info-link">+info</a>
+
+<!-- Audio Player -->
+<div class="floating-player" id="audioPlayer">
+  <div class="player-header" onclick="togglePlayer()">
+    <span id="playerTitle">Garden de La Selva – Shaped by shakers grown from okra harvests</span>
+    <span id="toggleButton">−</span>
   </div>
+  <div class="player-body">
+    <div class="centered-play-button">
+      <svg id="playIcon" viewBox="0 0 100 100" width="60" height="60" onclick="togglePlay()">
+        <circle cx="50" cy="50" r="45" fill="#fff" />
+        <polygon id="playTriangle" points="40,30 70,50 40,70" fill="#000" />
+      </svg>
+    </div>
+    <div class="progress-container">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progressBar" class="progress-bar" value="0" min="0" max="100" step="1">
+      <span id="duration">0:00</span>
+    </div>
+    <div class="tracklist" id="tracklist"></div>
+  </div>
+</div>
 
-  <!-- Floating audio player loads below -->
-
-  <!-- JavaScript player logic -->
-  <script src="gardendelaselva.js"></script>
+<script src="gardendelaselva.js"></script>
 
 </body>
 </html>
