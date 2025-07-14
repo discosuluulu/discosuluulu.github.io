@@ -48,20 +48,20 @@
       background: rgba(10, 10, 10, 0.3);
       backdrop-filter: blur(4px);
       color: white;
-      padding: 12px;
+      padding: 14px 16px;
       font-size: 14px;
       z-index: 999;
     }
 
     .audio-header {
       font-weight: bold;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
 
     .tracklist {
       max-height: 150px;
       overflow-y: auto;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     .track {
@@ -78,20 +78,32 @@
     .controls {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-top: 6px;
+      gap: 14px;
+      margin-bottom: 6px;
     }
 
     .play-btn {
-      width: 30px;
-      height: 30px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: black;
       cursor: pointer;
+    }
+
+    .play-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: black;
+    }
+
+    .progress-container {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .progress {
@@ -99,13 +111,29 @@
       height: 4px;
       background: rgba(255,255,255,0.3);
       position: relative;
-      margin-left: 10px;
+      border-radius: 2px;
+      overflow: hidden;
     }
 
     .progress-bar {
       height: 100%;
       background: white;
       width: 0%;
+    }
+
+    .timestamp {
+      min-width: 40px;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    /* Swiper container height fix */
+    .swiper-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 1;
     }
   </style>
 </head>
@@ -114,13 +142,14 @@
   <!-- Background video -->
   <video class="background-video" autoplay muted loop playsinline>
     <source src="shop.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
   </video>
 
   <!-- Info Link -->
   <a href="https://info.discosuluulu.com" class="info-link">+info</a>
 
   <!-- Swiper for swipe nav -->
-  <div class="swiper-container" style="height: 100vh;">
+  <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide"></div>
     </div>
@@ -130,8 +159,16 @@
   <div class="audio-player" id="player">
     <div class="audio-header">Garden de La Selva</div>
     <div class="controls">
-      <div class="play-btn" id="playPauseBtn">▶</div>
-      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="play-btn" id="playPauseBtn">
+        <!-- Play SVG -->
+        <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <!-- Pause SVG (hidden initially) -->
+        <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+      </div>
+      <div class="progress-container">
+        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="timestamp" id="currentTime">0:00</div>
+      </div>
     </div>
     <div class="tracklist" id="trackList"></div>
   </div>
@@ -158,6 +195,9 @@
     const trackListEl = document.getElementById("trackList");
     const progressBar = document.getElementById("progressBar");
     const playPauseBtn = document.getElementById("playPauseBtn");
+    const playIcon = document.getElementById("playIcon");
+    const pauseIcon = document.getElementById("pauseIcon");
+    const currentTimeLabel = document.getElementById("currentTime");
 
     let currentTrack = 0;
 
@@ -165,20 +205,31 @@
       currentTrack = index;
       audio.src = tracks[index].url;
       audio.play();
-      playPauseBtn.textContent = "❚❚";
+      showPauseIcon();
     }
 
     function togglePlay() {
       if (audio.paused) {
         audio.play();
-        playPauseBtn.textContent = "❚❚";
+        showPauseIcon();
       } else {
         audio.pause();
-        playPauseBtn.textContent = "▶";
+        showPlayIcon();
       }
     }
 
+    function showPlayIcon() {
+      playIcon.style.display = "block";
+      pauseIcon.style.display = "none";
+    }
+
+    function showPauseIcon() {
+      playIcon.style.display = "none";
+      pauseIcon.style.display = "block";
+    }
+
     playPauseBtn.addEventListener("click", togglePlay);
+
     audio.addEventListener("ended", () => {
       currentTrack = (currentTrack + 1) % tracks.length;
       loadTrack(currentTrack);
@@ -187,7 +238,14 @@
     audio.addEventListener("timeupdate", () => {
       const percent = (audio.currentTime / audio.duration) * 100;
       progressBar.style.width = percent + "%";
+      currentTimeLabel.textContent = formatTime(audio.currentTime);
     });
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
 
     tracks.forEach((track, i) => {
       const el = document.createElement("div");
@@ -197,7 +255,7 @@
       trackListEl.appendChild(el);
     });
 
-    loadTrack(0); // autoplay first track
+    loadTrack(0);
 
     // Swiper navigation setup
     document.addEventListener("DOMContentLoaded", () => {
