@@ -4,10 +4,7 @@
   <meta charset="UTF-8" />
   <title>Shop – Discosuluulu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-  />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
     html, body {
       margin: 0;
@@ -19,18 +16,20 @@
     }
 
     video#bgvid {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
-      z-index: -1;
+      z-index: -2;
     }
 
     .swiper {
       width: 100%;
       height: 100%;
+      position: absolute;
+      z-index: 2;
     }
 
     .swiper-slide {
@@ -53,6 +52,11 @@
       padding: 5px 10px;
       border-radius: 4px;
     }
+
+    #audio-player {
+      position: relative;
+      z-index: 5;
+    }
   </style>
 </head>
 <body>
@@ -66,6 +70,9 @@
   <!-- +info Link -->
   <a id="info-link" href="info.html">+info</a>
 
+  <!-- Audio Player Container -->
+  <div id="audio-player"></div>
+
   <!-- Swiper Swipe Zones -->
   <div class="swiper">
     <div class="swiper-wrapper">
@@ -75,10 +82,10 @@
     </div>
   </div>
 
-  <!-- Audio Player Script -->
+  <!-- Gardendelaselva Player Script -->
   <script src="gardendelaselva.js"></script>
 
-  <!-- Swiper Script -->
+  <!-- Swiper.js -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     const swiper = new Swiper('.swiper', {
