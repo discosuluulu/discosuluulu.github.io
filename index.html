@@ -3,83 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Discos Suluulu</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <title>Discosuluulu</title>
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      height: 100%;
-      font-family: sans-serif;
+      box-sizing: border-box;
     }
 
-    .video-bg {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
+    body, html {
       height: 100%;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    video.bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
       object-fit: cover;
       z-index: -1;
     }
 
-    .center-content {
+    .centered-content {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
       color: white;
     }
 
-    .center-content img {
-      width: 200px;
-      max-width: 80%;
-      margin-bottom: 20px;
+    .centered-content img {
+      max-width: 300px;
+      width: 80%;
+      margin-bottom: 2rem;
     }
 
-    .swiper {
-      width: 100%;
-      height: 100%;
+    .explore-button {
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 2px solid white;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .explore-button:hover {
+      background: white;
+      color: black;
     }
   </style>
 </head>
 <body>
+  <video class="bg" autoplay muted loop playsinline>
+    <source src="background.mp4" type="video/mp4" />
+  </video>
 
-  <!-- Swiper container -->
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <!-- Slide 1: Landing -->
-      <div class="swiper-slide">
-        <video class="video-bg" autoplay muted loop playsinline>
-          <source src="assets/background.mp4" type="video/mp4" />
-        </video>
-        <div class="center-content">
-          <img src="assets/logo.png" alt="Discos Suluulu Logo" />
-          <h2>Explore Music</h2>
-        </div>
-      </div>
-
-      <!-- Slide 2: Shop (loads separate HTML) -->
-      <div class="swiper-slide" data-url="shop.html"></div>
-    </div>
+  <div class="centered-content">
+    <img src="logo.png" alt="Discosuluulu Logo" />
+    <a href="https://discosuluulu.com/shop" class="explore-button">Explore Music</a>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script>
-    const swiper = new Swiper('.swiper', {
-      direction: 'horizontal',
-      allowTouchMove: true,
-      effect: 'slide',
-      on: {
-        slideChangeTransitionStart: function () {
-          const activeSlide = swiper.slides[swiper.activeIndex];
-          const url = activeSlide.getAttribute('data-url');
-          if (url) {
-            window.location.href = url;
-          }
-        }
-      }
-    });
-  </script>
 </body>
 </html>
