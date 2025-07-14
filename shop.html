@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Shop – Discosuluulu</title>
+  <title>Garden de La Selva</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Styles -->
   <style>
     html, body {
       margin: 0;
@@ -15,98 +16,128 @@
       color: white;
     }
 
-    video#bgvid {
+    video.bg {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      min-width: 100%;
+      min-height: 100%;
       object-fit: cover;
-      z-index: -2;
+      z-index: -1;
     }
 
-    .swiper {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      z-index: 2;
-    }
-
-    .swiper-slide {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #info-link {
-      position: absolute;
-      top: 10px;
+    .info-link {
+      position: fixed;
+      top: 12px;
       left: 50%;
       transform: translateX(-50%);
+      font-size: 14px;
       color: white;
       text-decoration: none;
-      font-size: 1rem;
-      font-weight: 500;
-      z-index: 10;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 5px 10px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 4px 10px;
       border-radius: 4px;
+      z-index: 10;
     }
 
-    #audio-player {
+    /* Include all the audio player styles */
+    .audio-player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      color: white;
+      font-family: sans-serif;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    .audio-player.minimized {
+      height: 40px;
+      overflow: hidden;
+      padding: 5px 15px;
+    }
+    .audio-player.expanded {
+      padding: 10px 15px;
+    }
+    .player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .album-title {
+      font-size: 16px;
+      line-height: 1.2;
+    }
+    .album-title .subtitle {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .toggle-btn {
+      cursor: pointer;
+      font-size: 24px;
+    }
+    .player-controls {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    #playPauseBtn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.3);
+      margin-left: 10px;
       position: relative;
-      z-index: 5;
+    }
+    .progress {
+      height: 100%;
+      background: white;
+      width: 0%;
+    }
+    .tracklist {
+      margin-top: 10px;
+      max-height: 130px;
+      overflow-y: auto;
+      padding-left: 0;
+      list-style: none;
+    }
+    .tracklist li {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      cursor: pointer;
+    }
+    .tracklist li.active {
+      background: rgba(255,255,255,0.1);
+    }
+    .track-number, .track-title, .track-duration {
+      padding: 0 5px;
     }
   </style>
 </head>
-<body>
 
-  <!-- Background Video -->
-  <video id="bgvid" autoplay muted loop playsinline>
+<body>
+  <!-- Background video -->
+  <video autoplay muted loop playsinline class="bg">
     <source src="shop.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
-  <!-- +info Link -->
-  <a id="info-link" href="info.html">+info</a>
+  <!-- Info button -->
+  <a href="info.html" class="info-link">+info</a>
 
-  <!-- Audio Player Container -->
-  <div id="audio-player"></div>
-
-  <!-- Swiper Swipe Zones -->
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide" data-direction="backward"></div>
-      <div class="swiper-slide" data-direction="stay"></div>
-      <div class="swiper-slide" data-direction="forward"></div>
-    </div>
-  </div>
-
-  <!-- Gardendelaselva Player Script -->
+  <!-- Audio player will be injected here -->
   <script src="gardendelaselva.js"></script>
-
-  <!-- Swiper.js -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script>
-    const swiper = new Swiper('.swiper', {
-      initialSlide: 1,
-      allowTouchMove: true,
-      threshold: 50,
-      on: {
-        slideChange: function () {
-          const slides = document.querySelectorAll('.swiper-slide');
-          const direction = slides[this.activeIndex].dataset.direction;
-          if (direction === 'forward') {
-            window.location.href = 'shop2.html';
-          } else if (direction === 'backward') {
-            window.location.href = 'index.html';
-          } else {
-            this.slideTo(1, 0);
-          }
-        }
-      }
-    });
-  </script>
-
 </body>
 </html>
