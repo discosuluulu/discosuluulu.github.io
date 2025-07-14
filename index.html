@@ -4,110 +4,106 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Discos Uluulu</title>
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
       height: 100%;
-      font-family: sans-serif;
       overflow: hidden;
+      font-family: sans-serif;
     }
 
-    .video-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      background: #000;
+      color: #fff;
+    }
+
+    video.bg-video {
+      position: absolute;
       width: 100%;
       height: 100%;
       object-fit: cover;
       z-index: -2;
-      transition: transform 0.3s ease;
     }
 
-    /* Overlay color */
     .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
+      background: rgba(0, 0, 0, 0.58);
+      position: absolute;
       width: 100%;
       height: 100%;
-      background-color: #00000094;
       z-index: -1;
     }
 
     .logo {
-      position: absolute;
-      top: 25%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      max-width: 280px;
-      height: auto;
+      max-width: 220px;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      text-align: center;
     }
 
     .explore-link {
-      position: absolute;
-      top: 55%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.7rem;
       color: white;
+      font-size: 22px;
       text-decoration: none;
+      transition: opacity 0.2s ease;
     }
 
     .explore-link:hover {
-      text-decoration: underline;
-    }
-
-    /* Responsive video zoom */
-    @media (max-width: 600px) {
-      .video-bg {
-        transform: scale(1.1); /* Zoom in slightly on mobile */
-      }
-    }
-
-    @media (min-width: 601px) {
-      .video-bg {
-        transform: scale(0.97); /* Zoom out slightly on desktop */
-      }
+      opacity: 0.75;
     }
   </style>
 </head>
 <body>
 
-  <video class="video-bg" autoplay muted loop playsinline>
-    <source src="background.mp4" type="video/mp4" />
-  </video>
+  <!-- Swiper Container -->
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <!-- Background video and overlay -->
+        <video autoplay muted loop playsinline class="bg-video">
+          <source src="background.mp4" type="video/mp4" />
+        </video>
+        <div class="overlay"></div>
 
-  <div class="overlay"></div>
+        <!-- Logo and Link -->
+        <div class="content">
+          <img src="logo.png" alt="Logo" class="logo" />
+          <br />
+          <a href="https://shop.discosuluulu.com" class="explore-link">Explore Music</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <img src="logo.png" alt="Logo" class="logo" />
-
-  <a href="https://shop.discosuluulu.com" class="explore-link">Explore Music</a>
-
+  <!-- Swiper Script -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    let touchStartX = 0;
-
-    window.addEventListener("touchstart", e => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-
-    window.addEventListener("touchend", e => {
-      const touchEndX = e.changedTouches[0].screenX;
-      const diff = touchEndX - touchStartX;
-
-      if (diff > 50) {
-        // Swipe right → go back
-        window.location.href = "https://info.discosuluulu.com";
-      } else if (diff < -50) {
-        // Swipe left → go forward
-        window.location.href = "https://shop.discosuluulu.com";
-      }
+    const swiper = new Swiper('.swiper', {
+      allowTouchMove: true,
+      effect: 'slide',
+      on: {
+        slideNextTransitionStart: () => {
+          window.location.href = 'https://shop.discosuluulu.com';
+        },
+        slidePrevTransitionStart: () => {
+          window.location.href = 'https://info.discosuluulu.com';
+        },
+      },
     });
   </script>
-
 </body>
 </html>
