@@ -1,105 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shop – Discosuluulu</title>
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <meta charset="UTF-8">
+  <title>Shop Test</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      font-family: sans-serif;
     }
-
-    .swiper {
-      width: 100%;
-      height: 100%;
-    }
-
-    .swiper-slide {
-      position: relative;
-    }
-
-    video.bg-video {
-      position: absolute;
+    video {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: -1;
-    }
-
-    .content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      color: white;
-    }
-
-    .content img {
-      width: 160px;
-      margin-bottom: 1rem;
-    }
-
-    .content h1 {
-      font-size: 1.5rem;
-      margin: 0;
-    }
-
-    .player-container {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      z-index: 10;
     }
   </style>
 </head>
 <body>
-
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      
-      <!-- Slide: Shop -->
-      <div class="swiper-slide">
-        <video class="bg-video" autoplay muted loop playsinline>
-          <source src="backgroundshop.mp4" type="video/mp4" />
-        </video>
-        <div class="content">
-          <img src="logo.png" alt="Logo" />
-          <h1>Explore Music</h1>
-        </div>
-        <div class="player-container" id="player-container"></div>
-      </div>
-
-      <!-- Slide: Forward swipe → shop2.html -->
-      <div class="swiper-slide" data-link="shop2.html"></div>
-
-      <!-- Slide: Backward swipe → index.html -->
-      <div class="swiper-slide" data-link="index.html"></div>
-    </div>
-  </div>
-
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-  <script>
-    const swiper = new Swiper('.swiper', {
-      initialSlide: 0,
-      direction: 'horizontal',
-      allowTouchMove: true,
-      on: {
-        slideChangeTransitionEnd: function () {
-          const currentSlide = swiper.slides[swiper.activeIndex];
-          const link = currentSlide.getAttribute('data-link');
-          if (link) {
-            window.location.href = link;
-          }
-        }
-      }
-    });
-  </script>
-  <script src="gardendelaselva.js"></script>
+  <video autoplay muted loop playsinline>
+    <source src="shop.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 </body>
 </html>
