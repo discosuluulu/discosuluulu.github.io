@@ -5,104 +5,156 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Discos Uluulu – Explore</title>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; overflow:hidden; font-family:sans-serif; background:#000; }
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    html, body {height: 100%; overflow: hidden; font-family: sans-serif; background: #000;}
     video#bgVideo {
-      position:fixed; top:0; left:0; width:100%; height:100%;
-      object-fit:cover; z-index:-1;
+      position: fixed;
+      top: 0; left: 0;
+      width: 120%;
+      height: 120%;
+      object-fit: cover;
+      transform: translate(-10%, -10%);
+      z-index: -1;
+      opacity: 1;
+    }
+    .cta-button {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px 40px;
+      font-size: 22px;
+      color: #fff;
+      border: 2px solid #fff;
+      background: rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      z-index: 10;
     }
     .info-link {
-      position:fixed; top:50px; left:50%;
-      transform:translateX(-50%);
-      z-index:10; color:white; text-decoration:none;
-      font-weight:bold; font-size:18px;
+      position: fixed;
+      top: 60px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      text-decoration: none;
     }
     .floating-player {
-      position:fixed; bottom:20px; left:50%;
-      transform:translateX(-50%);
-      width:90%; max-width:500px;
-      background:rgba(0,0,0,0.6); padding:12px;
-      border-radius:12px; color:#fff; z-index:20;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 500px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 12px;
+      border-radius: 12px;
+      color: #fff;
+      z-index: 20;
+      display: none;
     }
-    .player-header { text-align:center; margin-bottom:8px; }
-    .controls { display:flex; align-items:center; justify-content:center; gap:12px; }
+    .player-header { text-align: center; margin-bottom: 8px; }
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
     .play-btn {
-      width:40px; height:40px; border:none;
-      background:#fff; color:#000;
-      border-radius:50%; font-size:20px; cursor:pointer;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: #fff;
+      color: #000;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
     }
     .progress {
-      flex:1; height:6px;
-      background:rgba(255,255,255,0.3);
-      border-radius:3px; position:relative; cursor:pointer;
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
     }
     .progress-inner {
-      height:100%; width:0%;
-      background:#fff; border-radius:3px;
+      height: 100%;
+      width: 0%;
+      background: #fff;
+      border-radius: 3px;
     }
     .tracklist {
-      margin-top:8px; max-height:140px; overflow-y:auto;
-      font-size:13px;
+      margin-top: 8px;
+      max-height: 140px;
+      overflow-y: auto;
+      font-size: 13px;
     }
-    .track { display:flex; justify-content:space-between; padding:4px 0; cursor:pointer; }
-    .track.active { font-weight:bold; }
-    #timeDisplay { font-size:12px; margin-left:8px; white-space:nowrap; }
+    .track {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      cursor: pointer;
+    }
+    .track.active { font-weight: bold; }
+    #timeDisplay {
+      font-size: 12px;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
     .album-nav {
-      margin-top:8px; text-align:center;
+      margin-top: 8px;
+      text-align: center;
     }
     .album-nav button {
-      background:none; border:none;
-      color:#ccc; cursor:pointer;
-      font-size:14px;
+      background: none;
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
-<video id="bgVideo" autoplay muted loop playsinline></video>
-
+<video id="bgVideo" autoplay muted playsinline preload="auto" loop></video>
+<button class="cta-button" id="ctaBtn">Explore Music</button>
 <a class="info-link" href="https://info.discosuluulu.com">+info</a>
 
-<div class="floating-player">
+<div class="floating-player" id="audioPlayer">
   <div class="player-header" id="albumHeader">
-    <strong>Garden de La Selva</strong><br>
-    <span style="opacity:0.7;font-size:12px;">Shaped by shakers grown from okra harvests</span>
+    <strong>Album Title</strong><br>
+    <span style="opacity: 0.7; font-size: 12px;">Subtitle</span>
   </div>
   <div class="controls">
-    <button class="play-btn" onclick="togglePlay()">▶</button>
-    <div class="progress" onclick="seek(event)">
-      <div class="progress-inner" id="progressInner"></div>
-    </div>
+    <button class="play-btn" id="playBtn">▶</button>
+    <div class="progress" id="progressBar"><div class="progress-inner" id="progressInner"></div></div>
     <div id="timeDisplay">00:00 / 00:00</div>
   </div>
   <div class="tracklist" id="tracklist"></div>
-  <div class="album-nav">
-    <button onclick="switchAlbum()">⟶ Next Album</button>
-  </div>
+  <div class="album-nav"><button id="switchAlbumBtn">⟶ Next Album</button></div>
 </div>
 
 <script>
-  const videoBank = ['videos/background.mp4', 'videos/backgroundshop.mp4'];
-  const bgVideo = document.getElementById('bgVideo');
-
-  function playRandomVideo() {
-    const index = Math.floor(Math.random() * videoBank.length);
-    bgVideo.src = videoBank[index];
-    bgVideo.play();
+  const videoBank = [
+    'videos/background.mp4',
+    'videos/backgroundshop.mp4'
+  ];
+  const bg = document.getElementById('bgVideo');
+  function randomVideo() {
+    const idx = Math.floor(Math.random() * videoBank.length);
+    bg.src = videoBank[idx];
   }
+  bg.addEventListener('ended', randomVideo);
+  randomVideo(); // start immediately on page load
 
-  bgVideo.addEventListener('ended', playRandomVideo);
-  playRandomVideo();
-
-  // Audio Player Setup
   const albums = [
     {
       title: "Garden de La Selva",
       subtitle: "Shaped by shakers grown from okra harvests",
       tracks: [
-        { title: "01. Rubba Dubba", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2001%20Rubba%20Dubba.mp3", duration: "3:12" },
-        { title: "02. Blue", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2002%20Blue.mp3", duration: "2:57" }
-        // Add more tracks here
+        { title: "01. Rubba Dubba", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/01%20Rubba%20Dubba.mp3", duration: "3:12" },
+        { title: "02. Blue", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/02%20Blue.mp3", duration: "2:57" }
       ]
     },
     {
@@ -111,59 +163,53 @@
       tracks: [
         { title: "01. Que Gata", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/01%20Que%20Gata.mp3", duration: "2:48" },
         { title: "02. Mi Amor", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/02%20Mi%20Amor.mp3", duration: "2:43" }
-        // Add more tracks here
       ]
     }
   ];
 
-  let currentAlbum = 0;
-  let currentTrack = 0;
-  const audio = new Audio();
-  const playBtn = document.querySelector('.play-btn');
-  const tracklistEl = document.getElementById('tracklist');
-  const progressInner = document.getElementById('progressInner');
-  const timeDisplay = document.getElementById('timeDisplay');
+  let currentAlbum = 0, currentTrack = 0;
+  const audio = new Audio(),
+        playBtn = document.getElementById('playBtn'),
+        tracklistEl = document.getElementById('tracklist'),
+        progressInner = document.getElementById('progressInner'),
+        timeDisplay = document.getElementById('timeDisplay'),
+        playerDiv = document.getElementById('audioPlayer'),
+        albumHeader = document.getElementById('albumHeader');
 
-  function loadAlbum(index) {
-    currentAlbum = index;
-    const album = albums[index];
-    document.getElementById('albumHeader').innerHTML =
-      `<strong>${album.title}</strong><br><span style="opacity:0.7;font-size:12px;">${album.subtitle}</span>`;
+  function loadAlbum(i) {
+    currentAlbum = i;
+    currentTrack = 0;
+    const a = albums[i];
+    albumHeader.innerHTML = `<strong>${a.title}</strong><br><span style="opacity:0.7;font-size:12px;">${a.subtitle}</span>`;
     tracklistEl.innerHTML = '';
-    album.tracks.forEach((track, i) => {
-      const div = document.createElement('div');
-      div.className = 'track';
-      div.innerHTML = `<span>${track.title}</span><span>${track.duration}</span>`;
-      div.onclick = () => selectTrack(i);
-      tracklistEl.appendChild(div);
+    a.tracks.forEach((t, j) => {
+      const d = document.createElement('div');
+      d.className = 'track';
+      d.innerHTML = `<span>${t.title}</span><span>${t.duration}</span>`;
+      d.onclick = () => playTrack(j);
+      tracklistEl.appendChild(d);
     });
-    selectTrack(0);
+    playTrack(0);
   }
 
-  function selectTrack(i) {
+  function playTrack(i) {
     currentTrack = i;
-    const track = albums[currentAlbum].tracks[i];
-    audio.src = track.url;
+    audio.src = albums[currentAlbum].tracks[i].url;
     audio.play();
     updateUI();
   }
 
   function togglePlay() {
-    if (!audio.src) selectTrack(0);
-    else if (audio.paused) audio.play(); else audio.pause();
+    if (!audio.src) playTrack(0);
+    else audio.paused ? audio.play() : audio.pause();
     updateUI();
   }
 
   function updateUI() {
-    document.querySelectorAll('.track').forEach((el, i) =>
-      el.classList.toggle('active', i === currentTrack)
-    );
+    [...document.querySelectorAll('.track')].forEach((e, i) => {
+      e.classList.toggle('active', i === currentTrack);
+    });
     playBtn.textContent = audio.paused ? '▶' : '⏸';
-  }
-
-  function format(s) {
-    const m = Math.floor(s / 60), sec = Math.floor(s % 60);
-    return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
   }
 
   audio.addEventListener('timeupdate', () => {
@@ -173,22 +219,31 @@
   });
 
   audio.addEventListener('ended', () => {
-    currentTrack = (currentTrack + 1) % albums[currentAlbum].tracks.length;
-    selectTrack(currentTrack);
+    const next = (currentTrack + 1) % albums[currentAlbum].tracks.length;
+    playTrack(next);
   });
 
-  function seek(e) {
+  document.getElementById('progressBar').addEventListener('click', e => {
     const r = e.currentTarget.getBoundingClientRect();
     audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+  });
+
+  function format(s) {
+    const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+    return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
   }
 
-  function switchAlbum() {
-    currentAlbum = (currentAlbum + 1) % albums.length;
-    loadAlbum(currentAlbum);
-  }
+  document.getElementById('switchAlbumBtn').onclick = () => {
+    loadAlbum((currentAlbum + 1) % albums.length);
+  };
 
-  loadAlbum(currentAlbum);
+  document.getElementById('ctaBtn').onclick = () => {
+    playerDiv.style.display = 'block';
+    document.getElementById('ctaBtn').style.display = 'none';
+    loadAlbum(0);
+  };
+
+  playBtn.onclick = togglePlay;
 </script>
-
 </body>
 </html>
