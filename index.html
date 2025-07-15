@@ -2,216 +2,332 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Discos ULUULU</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Discos Uluulu</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; overflow: hidden; font-family: sans-serif; background: black; color: white; }
-    #bg-video {
+    html, body { height: 100%; font-family: sans-serif; overflow: hidden; background: black; }
+
+    #videoContainer video {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      object-fit: cover; z-index: -2;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -1;
     }
-    #explore-btn {
+
+    .info-link {
+      position: fixed;
+      top: 40px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    #exploreBtn {
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      padding: 14px 28px;
-      background: white; color: black;
-      border: none; border-radius: 24px;
-      font-size: 18px; cursor: pointer;
-      z-index: 5;
-    }
-    #info-link {
-      position: fixed;
-      top: 30px; left: 50%;
-      transform: translateX(-50%);
-      z-index: 5;
-      font-weight: bold; text-decoration: none;
-      color: white; background: rgba(0,0,0,0.5);
-      padding: 4px 10px; border-radius: 6px;
-    }
-    .player-container {
-      display: none;
-      position: fixed;
-      bottom: 20px; left: 50%;
-      transform: translateX(-50%);
-      width: 90%; max-width: 480px;
-      background: rgba(0,0,0,0.6);
-      padding: 16px;
-      border-radius: 12px;
+      background: rgba(255,255,255,0.9);
+      border: none;
+      padding: 16px 28px;
+      font-size: 20px;
+      border-radius: 8px;
+      cursor: pointer;
       z-index: 10;
-      color: white;
     }
-    .minimized {
+
+    #player-full, #player-min {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 500px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border-radius: 12px;
+      padding: 14px;
+      display: none;
+      z-index: 15;
+    }
+
+    #player-min {
+      text-align: center;
+      font-size: 14px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .album-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px;
-      background: rgba(0,0,0,0.6);
-      border-radius: 12px;
     }
+
+    .album-title {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .album-sub {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .minimize-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
     .controls {
-      display: flex; justify-content: center; align-items: center;
-      gap: 12px; margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
     }
-    .tracklist {
-      max-height: 120px; overflow-y: auto;
-      margin-top: 10px; font-size: 14px;
-    }
-    .track {
-      display: flex; justify-content: space-between;
-      padding: 4px 0; cursor: pointer;
-    }
-    .track.active { font-weight: bold; }
-    .album-header {
-      text-align: center; margin-bottom: 10px;
-    }
-    .album-title { font-weight: bold; font-size: 16px; }
-    .album-sub { font-size: 12px; opacity: 0.7; }
+
     .play-btn {
-      background: white; color: black;
-      border-radius: 50%; width: 40px; height: 40px;
-      border: none; font-size: 18px;
+      width: 36px; height: 36px;
+      border: none;
+      border-radius: 50%;
+      font-size: 18px;
+      background: white;
+      color: black;
+      cursor: pointer;
     }
-    .nav-btn, .minimize-btn, .maximize-btn {
-      background: none; border: none;
-      color: white; font-size: 20px; cursor: pointer;
+
+    .progress {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .progress-inner {
+      height: 100%;
+      width: 0%;
+      background: white;
+      border-radius: 3px;
+    }
+
+    #timeDisplay {
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .tracklist {
+      margin-top: 8px;
+      max-height: 120px;
+      overflow-y: auto;
+      font-size: 13px;
+    }
+
+    .track {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      cursor: pointer;
+    }
+
+    .track.active {
+      font-weight: bold;
+    }
+
+    .switch-album {
+      margin-top: 10px;
+      text-align: right;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: underline;
+      opacity: 0.8;
     }
   </style>
 </head>
 <body>
-  <video id="bg-video" autoplay muted loop playsinline></video>
 
-  <a id="info-link" href="https://info.discosuluulu.com" target="_blank">+info</a>
-  <button id="explore-btn" onclick="showPlayer()">Explore Music</button>
+  <div id="videoContainer"></div>
 
-  <div id="audio-player" class="player-container">
-    <div id="minimized-bar" class="minimized" style="display:none;">
-      <span id="album-name">Garden de La Selva</span>
-      <button class="maximize-btn" onclick="maximizePlayer()">+</button>
-    </div>
+  <a class="info-link" href="https://info.discosuluulu.com">+info</a>
+  <button id="exploreBtn" onclick="showPlayer()">Explore Music</button>
 
-    <div id="player-full">
-      <div class="album-header">
-        <div class="album-title" id="albumTitle">Garden de La Selva</div>
-        <div class="album-sub" id="albumSubtitle">Shaped by shakers grown from okra harvests</div>
+  <div id="player-full">
+    <div class="album-header">
+      <div>
+        <div class="album-title" id="albumTitle"></div>
+        <div class="album-sub" id="albumSubtitle"></div>
       </div>
-      <div class="controls">
-        <button onclick="prevTrack()" class="nav-btn">&#8592;</button>
-        <button onclick="togglePlay()" class="play-btn" id="playBtn">&#9658;</button>
-        <button onclick="nextTrack()" class="nav-btn">&#8594;</button>
-        <button class="minimize-btn" onclick="minimizePlayer()">−</button>
-      </div>
-      <div class="tracklist" id="tracklist"></div>
+      <button class="minimize-btn" onclick="minimizePlayer()">−</button>
     </div>
+    <div class="controls">
+      <button class="play-btn" onclick="togglePlay()">▶</button>
+      <div class="progress" onclick="seek(event)">
+        <div class="progress-inner" id="progressInner"></div>
+      </div>
+      <div id="timeDisplay">00:00 / 00:00</div>
+    </div>
+    <div class="tracklist" id="tracklist"></div>
+    <div class="switch-album" onclick="switchAlbum()">→ Switch Album</div>
+  </div>
+
+  <div id="player-min" onclick="maximizePlayer()">
+    <strong id="minTitle">Garden de La Selva</strong> — Tap to Expand +
   </div>
 
   <script>
-    const videoList = ["background.mp4", "backgroundshop.mp4"];
-    const videoEl = document.getElementById("bg-video");
+    const videos = ['background.mp4', 'backgroundshop.mp4'];
+    const videoContainer = document.getElementById('videoContainer');
+    let currentVideo = 0;
 
-    function shuffleVideo() {
-      const random = Math.floor(Math.random() * videoList.length);
-      videoEl.src = videoList[random];
-      videoEl.load();
-      videoEl.play();
+    function playNextVideo() {
+      const video = document.createElement('video');
+      video.src = videos[currentVideo];
+      video.autoplay = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.onended = () => {
+        currentVideo = Math.floor(Math.random() * videos.length);
+        video.remove();
+        playNextVideo();
+      };
+      videoContainer.innerHTML = '';
+      videoContainer.appendChild(video);
     }
 
-    videoEl.addEventListener('ended', shuffleVideo);
-    window.addEventListener('DOMContentLoaded', shuffleVideo);
+    playNextVideo();
 
-    const albums = [
-      {
-        title: "Garden de La Selva",
-        subtitle: "Shaped by shakers grown from okra harvests",
+    const albums = {
+      garden: {
+        title: 'Garden de La Selva',
+        subtitle: 'Shaped by shakers grown from okra harvests',
         tracks: [
-          { title: "01. Agua", url: "https://discosuluulu.github.io/audio/garden/agua.mp3", duration: "2:30" },
-          { title: "02. Gotas", url: "https://discosuluulu.github.io/audio/garden/gotas.mp3", duration: "3:10" },
-          { title: "03. Vibraciones", url: "https://discosuluulu.github.io/audio/garden/vibraciones.mp3", duration: "2:45" }
-          // Add more as needed
+          { title: '01. Rubba Dubba', url: 'https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2001%20Rubba%20Dubba.mp3', duration: '3:12' },
+          { title: '02. Blue', url: 'https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2002%20Blue.mp3', duration: '2:57' },
+          { title: "Jam 3", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2003%20Jam%203.mp3", length: "3:44" },
+          { title: "Groove 1", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2004%20Groove%201.mp3", length: "2:46" },
         ]
       },
-      {
-        title: "O tú can",
-        subtitle: "Recorded with one microphone in a palm frond wall rancho",
+      otucan: {
+        title: 'O tú can',
+        subtitle: 'Recorded with one microphone in a palm frond wall rancho',
         tracks: [
-          { title: "01. Que Gata", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/01.mp3", duration: "2:21" },
-          { title: "02. Mi Amor", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/02.mp3", duration: "3:03" },
-          { title: "03. Forget the rest", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/03.mp3", duration: "2:42" }
-          // Add more tracks
+          { title: '01. Que Gata', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/01_Que_Gata.mp3', duration: '3:15' },
+          { title: '02. Mi Amor', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/02_Mi_Amor.mp3', duration: '2:47' },
+          { title: '03. Forget the rest', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/03_Forget_the_rest.mp3', duration: '2:50' },
+          { title: '04. Highlife', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/04_Highlife.mp3', duration: '3:00' },
+          { title: '05. Voy Pal Agua', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/05_Voy_Pal_Agua.mp3', duration: '3:10' },
+          { title: '06. Have ya had a Lemon', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/06_Have_ya_had_a_Lemon.mp3', duration: '2:55' },
+          { title: '07. Move ya body', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/07_Move_ya_body.mp3', duration: '2:42' },
+          { title: '08. Bom día', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/08_Bom_dia.mp3', duration: '3:06' },
+          { title: '09. Ya', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/09_Ya.mp3', duration: '2:30' },
+          { title: '10. Que disfrutes', url: 'https://raw.githubusercontent.com/discosuluulu/Otucan/main/10_Que_disfrutes.mp3', duration: '3:18' }
         ]
       }
-    ];
+    };
 
-    let currentAlbum = 0;
+    let currentAlbumKey = 'garden';
     let currentTrack = 0;
-    let audio = new Audio();
-    const playBtn = document.getElementById("playBtn");
-    const tracklistEl = document.getElementById("tracklist");
-
-    function loadTracklist() {
-      const album = albums[currentAlbum];
-      document.getElementById("albumTitle").textContent = album.title;
-      document.getElementById("albumSubtitle").textContent = album.subtitle;
-      document.getElementById("album-name").textContent = album.title;
-      tracklistEl.innerHTML = "";
-      album.tracks.forEach((track, i) => {
-        const div = document.createElement("div");
-        div.className = "track" + (i === currentTrack ? " active" : "");
-        div.textContent = `${track.title} – ${track.duration}`;
-        div.onclick = () => { currentTrack = i; playCurrent(); };
-        tracklistEl.appendChild(div);
-      });
-    }
-
-    function playCurrent() {
-      const track = albums[currentAlbum].tracks[currentTrack];
-      audio.src = track.url;
-      audio.play();
-      playBtn.innerHTML = "❚❚";
-      loadTracklist();
-    }
-
-    function togglePlay() {
-      if (audio.paused) {
-        audio.play();
-        playBtn.innerHTML = "❚❚";
-      } else {
-        audio.pause();
-        playBtn.innerHTML = "▶";
-      }
-    }
-
-    function prevTrack() {
-      if (currentAlbum > 0) currentAlbum--;
-      else currentAlbum = albums.length - 1;
-      currentTrack = 0;
-      playCurrent();
-    }
-
-    function nextTrack() {
-      if (currentAlbum < albums.length - 1) currentAlbum++;
-      else currentAlbum = 0;
-      currentTrack = 0;
-      playCurrent();
-    }
+    const audio = new Audio();
+    const playBtn = document.querySelector('.play-btn');
+    const progressInner = document.getElementById('progressInner');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const tracklistEl = document.getElementById('tracklist');
+    const albumTitleEl = document.getElementById('albumTitle');
+    const albumSubtitleEl = document.getElementById('albumSubtitle');
+    const minTitle = document.getElementById('minTitle');
 
     function showPlayer() {
-      document.getElementById("explore-btn").style.display = "none";
-      document.getElementById("audio-player").style.display = "block";
-      loadTracklist();
-      playCurrent();
+      document.getElementById('exploreBtn').style.display = 'none';
+      document.getElementById('player-full').style.display = 'block';
+      loadAlbum(currentAlbumKey);
     }
 
     function minimizePlayer() {
-      document.getElementById("player-full").style.display = "none";
-      document.getElementById("minimized-bar").style.display = "flex";
+      document.getElementById('player-full').style.display = 'none';
+      document.getElementById('player-min').style.display = 'block';
     }
 
     function maximizePlayer() {
-      document.getElementById("player-full").style.display = "block";
-      document.getElementById("minimized-bar").style.display = "none";
+      document.getElementById('player-min').style.display = 'none';
+      document.getElementById('player-full').style.display = 'block';
+    }
+
+    function loadAlbum(key) {
+      const album = albums[key];
+      currentAlbumKey = key;
+      currentTrack = 0;
+      audio.src = album.tracks[0].url;
+      albumTitleEl.textContent = album.title;
+      albumSubtitleEl.textContent = album.subtitle;
+      minTitle.textContent = album.title;
+
+      tracklistEl.innerHTML = '';
+      album.tracks.forEach((track, i) => {
+        const div = document.createElement('div');
+        div.className = 'track';
+        div.innerHTML = `<span>${track.title}</span><span>${track.duration}</span>`;
+        div.onclick = () => selectTrack(i);
+        tracklistEl.appendChild(div);
+      });
+      updateUI();
+    }
+
+    function selectTrack(i) {
+      currentTrack = i;
+      audio.src = albums[currentAlbumKey].tracks[i].url;
+      audio.play();
+      updateUI();
+    }
+
+    function togglePlay() {
+      if (!audio.src) return selectTrack(0);
+      if (audio.paused) audio.play();
+      else audio.pause();
+      updateUI();
+    }
+
+    function updateUI() {
+      playBtn.textContent = audio.paused ? '▶' : '⏸';
+      [...tracklistEl.children].forEach((el, i) => {
+        el.classList.toggle('active', i === currentTrack);
+      });
+    }
+
+    function seek(e) {
+      const bar = e.currentTarget;
+      const pct = (e.offsetX / bar.clientWidth);
+      audio.currentTime = pct * audio.duration;
+    }
+
+    audio.addEventListener('timeupdate', () => {
+      const pct = (audio.currentTime / audio.duration) * 100 || 0;
+      progressInner.style.width = pct + '%';
+      timeDisplay.textContent = `${format(audio.currentTime)} / ${format(audio.duration)}`;
+    });
+
+    audio.addEventListener('ended', () => {
+      const album = albums[currentAlbumKey];
+      currentTrack = (currentTrack + 1) % album.tracks.length;
+      selectTrack(currentTrack);
+    });
+
+    function switchAlbum() {
+      currentAlbumKey = currentAlbumKey === 'garden' ? 'otucan' : 'garden';
+      loadAlbum(currentAlbumKey);
+    }
+
+    function format(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
   </script>
 </body>
