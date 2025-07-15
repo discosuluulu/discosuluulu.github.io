@@ -3,18 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Test Player</title>
+  <title>Discos Uluulu Player</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <button id="exploreBtn">Explore Music</button>
+  <div id="player">
+    <div class="player-header">
+      <div>
+        <h2 id="albumTitle"></h2>
+        <p id="albumSubtitle"></p>
+      </div>
+      <button id="albumToggleBtn">Next Album</button>
+    </div>
 
-  <div id="audioPlayer" class="hidden">
-    <h2 id="albumTitle">Title</h2>
-    <p id="albumSubtitle">Subtitle</p>
-    <div id="tracklist"></div>
-    <div>
-      <button id="playPauseBtn">▶️</button>
+    <div id="tracklist" class="tracklist"></div>
+
+    <div class="controls">
+      <button id="prevBtn">⏮️</button>
+      <button id="playPauseBtn"></button>
+      <button id="nextBtn">⏭️</button>
+    </div>
+
+    <div class="progress-container">
+      <input type="range" id="progressBar" min="0" value="0" step="0.01">
+      <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
     </div>
   </div>
 
