@@ -1,55 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Discos Uluulu Audio Player</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Discos Uluulu Player</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- Explore Music Button -->
-  <div id="exploreSection">
-    <button id="exploreBtn">Explore Music</button>
-  </div>
-
-  <!-- Audio Player -->
-  <div id="audioPlayer" class="hidden">
+  <div id="player" class="player">
     <div class="player-header">
       <div class="album-info">
-        <h2 id="albumTitle"></h2>
-        <p id="albumSubtitle"></p>
+        <h2 id="album-title">Album Title</h2>
+        <p id="album-subtitle">Album Subtitle</p>
       </div>
       <div class="player-controls-top">
-        <button id="minimizeBtn" title="Minimize">−</button>
-        <button id="nextAlbumBtn" title="Next Album">Next Album</button>
+        <button id="toggle-album" title="Next Album">⇄</button>
+        <button id="minimize" title="Minimize">−</button>
       </div>
     </div>
 
-    <div class="tracklist" id="trackList"></div>
+    <ul id="track-list" class="track-list"></ul>
 
-    <div class="bottom-controls">
-      <button id="prevBtn" title="Previous Track">
-        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M6 4v16l12-8z" fill="white"/></svg>
+    <div class="player-controls">
+      <button id="prev">
+        <svg viewBox="0 0 24 24"><path d="M6 19V5h2v14H6zm3.5-7L18 5v14l-8.5-7z"/></svg>
       </button>
-      <button id="playPauseBtn" title="Play/Pause">
-        <svg id="playIcon" width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="white"/></svg>
-        <svg id="pauseIcon" width="24" height="24" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6zm8-14v14h4V5z" fill="white"/></svg>
+      <button id="play">
+        <svg id="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pause-icon" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
       </button>
-      <button id="nextBtn" title="Next Track">
-        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M6 4l12 8-12 8z" fill="white"/></svg>
+      <button id="next">
+        <svg viewBox="0 0 24 24"><path d="M16 5v14h-2V5h2zm-3.5 7L6 5v14l6.5-7z"/></svg>
       </button>
     </div>
 
     <div class="progress-container">
-      <span id="currentTime">0:00</span>
-      <input type="range" id="progressBar" value="0" min="0" max="100" step="0.1" />
-      <span id="duration">0:00</span>
+      <input type="range" id="progress" value="0" min="0" max="100">
+      <div id="time-display">0:00 / 0:00</div>
     </div>
   </div>
 
-  <!-- Maximize button -->
-  <button id="maximizeBtn" class="hidden">+</button>
+  <button id="maximize" style="display:none;">+</button>
 
   <script src="script.js"></script>
 </body>
