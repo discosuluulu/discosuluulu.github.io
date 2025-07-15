@@ -1,4 +1,6 @@
-document.getElementById('exploreBtn').addEventListener('click', () => {
-  document.getElementById('audioPlayerContainer').classList.remove('hidden');
-  initializePlayer(); // Defined in audioPlayer.js
+document.getElementById('explore-btn').addEventListener('click', () => {
+  document.querySelector('.landing-content').style.display = 'none';
+  document.getElementById('audio-player-container').classList.remove('hidden');
+  document.getElementById('bg-video').play();
+  window.dispatchEvent(new Event('startAudio'));
 });
