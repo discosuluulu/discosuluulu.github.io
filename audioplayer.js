@@ -34,113 +34,96 @@ const otucanAlbum = {
 };
 
 let currentAlbum = gardenAlbum;
-let currentTrack = 0;
-const audio = new Audio();
-
+let currentTrackIndex = 0;
+const audio = document.getElementById("audio");
 const albumTitle = document.getElementById("albumTitle");
 const albumSubtitle = document.getElementById("albumSubtitle");
 const trackList = document.getElementById("trackList");
-const playPauseBtn = document.getElementById("playPauseBtn");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
 const progressBar = document.getElementById("progressBar");
-const currentTimeEl = document.getElementById("currentTime");
-const durationEl = document.getElementById("duration");
+const currentTimeSpan = document.getElementById("currentTime");
+const durationSpan = document.getElementById("duration");
 
 function loadAlbum(album) {
-  currentAlbum = album;
   albumTitle.textContent = album.title;
   albumSubtitle.textContent = album.subtitle;
   trackList.innerHTML = "";
+
   album.tracks.forEach((track, index) => {
-    const li = document.createElement("li");
-    li.textContent = `${index + 1}. ${track.title}`;
-    const time = document.createElement("span");
-    time.textContent = track.length;
-    li.appendChild(time);
-    li.onclick = () => {
-      currentTrack = index;
-      loadTrack();
-      playAudio();
-    };
-    trackList.appendChild(li);
+    const div = document.createElement("div");
+    div.className = "track";
+    div.innerHTML = `<span>${index + 1}. ${track.title}</span><span>${track.length}</span>`;
+    div.addEventListener("click", () => playTrack(index));
+    trackList.appendChild(div);
   });
-  highlightTrack();
-  loadTrack();
+
+  playTrack(0);
 }
 
-function loadTrack() {
-  const track = currentAlbum.tracks[currentTrack];
+function playTrack(index) {
+  const prev = document.querySelector(".track.active");
+  if (prev) prev.classList.remove("active");
+
+  currentTrackIndex = index;
+  const track = currentAlbum.tracks[index];
   audio.src = track.url;
-  highlightTrack();
-}
-
-function playAudio() {
   audio.play();
-  playPauseBtn.textContent = "⏸️";
+
+  trackList.children[index].classList.add("active");
+  updatePlayPauseIcons();
 }
 
-function pauseAudio() {
-  audio.pause();
-  playPauseBtn.textContent = "▶️";
+function updatePlayPauseIcons() {
+  document.getElementById("playIcon").style.display = audio.paused ? "inline" : "none";
+  document.getElementById("pauseIcon").style.display = audio.paused ? "none" : "inline";
 }
 
-function highlightTrack() {
-  const items = trackList.querySelectorAll("li");
-  items.forEach((item, i) => {
-    item.classList.toggle("active", i === currentTrack);
-  });
-}
-
-playPauseBtn.onclick = () => {
+document.getElementById("playPauseBtn").addEventListener("click", () => {
   if (audio.paused) {
-    playAudio();
+    audio.play();
   } else {
-    pauseAudio();
+    audio.pause();
   }
-};
+  updatePlayPauseIcons();
+});
 
-prevBtn.onclick = () => {
-  currentTrack = (currentTrack - 1 + currentAlbum.tracks.length) % currentAlbum.tracks.length;
-  loadTrack();
-  playAudio();
-};
+document.getElementById("prevBtn").addEventListener("click", () => {
+  playTrack((currentTrackIndex - 1 + currentAlbum.tracks.length) % currentAlbum.tracks.length);
+});
 
-nextBtn.onclick = () => {
-  currentTrack = (currentTrack + 1) % currentAlbum.tracks.length;
-  loadTrack();
-  playAudio();
-};
+document.getElementById("nextBtn").addEventListener("click", () => {
+  playTrack((currentTrackIndex + 1) % currentAlbum.tracks.length);
+});
 
 audio.addEventListener("timeupdate", () => {
-  progressBar.value = (audio.currentTime / audio.duration) * 100 || 0;
-  currentTimeEl.textContent = formatTime(audio.currentTime);
-  durationEl.textContent = formatTime(audio.duration);
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressBar.value = percent || 0;
+  currentTimeSpan.textContent = formatTime(audio.currentTime);
+  durationSpan.textContent = formatTime(audio.duration);
 });
 
 progressBar.addEventListener("input", () => {
   audio.currentTime = (progressBar.value / 100) * audio.duration;
 });
 
-function formatTime(time) {
-  const mins = Math.floor(time / 60) || 0;
-  const secs = Math.floor(time % 60) || 0;
-  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s < 10 ? "0" : ""}${s}`;
 }
 
-document.getElementById("toggleAlbum").onclick = () => {
-  const next = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
-  loadAlbum(next);
-};
+document.getElementById("toggleAlbumBtn").addEventListener("click", () => {
+  currentAlbum = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
+  loadAlbum(currentAlbum);
+});
 
-document.getElementById("minimizeBtn").onclick = () => {
-  document.getElementById("audioPlayer").classList.add("hidden");
-  document.getElementById("maximizeBtn").classList.remove("hidden");
-};
+document.getElementById("minimizeBtn").addEventListener("click", () => {
+  document.getElementById("audioPlayer").classList.add("minimized");
+  document.getElementById("maximizeBtn").style.display = "block";
+});
 
-document.getElementById("maximizeBtn").onclick = () => {
-  document.getElementById("audioPlayer").classList.remove("hidden");
-  document.getElementById("maximizeBtn").classList.add("hidden");
-};
+document.getElementById("maximizeBtn").addEventListener("click", () => {
+  document.getElementById("audioPlayer").classList.remove("minimized");
+  document.getElementById("maximizeBtn").style.display = "none";
+});
 
-loadAlbum(gardenAlbum);
+loadAlbum(currentAlbum);
