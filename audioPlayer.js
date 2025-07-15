@@ -20,16 +20,16 @@ const otucanAlbum = {
   title: "O tú can",
   subtitle: "Recorded with one microphone in a palm frond wall rancho",
   tracks: [
-    { title: "Que Gata", length: "2:45", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3" },
-    { title: "Mi Amor", length: "2:48", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3" },
-    { title: "Forget the rest", length: "3:10", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3" },
-    { title: "Highlife", length: "2:50", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2004%20Highlife.mp3" },
-    { title: "Voy Pal Agua", length: "3:00", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2005%20Voy%20Pal%20Agua.mp3" },
-    { title: "Have ya had a Lemon", length: "3:03", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2006%20Have%20ya%20had%20a%20Lemon.mp3" },
-    { title: "Move ya body", length: "3:15", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3" },
-    { title: "Bom día", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3" },
-    { title: "Ya", length: "3:30", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2009%20Ya.mp3" },
-    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" }
+    { title: "Que Gata", length: "2:45", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3" },
+    { title: "Mi Amor", length: "2:48", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3" },
+    { title: "Forget the rest", length: "3:10", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3" },
+    { title: "Highlife", length: "2:50", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2004%20Highlife.mp3" },
+    { title: "Voy Pal Agua", length: "3:00", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2005%20Voy%20Pal%20Agua.mp3" },
+    { title: "Have ya had a Lemon", length: "3:03", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2006%20Have%20ya%20had%20a%20Lemon.mp3" },
+    { title: "Move ya body", length: "3:15", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3" },
+    { title: "Bom día", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3" },
+    { title: "Ya", length: "3:30", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2009%20Ya.mp3" },
+    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" }
   ]
 };
 
@@ -44,13 +44,11 @@ const tracklist = document.getElementById("tracklist");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const progressBar = document.getElementById("progressBar");
 const audioPlayer = document.getElementById("audioPlayer");
+const logo = document.getElementById("logo");
+const exploreBtn = document.getElementById("exploreBtn");
 const infoLink = document.getElementById("infoLink");
-const maximizeBtn = document.getElementById("maximizeBtn");
 
-// Load album
 function loadAlbum(index) {
-  currentAlbumIndex = index;
-  currentTrackIndex = 0;
   const album = albums[index];
   albumTitle.textContent = album.title;
   albumSubtitle.textContent = album.subtitle;
@@ -61,7 +59,7 @@ function loadAlbum(index) {
     div.className = "track";
     div.innerHTML = `
       <span class="track-title">${(i + 1).toString().padStart(2, '0')}. ${track.title}</span>
-      <span class="track-time">${track.length}</span>
+      <span class="track-length">${track.length}</span>
     `;
     div.addEventListener("click", () => {
       currentTrackIndex = i;
@@ -71,7 +69,6 @@ function loadAlbum(index) {
   });
 }
 
-// Play track
 function playTrack(index) {
   const track = albums[currentAlbumIndex].tracks[index];
   audio.src = track.url;
@@ -79,7 +76,23 @@ function playTrack(index) {
   updatePlayPauseIcon();
 }
 
-// Play/pause toggle
+function updatePlayPauseIcon() {
+  playPauseBtn.innerHTML = audio.paused
+    ? `<svg viewBox="0 0 60 60" width="28" height="28"><polygon points="15,10 50,30 15,50" fill="black"/></svg>`
+    : `<svg viewBox="0 0 60 60" width="28" height="28"><rect x="15" y="10" width="8" height="40" fill="black"/><rect x="35" y="10" width="8" height="40" fill="black"/></svg>`;
+}
+
+// Explore button logic
+exploreBtn.addEventListener("click", () => {
+  audioPlayer.classList.add("visible");
+  exploreBtn.style.display = "none";
+  logo.classList.add("top-left");
+  infoLink.style.display = "block";
+  loadAlbum(currentAlbumIndex);
+  playTrack(currentTrackIndex);
+});
+
+// Playback controls
 playPauseBtn.addEventListener("click", () => {
   if (!audio.src) {
     playTrack(currentTrackIndex);
@@ -91,65 +104,45 @@ playPauseBtn.addEventListener("click", () => {
   updatePlayPauseIcon();
 });
 
-// Update icon
-function updatePlayPauseIcon() {
-  playPauseBtn.innerHTML = audio.paused
-    ? `<svg width="30" height="30" viewBox="0 0 24 24"><polygon fill="black" points="5,3 19,12 5,21"/></svg>`
-    : `<svg width="30" height="30" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`;
-}
-
-// Progress bar sync
-audio.addEventListener("timeupdate", () => {
-  progressBar.max = audio.duration || 0;
-  progressBar.value = audio.currentTime;
-});
-progressBar.addEventListener("input", () => {
-  audio.currentTime = progressBar.value;
-});
-
-// Next/previous
 document.getElementById("nextBtn").addEventListener("click", () => {
   currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
   playTrack(currentTrackIndex);
 });
+
 document.getElementById("prevBtn").addEventListener("click", () => {
   currentTrackIndex = (currentTrackIndex - 1 + albums[currentAlbumIndex].tracks.length) % albums[currentAlbumIndex].tracks.length;
   playTrack(currentTrackIndex);
 });
 
-// Album toggle
 document.getElementById("albumToggleBtn").addEventListener("click", () => {
   currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
   loadAlbum(currentAlbumIndex);
-  playTrack(currentTrackIndex);
+  playTrack(0);
 });
 
-// Auto-play next
-audio.addEventListener("ended", () => {
-  currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
-  playTrack(currentTrackIndex);
+// Progress bar updates
+audio.addEventListener("timeupdate", () => {
+  progressBar.value = audio.currentTime;
+  progressBar.max = audio.duration || 0;
 });
 
-// Explore Music button behavior
-document.getElementById("exploreBtn").addEventListener("click", () => {
-  document.getElementById("logo").classList.add("logo-shrink");
-  audioPlayer.style.display = "flex";
-  infoLink.style.display = "inline-block";
-  playTrack(currentTrackIndex);
+progressBar.addEventListener("input", () => {
+  audio.currentTime = progressBar.value;
 });
 
-// Minimize/maximize
+// Minimize/maximize functionality
 document.getElementById("minimizeBtn").addEventListener("click", () => {
-  audioPlayer.style.display = "none";
+  audioPlayer.classList.remove("visible");
+  document.getElementById("maximizeBtn").style.display = "block";
   infoLink.style.display = "none";
-  maximizeBtn.style.display = "block";
-});
-maximizeBtn.addEventListener("click", () => {
-  audioPlayer.style.display = "flex";
-  infoLink.style.display = "inline-block";
-  maximizeBtn.style.display = "none";
 });
 
-// Init
+document.getElementById("maximizeBtn").addEventListener("click", () => {
+  audioPlayer.classList.add("visible");
+  document.getElementById("maximizeBtn").style.display = "none";
+  infoLink.style.display = "block";
+});
+
+// Load first album
 loadAlbum(currentAlbumIndex);
 updatePlayPauseIcon();
