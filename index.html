@@ -2,240 +2,269 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Discos Uluulu</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: black;
-      font-family: sans-serif;
-      color: white;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html { height: 100%; font-family: sans-serif; overflow: hidden; background: black; }
 
-    video.bg {
+    video.bg-video {
       position: fixed;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw; height: 100vh;
       object-fit: cover;
       z-index: -1;
     }
 
-    #logo {
+    .overlay {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      max-width: 200px;
-      z-index: 2;
-    }
-
-    #exploreBtn {
-      position: absolute;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255,255,255,0.9);
-      color: black;
-      border: none;
-      padding: 12px 24px;
-      font-size: 16px;
-      cursor: pointer;
-      z-index: 2;
-    }
-
-    #infoBtn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      color: white;
-      font-size: 18px;
-      background: transparent;
-      border: 1px solid white;
-      padding: 6px 12px;
-      cursor: pointer;
-      z-index: 2;
-    }
-
-    #playerContainer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 10px 20px;
-      box-sizing: border-box;
-      transition: transform 0.3s ease;
-    }
-
-    #playerHeader {
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
+      z-index: 2;
     }
 
-    #playerHeader h2 {
-      margin: 0;
-      font-size: 16px;
+    .overlay img {
+      width: 160px;
+      margin-bottom: 20px;
     }
 
-    #minimizeBtn, #maximizeBtn {
+    .overlay button {
       background: none;
-      border: none;
+      border: 2px solid white;
       color: white;
-      font-size: 20px;
+      padding: 12px 24px;
+      font-size: 1.2em;
       cursor: pointer;
+      transition: all 0.3s;
     }
 
-    #maximizeBtn {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      background: rgba(0,0,0,0.7);
-      padding: 10px;
+    .overlay button:hover {
+      background: white;
+      color: black;
+    }
+
+    .info-button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
       z-index: 3;
     }
 
-    #trackList {
+    .info-button a {
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      background: rgba(0,0,0,0.5);
+      padding: 8px 12px;
+      border-radius: 4px;
+    }
+
+    #audio-player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .player-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .album-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tracklist {
       margin-top: 10px;
-      max-height: 150px;
+      max-height: 140px;
       overflow-y: auto;
     }
 
     .track {
-      padding: 5px 0;
       display: flex;
       justify-content: space-between;
+      padding: 4px 0;
       cursor: pointer;
     }
 
-    .active {
-      font-weight: bold;
+    .minimized-player {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 11;
     }
+
+    .hide { display: none; }
   </style>
 </head>
 <body>
 
-  <video class="bg" id="bgVideo" autoplay muted loop playsinline></video>
+  <!-- Landing Video -->
+  <video id="landingVideo" class="bg-video" autoplay muted loop playsinline>
+    <source src="background.mp4" type="video/mp4" />
+  </video>
 
-  <img id="logo" src="logo.png" alt="Logo" />
-  <button id="exploreBtn">Explore Music</button>
-  <button id="infoBtn" onclick="window.location.href='https://info.discosuluulu.com'">+ info</button>
+  <!-- Music Background Video (hidden until Explore Music is clicked) -->
+  <video id="musicVideo" class="bg-video hide" autoplay muted loop playsinline>
+    <source src="backgroundshop.mp4" type="video/mp4" />
+  </video>
 
-  <div id="playerContainer" style="display:none;">
-    <div id="playerHeader">
-      <h2 id="albumTitle">Garden de La Selva</h2>
-      <button id="minimizeBtn">–</button>
-    </div>
-    <div id="trackList"></div>
-    <audio id="audio" controls style="width: 100%; margin-top:10px;"></audio>
+  <!-- Landing Overlay -->
+  <div class="overlay" id="landingOverlay">
+    <img src="logo.png" alt="Discos Uluulu Logo" />
+    <button onclick="startExperience()">Explore Music</button>
   </div>
 
-  <button id="maximizeBtn">+</button>
+  <!-- +INFO Button -->
+  <div class="info-button">
+    <a href="https://info.discosuluulu.com" target="_blank">+info</a>
+  </div>
+
+  <!-- Floating Audio Player -->
+  <div id="audio-player" class="hide">
+    <div class="player-header">
+      <div class="album-info">
+        <strong id="album-title">O tú can</strong>
+        <span id="album-subtitle" style="font-weight: 300; font-size: 0.9em;">Recorded with one microphone in a palm frond wall rancho</span>
+      </div>
+      <div class="controls">
+        <button onclick="toggleMinimize()">−</button>
+        <button onclick="switchAlbum()">→</button>
+      </div>
+    </div>
+    <audio id="audio" onended="playNextTrack()"></audio>
+    <div class="tracklist" id="tracklist"></div>
+  </div>
+
+  <!-- Minimized Version -->
+  <div class="minimized-player hide" onclick="toggleMinimize()">
+    <span id="minimized-title">O tú can</span> – Tap to expand
+  </div>
 
   <script>
-    const videos = ['background.mp4', 'backgroundshop.mp4'];
-    let currentVideo = 0;
-    const bgVideo = document.getElementById('bgVideo');
-
-    function playNextVideo() {
-      bgVideo.src = videos[currentVideo];
-      bgVideo.load();
-      bgVideo.play();
-      currentVideo = (currentVideo + 1) % videos.length;
-    }
-
-    bgVideo.addEventListener('ended', playNextVideo);
-    playNextVideo();
-
-    const exploreBtn = document.getElementById('exploreBtn');
-    const logo = document.getElementById('logo');
-    const player = document.getElementById('playerContainer');
-    const maximizeBtn = document.getElementById('maximizeBtn');
-    const minimizeBtn = document.getElementById('minimizeBtn');
-    const audio = document.getElementById('audio');
-    const trackList = document.getElementById('trackList');
-    const albumTitle = document.getElementById('albumTitle');
-
     const albums = [
       {
-        title: "Garden de La Selva",
+        title: "O tú can",
+        subtitle: "Recorded with one microphone in a palm frond wall rancho",
         tracks: [
-          { title: "Rubba Dubba", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2001%20Rubba%20Dubba.mp3", length: "3:12" },
-          { title: "Blue", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2002%20Blue.mp3", length: "2:57" },
-          { title: "Jam 3", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2003%20Jam%203.mp3", length: "3:44" },
-          { title: "Groove 1", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2004%20Groove%201.mp3", length: "2:46" },
-          { title: "Vamos Limón", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2005%20Vamos%20Limón.mp3", length: "3:25" },
-          { title: "Mi Ritmo", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2006%20Mi%20Ritmo.mp3", length: "3:08" },
-          { title: "Valle Azul", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2007%20Valle%20Azul.mp3", length: "4:01" },
-          { title: "Yellow", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2008%20Yellow.mp3", length: "2:59" },
-          { title: "Manzanillo", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2009%20Manzanillo.mp3", length: "3:17" },
-          { title: "Dear Familia", url:"https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2010%20Dear%20Familia.mp3", length: "3:40" },
-          { title: "Shake It", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3", length: "3:20" }
+          { title: "01. Que Gata", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3", length: "3:12" },
+          { title: "02. Mi Amor", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3", length: "2:57" },
+          { title: "03. Forget the rest", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3", length: "3:44" },
+          { title: "04. Highlife", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2004%20Highlife.mp3", length: "2:46" },
+          { title: "05. Voy Pal Agua", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2005%20Voy%20Pal%20Agua.mp3", length: "3:25" },
+          { title: "06. Have ya had a Lemon", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2006%20Have%20ya%20had%20a%20Lemon.mp3", length: "3:08" },
+          { title: "07. Move ya body", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3", length: "4:01" },
+          { title: "08. Bom día", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3", length: "2:59" },
+          { title: "09. Ya", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2009%20Ya.mp3", length: "3:17" },
+          { title: "10. Que disfrutes", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3", length: "3:40" }
         ]
       },
       {
-        title: "O tú can",
+        title: "Garden de La Selva",
+        subtitle: "Shaped by shakers grown from okra harvests",
         tracks: [
-          { title: "Que Gata", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3", length: "2:44" },
-          { title: "Mi Amor", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3", length: "2:40" },
-          { title: "Forget the rest", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3", length: "3:01" },
-          { title: "Highlife", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2004%20Highlife.mp3", length: "2:53" },
-          { title: "Voy Pal Agua", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2005%20Voy%20Pal%20Agua.mp3", length: "3:15" },
-          { title: "Have ya had a Lemon", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2006%20Have%20ya%20had%20a%20Lemon.mp3", length: "2:38" },
-          { title: "Move ya body", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3", length: "3:10" },
-          { title: "Bom día", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3", length: "2:50" },
-          { title: "Ya", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2009%20Ya.mp3", length: "3:18" },
-          { title: "Que disfrutes", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3", length: "2:57" }
+          { title: "01. Rubba Dubba", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2001%20Rubba%20Dubba.mp3", length: "3:12" },
+          { title: "02. Blue", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2002%20Blue.mp3", length: "2:57" },
+          { title: "03. Jam 3", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2003%20Jam%203.mp3", length: "3:44" },
+          { title: "04. Groove 1", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2004%20Groove%201.mp3", length: "2:46" },
+          { title: "05. Vamos Limón", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2005%20Vamos%20Limón.mp3", length: "3:25" },
+          { title: "06. Mi Ritmo", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2006%20Mi%20Ritmo.mp3", length: "3:08" },
+          { title: "07. Valle Azul", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2007%20Valle%20Azul.mp3", length: "4:01" },
+          { title: "08. Yellow", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2008%20Yellow.mp3", length: "2:59" },
+          { title: "09. Manzanillo", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2009%20Manzanillo.mp3", length: "3:17" },
+          { title: "10. Dear Familia", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2010%20Dear%20Familia.mp3", length: "3:40" },
+          { title: "11. Shake It", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3", length: "3:20" }
         ]
       }
     ];
 
-    let currentAlbum = 0;
+    let currentAlbumIndex = 0;
+    let currentTrackIndex = 0;
+    const audio = document.getElementById('audio');
+    const tracklist = document.getElementById('tracklist');
+
+    function startExperience() {
+      document.getElementById('landingOverlay').classList.add('hide');
+      document.getElementById('landingVideo').classList.add('hide');
+      document.getElementById('musicVideo').classList.remove('hide');
+      document.getElementById('audio-player').classList.remove('hide');
+      loadAlbum(currentAlbumIndex);
+      playTrack(currentTrackIndex);
+    }
 
     function loadAlbum(index) {
       const album = albums[index];
-      albumTitle.textContent = album.title;
-      trackList.innerHTML = '';
+      document.getElementById('album-title').innerText = album.title;
+      document.getElementById('album-subtitle').innerText = album.subtitle;
+      document.getElementById('minimized-title').innerText = album.title;
+      tracklist.innerHTML = "";
       album.tracks.forEach((track, i) => {
         const div = document.createElement('div');
-        div.className = 'track';
-        div.innerHTML = `<span>${(i+1).toString().padStart(2, '0')}. ${track.title}</span><span>${track.length}</span>`;
-        div.onclick = () => {
-          document.querySelectorAll('.track').forEach(t => t.classList.remove('active'));
-          div.classList.add('active');
-          audio.src = track.url;
-          audio.play();
-        };
-        trackList.appendChild(div);
+        div.className = "track";
+        div.innerHTML = `<span>${track.title}</span><span>${track.length}</span>`;
+        div.onclick = () => playTrack(i);
+        tracklist.appendChild(div);
       });
     }
 
-    exploreBtn.onclick = () => {
-      exploreBtn.style.display = 'none';
-      logo.style.display = 'none';
-      player.style.display = 'block';
-      loadAlbum(currentAlbum);
-    };
+    function playTrack(index) {
+      const track = albums[currentAlbumIndex].tracks[index];
+      currentTrackIndex = index;
+      audio.src = track.url;
+      audio.play();
+    }
 
-    minimizeBtn.onclick = () => {
-      player.style.display = 'none';
-      maximizeBtn.style.display = 'block';
-    };
+    function playNextTrack() {
+      currentTrackIndex++;
+      if (currentTrackIndex >= albums[currentAlbumIndex].tracks.length) currentTrackIndex = 0;
+      playTrack(currentTrackIndex);
+    }
 
-    maximizeBtn.onclick = () => {
-      player.style.display = 'block';
-      maximizeBtn.style.display = 'none';
-    };
+    function switchAlbum() {
+      currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
+      currentTrackIndex = 0;
+      loadAlbum(currentAlbumIndex);
+      playTrack(currentTrackIndex);
+    }
 
-    albumTitle.onclick = () => {
-      currentAlbum = (currentAlbum + 1) % albums.length;
-      loadAlbum(currentAlbum);
-    };
+    function toggleMinimize() {
+      const player = document.getElementById('audio-player');
+      const minimized = document.querySelector('.minimized-player');
+      if (player.classList.contains('hide')) {
+        player.classList.remove('hide');
+        minimized.classList.add('hide');
+      } else {
+        player.classList.add('hide');
+        minimized.classList.remove('hide');
+      }
+    }
   </script>
+
 </body>
 </html>
