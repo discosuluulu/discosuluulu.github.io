@@ -4,49 +4,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Discos Uluulu</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-
-  <!-- Fullscreen background video -->
-  <video autoplay muted loop id="background-video">
-    <source src="background.mp4" type="video/mp4">
-    Your browser does not support the video tag.
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="assets/background.mp4" type="video/mp4" />
   </video>
 
-  <!-- Centered content -->
-  <div id="landing-content">
-    <img src="logo.png" alt="Logo" id="logo">
-    <button id="explore-btn">Explore Music</button>
-    <button id="info-btn">+info</button>
+  <!-- Logo + Explore Button -->
+  <div class="landing" id="landing">
+    <img src="assets/logo.png" alt="Logo" class="logo" />
+    <button id="exploreBtn">Explore Music</button>
   </div>
 
-  <!-- Hidden audio players (revealed when explore is pressed) -->
-  <div id="audio-players" style="display: none;">
-    <!-- Garden de La Selva Player -->
-    <div class="album-player">
-      <h2>Garden de La Selva</h2>
-      <p class="subtitle">Shaped by shakers grown from okra harvests</p>
-      <div class="tracklist">
-        <audio id="garden-audio" controls></audio>
-        <ul id="garden-tracks"></ul>
-      </div>
+  <!-- +Info Button -->
+  <a href="https://info.discosuluulu.com" class="info-button" id="infoBtn" target="_blank">+info</a>
+
+  <!-- Audio Player -->
+  <div id="audioPlayerContainer" class="player hidden">
+    <div class="player-header">
+      <span class="album-title" id="albumTitle">Garden de La Selva</span>
+      <span class="album-subtitle" id="albumSubtitle">Shaped by shakers grown from okra harvests</span>
+      <button id="minimizeBtn" class="minimize">_</button>
     </div>
 
-    <!-- O tú can Player -->
-    <div class="album-player">
-      <h2>O tú can</h2>
-      <p class="subtitle">Recorded with one microphone in a palm frond wall rancho</p>
-      <div class="tracklist">
-        <audio id="otucan-audio" controls></audio>
-        <ul id="otucan-tracks"></ul>
-      </div>
+    <div class="tracklist" id="tracklist"></div>
+
+    <div class="controls">
+      <button id="prevBtn">⏮️</button>
+      <button id="playPauseBtn">▶️</button>
+      <button id="nextBtn">⏭️</button>
+      <input type="range" id="progressBar" value="0" step="1" />
+    </div>
+
+    <div class="player-footer">
+      <button id="albumToggleBtn">Next Album</button>
     </div>
   </div>
 
   <!-- Scripts -->
-  <script src="script.js"></script>
-  <script src="audioPlayer.js"></script>
-
+  <script src="js/audioPlayer.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
