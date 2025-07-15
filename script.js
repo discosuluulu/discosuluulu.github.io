@@ -1,6 +1,12 @@
-document.getElementById('explore-btn').addEventListener('click', () => {
-  document.querySelector('.landing-content').style.display = 'none';
-  document.getElementById('audio-player-container').classList.remove('hidden');
-  document.getElementById('bg-video').play();
-  window.dispatchEvent(new Event('startAudio'));
+document.getElementById("explore-btn").addEventListener("click", () => {
+  document.getElementById("audio-players").style.display = "block";
+  document.getElementById("landing-content").style.display = "none";
+
+  // Optional: autoplay Garden de La Selva
+  const gardenAudio = document.getElementById("garden-audio");
+  if (gardenAudio) gardenAudio.play();
+});
+
+document.getElementById("info-btn").addEventListener("click", () => {
+  window.location.href = "https://info.discosuluulu.com";
 });
