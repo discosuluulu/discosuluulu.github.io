@@ -3,41 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Discos Uluulu Audio Player</title>
-  <link rel="stylesheet" href="style.css"/>
+  <title>Dual Album Audio Player</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="audioPlayer" class="player">
-    <div class="player-header">
-      <div class="album-info">
-        <div id="albumTitle" class="title">Album Title</div>
-        <div id="albumSubtitle" class="subtitle">Album Subtitle</div>
-      </div>
-      <div class="player-controls-top">
-        <button id="albumToggleBtn">Next Album</button>
-        <button id="minimizeBtn">−</button>
-      </div>
+
+<!-- Maximize Button -->
+<div id="maximizePlayer" class="maximize-btn">＋</div>
+
+<!-- Audio Player -->
+<div id="audioPlayer" class="audio-player">
+
+  <div class="player-header">
+    <div class="album-info">
+      <h2 id="albumTitle">Garden de La Selva</h2>
+      <h4 id="albumSubtitle">2024</h4>
     </div>
-
-    <div id="tracklist" class="tracklist"></div>
-
-    <div class="player-controls">
-      <button id="prevBtn" class="icon-btn">
-        <svg viewBox="0 0 60 60" width="28" height="28"><polygon points="35,10 15,30 35,50" fill="black"/><rect x="38" y="10" width="4" height="40" fill="black"/></svg>
-      </button>
-
-      <button id="playPauseBtn" class="icon-btn"></button>
-
-      <button id="nextBtn" class="icon-btn">
-        <svg viewBox="0 0 60 60" width="28" height="28"><polygon points="25,10 45,30 25,50" fill="black"/><rect x="18" y="10" width="4" height="40" fill="black"/></svg>
-      </button>
+    <div class="player-controls-right">
+      <button id="nextAlbumBtn">Next Album</button>
+      <button id="minimizePlayer" class="minimize-btn">−</button>
     </div>
-
-    <input type="range" id="progressBar" value="0" min="0" step="1"/>
   </div>
 
-  <button id="maximizeBtn" style="display:none;">+</button>
+  <ul id="trackList" class="track-list"></ul>
 
-  <script src="audioplayer.js"></script>
+  <div class="controls">
+    <button id="prevBtn" class="icon-btn" title="Previous Track">
+      ▶⏮
+    </button>
+    <button id="playPauseBtn" class="icon-btn" title="Play/Pause">
+      ▶
+    </button>
+    <button id="nextBtn" class="icon-btn" title="Next Track">
+      ▶⏭
+    </button>
+  </div>
+
+  <div class="progress-container">
+    <span id="currentTime">0:00</span>
+    <input type="range" id="progressBar" min="0" max="100" value="0">
+    <span id="totalDuration">0:00</span>
+  </div>
+
+  <audio id="audio" preload="metadata"></audio>
+
+</div>
+
+<script src="audioplayer.js"></script>
 </body>
 </html>
