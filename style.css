@@ -79,9 +79,8 @@ body, html {
 
 /* Header */
 .player-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .player-header h2 {
