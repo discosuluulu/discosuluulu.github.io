@@ -1,4 +1,3 @@
-/* General Reset */
 body, html {
   margin: 0;
   padding: 0;
@@ -16,26 +15,27 @@ body, html {
   z-index: -1;
 }
 
-/* Landing Screen */
 .landing {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   height: 100%;
-  background: transparent;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  z-index: 2;
 }
 
 .logo {
-  max-width: 200px;
+  max-width: 220px;
   margin-bottom: 20px;
 }
 
-#explore-btn, .info-btn {
+#explore-btn,
+.info-btn {
   background: rgba(255,255,255,0.85);
   border: none;
   padding: 12px 24px;
@@ -50,18 +50,27 @@ body, html {
   font-weight: bold;
 }
 
-/* Audio Player */
-.audio-player {
+.audio-player-container {
   position: absolute;
   bottom: 0;
-  left: 0;
   width: 100%;
   background: rgba(255,255,255,0.85);
+  display: flex;
+  flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
+  z-index: 3;
 }
 
-.audio-player .player-header h2 {
+.audio-player-container.hidden {
+  display: none;
+}
+
+.player {
+  margin-bottom: 30px;
+}
+
+.player-header h2 {
   margin: 0;
   font-size: 20px;
 }
@@ -69,26 +78,22 @@ body, html {
 .subtitle {
   font-size: 14px;
   opacity: 0.7;
+  margin-bottom: 10px;
 }
 
 .tracklist {
-  margin-top: 10px;
-  max-height: 150px;
+  max-height: 140px;
   overflow-y: auto;
-}
-
-.tracklist div {
-  padding: 5px 0;
-}
-
-.controls {
-  margin-top: 10px;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
 .controls button {
   font-size: 20px;
   margin: 0 10px;
   cursor: pointer;
+  background: none;
+  border: none;
 }
 
 .progress-container {
@@ -96,16 +101,11 @@ body, html {
   height: 6px;
   width: 100%;
   margin-top: 10px;
-  position: relative;
 }
 
-#progress {
-  background: #444;
+.progress-bar {
+  background: #222;
   height: 100%;
   width: 0%;
   transition: width 0.3s;
-}
-
-.hidden {
-  display: none !important;
 }
