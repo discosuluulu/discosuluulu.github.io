@@ -12,7 +12,7 @@ const gardenAlbum = {
     { title: "Yellow", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2008%20Yellow.mp3" },
     { title: "Manzanillo", length: "3:17", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2009%20Manzanillo.mp3" },
     { title: "Dear Familia", length: "3:40", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2010%20Dear%20Familia.mp3" },
-    { title: "Shake It", length: "3:20", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3" },
+    { title: "Shake It", length: "3:20", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3" }
   ]
 };
 
@@ -29,11 +29,11 @@ const otucanAlbum = {
     { title: "Move ya body", length: "3:15", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3" },
     { title: "Bom día", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3" },
     { title: "Ya", length: "3:30", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2009%20Ya.mp3" },
-    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" },
+    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" }
   ]
 };
 
-const albums = [gardenAlbum, otucanAlbum];
+let albums = [gardenAlbum, otucanAlbum];
 let currentAlbumIndex = 0;
 let currentTrackIndex = 0;
 let audio = new Audio();
@@ -43,15 +43,11 @@ const albumSubtitle = document.getElementById("albumSubtitle");
 const tracklist = document.getElementById("tracklist");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const progressBar = document.getElementById("progressBar");
-const currentTimeDisplay = document.getElementById("currentTime");
-const nextBtn = document.getElementById("nextBtn");
-const prevBtn = document.getElementById("prevBtn");
-const albumToggleBtn = document.getElementById("albumToggleBtn");
+const audioPlayer = document.getElementById("audioPlayer");
 const infoLink = document.getElementById("infoLink");
-const minimizeBtn = document.getElementById("minimizeBtn");
 const maximizeBtn = document.getElementById("maximizeBtn");
-const player = document.getElementById("player");
 
+// Load album
 function loadAlbum(index) {
   currentAlbumIndex = index;
   currentTrackIndex = 0;
@@ -63,7 +59,10 @@ function loadAlbum(index) {
   album.tracks.forEach((track, i) => {
     const div = document.createElement("div");
     div.className = "track";
-    div.innerHTML = `<span class="track-title">${(i + 1).toString().padStart(2, '0')}. ${track.title}</span><span class="track-length">${track.length}</span>`;
+    div.innerHTML = `
+      <span class="track-title">${(i + 1).toString().padStart(2, '0')}. ${track.title}</span>
+      <span class="track-time">${track.length}</span>
+    `;
     div.addEventListener("click", () => {
       currentTrackIndex = i;
       playTrack(i);
@@ -72,6 +71,7 @@ function loadAlbum(index) {
   });
 }
 
+// Play track
 function playTrack(index) {
   const track = albums[currentAlbumIndex].tracks[index];
   audio.src = track.url;
@@ -79,14 +79,9 @@ function playTrack(index) {
   updatePlayPauseIcon();
 }
 
-function updatePlayPauseIcon() {
-  playPauseBtn.innerHTML = audio.paused
-    ? `<svg viewBox="0 0 60 60" width="30" height="30"><polygon points="15,10 50,30 15,50" fill="black"/></svg>`
-    : `<svg viewBox="0 0 60 60" width="30" height="30"><rect x="15" y="10" width="8" height="40" fill="black"/><rect x="35" y="10" width="8" height="40" fill="black"/></svg>`;
-}
-
+// Play/pause toggle
 playPauseBtn.addEventListener("click", () => {
-  if (audio.src === "") {
+  if (!audio.src) {
     playTrack(currentTrackIndex);
   } else if (audio.paused) {
     audio.play();
@@ -96,51 +91,65 @@ playPauseBtn.addEventListener("click", () => {
   updatePlayPauseIcon();
 });
 
-nextBtn.addEventListener("click", () => {
+// Update icon
+function updatePlayPauseIcon() {
+  playPauseBtn.innerHTML = audio.paused
+    ? `<svg width="30" height="30" viewBox="0 0 24 24"><polygon fill="black" points="5,3 19,12 5,21"/></svg>`
+    : `<svg width="30" height="30" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`;
+}
+
+// Progress bar sync
+audio.addEventListener("timeupdate", () => {
+  progressBar.max = audio.duration || 0;
+  progressBar.value = audio.currentTime;
+});
+progressBar.addEventListener("input", () => {
+  audio.currentTime = progressBar.value;
+});
+
+// Next/previous
+document.getElementById("nextBtn").addEventListener("click", () => {
   currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
   playTrack(currentTrackIndex);
 });
-
-prevBtn.addEventListener("click", () => {
+document.getElementById("prevBtn").addEventListener("click", () => {
   currentTrackIndex = (currentTrackIndex - 1 + albums[currentAlbumIndex].tracks.length) % albums[currentAlbumIndex].tracks.length;
   playTrack(currentTrackIndex);
 });
 
-albumToggleBtn.addEventListener("click", () => {
+// Album toggle
+document.getElementById("albumToggleBtn").addEventListener("click", () => {
   currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
   loadAlbum(currentAlbumIndex);
   playTrack(currentTrackIndex);
 });
 
-audio.addEventListener("timeupdate", () => {
-  progressBar.value = audio.currentTime;
-  progressBar.max = audio.duration || 0;
-  currentTimeDisplay.textContent = formatTime(audio.currentTime);
+// Auto-play next
+audio.addEventListener("ended", () => {
+  currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
+  playTrack(currentTrackIndex);
 });
 
-progressBar.addEventListener("input", () => {
-  audio.currentTime = progressBar.value;
+// Explore Music button behavior
+document.getElementById("exploreBtn").addEventListener("click", () => {
+  document.getElementById("logo").classList.add("logo-shrink");
+  audioPlayer.style.display = "flex";
+  infoLink.style.display = "inline-block";
+  playTrack(currentTrackIndex);
 });
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
-}
 
 // Minimize/maximize
-minimizeBtn.addEventListener("click", () => {
-  player.classList.add("minimized");
+document.getElementById("minimizeBtn").addEventListener("click", () => {
+  audioPlayer.style.display = "none";
   infoLink.style.display = "none";
   maximizeBtn.style.display = "block";
 });
-
 maximizeBtn.addEventListener("click", () => {
-  player.classList.remove("minimized");
+  audioPlayer.style.display = "flex";
   infoLink.style.display = "inline-block";
   maximizeBtn.style.display = "none";
 });
 
-// Initialization
+// Init
 loadAlbum(currentAlbumIndex);
 updatePlayPauseIcon();
