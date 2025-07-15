@@ -43,6 +43,12 @@ const albumSubtitle = document.getElementById("albumSubtitle");
 const tracklist = document.getElementById("tracklist");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const progressBar = document.getElementById("progressBar");
+const currentTimeDisplay = document.getElementById("currentTime");
+const durationDisplay = document.getElementById("duration");
+const infoLink = document.getElementById("infoLink");
+const minimizeBtn = document.getElementById("minimizeBtn");
+const maximizeBtn = document.getElementById("maximizeBtn");
+const player = document.getElementById("player");
 
 function loadAlbum(index) {
   currentAlbumIndex = index;
@@ -55,7 +61,7 @@ function loadAlbum(index) {
   album.tracks.forEach((track, i) => {
     const div = document.createElement("div");
     div.className = "track";
-    div.textContent = `${(i + 1).toString().padStart(2, '0')}. ${track.title} (${track.length})`;
+    div.innerHTML = `<span class="track-title">${(i + 1).toString().padStart(2, '0')}. ${track.title}</span><span class="track-length">${track.length}</span>`;
     div.addEventListener("click", () => {
       currentTrackIndex = i;
       playTrack(i);
@@ -107,6 +113,14 @@ document.getElementById("albumToggleBtn").addEventListener("click", () => {
 audio.addEventListener("timeupdate", () => {
   progressBar.value = audio.currentTime;
   progressBar.max = audio.duration || 0;
+
+  const minutes = Math.floor(audio.currentTime / 60);
+  const seconds = Math.floor(audio.currentTime % 60).toString().padStart(2, '0');
+  currentTimeDisplay.textContent = `${minutes}:${seconds}`;
+
+  const durMin = Math.floor((audio.duration || 0) / 60);
+  const durSec = Math.floor((audio.duration || 0) % 60).toString().padStart(2, '0');
+  durationDisplay.textContent = `${durMin}:${durSec}`;
 });
 
 audio.addEventListener("ended", () => {
@@ -116,6 +130,17 @@ audio.addEventListener("ended", () => {
 
 progressBar.addEventListener("input", () => {
   audio.currentTime = progressBar.value;
+});
+
+// Minimize/maximize player
+minimizeBtn.addEventListener("click", () => {
+  player.classList.add("minimized");
+  infoLink.style.display = "none";
+});
+
+maximizeBtn.addEventListener("click", () => {
+  player.classList.remove("minimized");
+  infoLink.style.display = "block";
 });
 
 // Initialize
