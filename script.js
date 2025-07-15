@@ -33,112 +33,91 @@ const otucanAlbum = {
   ]
 };
 
-let currentAlbum = gardenAlbum;
+let albums = [gardenAlbum, otucanAlbum];
+let currentAlbumIndex = 0;
 let currentTrackIndex = 0;
-const audio = new Audio();
+let audio = new Audio();
 
-const albumTitle = document.getElementById("album-title");
-const albumSubtitle = document.getElementById("album-subtitle");
-const trackList = document.getElementById("track-list");
-const playBtn = document.getElementById("play");
-const playIcon = document.getElementById("play-icon");
-const pauseIcon = document.getElementById("pause-icon");
-const prevBtn = document.getElementById("prev");
-const nextBtn = document.getElementById("next");
-const progress = document.getElementById("progress");
-const timeDisplay = document.getElementById("time-display");
+const albumTitle = document.getElementById("albumTitle");
+const albumSubtitle = document.getElementById("albumSubtitle");
+const tracklist = document.getElementById("tracklist");
+const playPauseBtn = document.getElementById("playPauseBtn");
+const progressBar = document.getElementById("progressBar");
 
-document.getElementById("toggle-album").onclick = () => {
-  currentAlbum = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
+function loadAlbum(index) {
+  currentAlbumIndex = index;
   currentTrackIndex = 0;
-  loadAlbum();
-};
+  const album = albums[index];
+  albumTitle.textContent = album.title;
+  albumSubtitle.textContent = album.subtitle;
+  tracklist.innerHTML = "";
 
-document.getElementById("minimize").onclick = () => {
-  document.getElementById("player").style.display = "none";
-  document.getElementById("maximize").style.display = "block";
-};
+  album.tracks.forEach((track, i) => {
+    const div = document.createElement("div");
+    div.className = "track";
+    div.textContent = `${(i + 1).toString().padStart(2, '0')}. ${track.title} (${track.length})`;
+    div.addEventListener("click", () => {
+      currentTrackIndex = i;
+      playTrack(i);
+    });
+    tracklist.appendChild(div);
+  });
+}
 
-document.getElementById("maximize").onclick = () => {
-  document.getElementById("player").style.display = "block";
-  document.getElementById("maximize").style.display = "none";
-};
+function updatePlayPauseIcon() {
+  playPauseBtn.innerHTML = audio.paused
+    ? `<svg viewBox="0 0 60 60" width="30" height="30"><polygon points="15,10 50,30 15,50" fill="black"/></svg>`
+    : `<svg viewBox="0 0 60 60" width="30" height="30"><rect x="15" y="10" width="8" height="40" fill="black"/><rect x="35" y="10" width="8" height="40" fill="black"/></svg>`;
+}
 
-playBtn.onclick = () => {
-  if (audio.paused) {
+function playTrack(index) {
+  const track = albums[currentAlbumIndex].tracks[index];
+  audio.src = track.url;
+  audio.play();
+  updatePlayPauseIcon();
+}
+
+playPauseBtn.addEventListener("click", () => {
+  if (audio.src === "") {
+    playTrack(currentTrackIndex);
+  } else if (audio.paused) {
     audio.play();
   } else {
     audio.pause();
   }
-};
+  updatePlayPauseIcon();
+});
 
-audio.onplay = () => {
-  playIcon.style.display = "none";
-  pauseIcon.style.display = "inline";
-};
+document.getElementById("nextBtn").addEventListener("click", () => {
+  currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
+  playTrack(currentTrackIndex);
+});
 
-audio.onpause = () => {
-  playIcon.style.display = "inline";
-  pauseIcon.style.display = "none";
-};
+document.getElementById("prevBtn").addEventListener("click", () => {
+  currentTrackIndex = (currentTrackIndex - 1 + albums[currentAlbumIndex].tracks.length) % albums[currentAlbumIndex].tracks.length;
+  playTrack(currentTrackIndex);
+});
 
-audio.ontimeupdate = () => {
-  const progressPercent = (audio.currentTime / audio.duration) * 100;
-  progress.value = progressPercent || 0;
-  timeDisplay.textContent = formatTime(audio.currentTime) + " / " + formatTime(audio.duration);
-};
+document.getElementById("albumToggleBtn").addEventListener("click", () => {
+  currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
+  loadAlbum(currentAlbumIndex);
+  playTrack(currentTrackIndex);
+});
 
-progress.oninput = () => {
-  audio.currentTime = (progress.value / 100) * audio.duration;
-};
+audio.addEventListener("timeupdate", () => {
+  progressBar.value = audio.currentTime;
+  progressBar.max = audio.duration || 0;
+});
 
-prevBtn.onclick = () => {
-  if (currentTrackIndex > 0) {
-    currentTrackIndex--;
-    playTrack();
-  }
-};
+audio.addEventListener("ended", () => {
+  currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
+  playTrack(currentTrackIndex);
+});
 
-nextBtn.onclick = () => {
-  if (currentTrackIndex < currentAlbum.tracks.length - 1) {
-    currentTrackIndex++;
-    playTrack();
-  }
-};
+progressBar.addEventListener("input", () => {
+  audio.currentTime = progressBar.value;
+});
 
-function loadAlbum() {
-  albumTitle.textContent = currentAlbum.title;
-  albumSubtitle.textContent = currentAlbum.subtitle;
-  trackList.innerHTML = "";
-  currentAlbum.tracks.forEach((track, i) => {
-    const li = document.createElement("li");
-    li.textContent = `${i + 1}. ${track.title}`;
-    const span = document.createElement("span");
-    span.textContent = track.length;
-    li.appendChild(span);
-    li.onclick = () => {
-      currentTrackIndex = i;
-      playTrack();
-    };
-    trackList.appendChild(li);
-  });
-  playTrack();
-}
-
-function playTrack() {
-  const allTracks = trackList.querySelectorAll("li");
-  allTracks.forEach(t => t.classList.remove("active"));
-  if (allTracks[currentTrackIndex]) {
-    allTracks[currentTrackIndex].classList.add("active");
-  }
-  audio.src = currentAlbum.tracks[currentTrackIndex].url;
-  audio.play();
-}
-
-function formatTime(seconds) {
-  const min = Math.floor(seconds / 60) || 0;
-  const sec = Math.floor(seconds % 60) || 0;
-  return `${min}:${sec < 10 ? "0" + sec : sec}`;
-}
-
-loadAlbum();
+// Initialize
+loadAlbum(currentAlbumIndex);
+updatePlayPauseIcon();
