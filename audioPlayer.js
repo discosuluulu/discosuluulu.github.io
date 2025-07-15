@@ -1,93 +1,75 @@
 const tracks = [
-  {
-    album: "Garden de La Selva",
-    title: "Track 1",
-    duration: "2:34",
-    url: "https://raw.githubusercontent.com/discosuluulu/GardenAudio/main/Track1.mp3"
-  },
-  {
-    album: "O tú can",
-    title: "Que Gata",
-    duration: "2:45",
-    url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3"
-  },
-  {
-    album: "O tú can",
-    title: "Mi Amor",
-    duration: "3:01",
-    url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3"
-  },
-  // Add more O tú can and Garden de La Selva tracks here...
+  // Garden de La Selva
+  { title: "Rubba Dubba", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2001%20Rubba%20Dubba.mp3", length: "3:12" },
+  { title: "Blue", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2002%20Blue.mp3", length: "2:57" },
+  { title: "Jam 3", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2003%20Jam%203.mp3", length: "3:44" },
+  { title: "Groove 1", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2004%20Groove%201.mp3", length: "2:46" },
+  { title: "Vamos Limón", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2005%20Vamos%20Limón.mp3", length: "3:25" },
+  { title: "Mi Ritmo", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2006%20Mi%20Ritmo.mp3", length: "3:08" },
+  { title: "Valle Azul", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2007%20Valle%20Azul.mp3", length: "4:01" },
+  { title: "Yellow", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2008%20Yellow.mp3", length: "2:59" },
+  { title: "Manzanillo", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2009%20Manzanillo.mp3", length: "3:17" },
+  { title: "Dear Familia", url:"https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2010%20Dear%20Familia.mp3", length: "3:40" },
+  { title: "Shake It", url:"https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3", length: "3:20" },
 ];
 
-let currentTrack = 0;
 const audio = document.getElementById("audio");
+const tracklistEl = document.getElementById("tracklist");
 const playBtn = document.getElementById("play-pause");
-const progress = document.getElementById("progress");
-const timeDisplay = document.getElementById("track-time");
-const tracklistDiv = document.getElementById("tracklist");
+const nextBtn = document.getElementById("next");
+const prevBtn = document.getElementById("prev");
+const progressBar = document.getElementById("progress");
 
-function loadTrack(index) {
-  currentTrack = index;
-  audio.src = tracks[index].url;
-  updateTracklistUI();
-}
+let currentTrack = 0;
+let isPlaying = false;
+
+// Populate tracklist
+tracks.forEach((track, index) => {
+  const trackEl = document.createElement("div");
+  trackEl.textContent = `${(index + 1).toString().padStart(2, "0")}. ${track.title} – ${track.length}`;
+  trackEl.addEventListener("click", () => {
+    currentTrack = index;
+    playCurrentTrack();
+  });
+  tracklistEl.appendChild(trackEl);
+});
 
 function playCurrentTrack() {
-  loadTrack(currentTrack);
+  audio.src = tracks[currentTrack].url;
   audio.play();
-  playBtn.innerHTML = "❚❚";
+  isPlaying = true;
+  playBtn.textContent = "⏸";
 }
 
-function togglePlayPause() {
-  if (audio.paused) {
-    audio.play();
-    playBtn.innerHTML = "❚❚";
-  } else {
+playBtn.addEventListener("click", () => {
+  if (isPlaying) {
     audio.pause();
-    playBtn.innerHTML = "►";
+    playBtn.textContent = "▶️";
+  } else {
+    audio.play();
+    playBtn.textContent = "⏸";
   }
-}
+  isPlaying = !isPlaying;
+});
 
-function updateProgress() {
-  const percent = (audio.currentTime / audio.duration) * 100;
-  progress.style.width = percent + "%";
-  timeDisplay.textContent = formatTime(audio.currentTime) + " / " + formatTime(audio.duration);
-}
-
-function formatTime(seconds) {
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
-}
-
-function updateTracklistUI() {
-  tracklistDiv.innerHTML = "";
-  tracks.forEach((track, i) => {
-    const div = document.createElement("div");
-    div.className = "track" + (i === currentTrack ? " active" : "");
-    div.innerHTML = `<span>${track.title}</span><span>${track.duration}</span>`;
-    div.onclick = () => {
-      currentTrack = i;
-      playCurrentTrack();
-    };
-    tracklistDiv.appendChild(div);
-  });
-}
-
-// Event Listeners
-playBtn.addEventListener("click", togglePlayPause);
-audio.addEventListener("timeupdate", updateProgress);
-audio.addEventListener("ended", () => {
+nextBtn.addEventListener("click", () => {
   currentTrack = (currentTrack + 1) % tracks.length;
   playCurrentTrack();
 });
 
-document.getElementById("explore-btn").addEventListener("click", () => {
-  document.querySelector(".landing").style.display = "none";
-  document.getElementById("audio-player").style.display = "block";
+prevBtn.addEventListener("click", () => {
+  currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
   playCurrentTrack();
 });
 
-// Initial setup
-updateTracklistUI();
+audio.addEventListener("timeupdate", () => {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressBar.style.width = percent + "%";
+});
+
+// Explore Music triggers
+document.getElementById("explore-btn").addEventListener("click", () => {
+  document.querySelector(".landing").classList.add("hidden");
+  document.getElementById("audio-player").classList.remove("hidden");
+  playCurrentTrack(); // autoplay
+});
