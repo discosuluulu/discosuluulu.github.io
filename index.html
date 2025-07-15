@@ -2,60 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Discos Uluulu</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- Background Video -->
-  <video id="background-video" autoplay muted loop playsinline>
+  <video id="background-video" autoplay muted loop>
     <source src="background.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
-  <!-- Landing Content -->
+  <!-- Landing Page -->
   <div class="landing">
-    <img src="logo.png" alt="Logo" class="logo" />
-    <button id="explore-btn" class="explore-button">Explore Music</button>
-    <button id="info-btn" class="info-button">+info</button>
+    <a href="https://info.discosuluulu.com" class="info-button">+info</a>
+    <img src="logo.png" alt="Discos Uluulu Logo" class="logo" />
+    <button id="explore-btn">Explore Music</button>
   </div>
 
-  <!-- Minimized Bar -->
-  <div id="minimized-bar" class="minimized-bar" style="display: none;">
-    <span id="player-title-minimized">Discos Uluulu</span>
-    <button id="maximize-btn">+</button>
-  </div>
-
-  <!-- Audio Player -->
-  <div id="audio-player" class="audio-player">
+  <!-- Audio Player Section (initially hidden) -->
+  <div id="audio-player" class="audio-player" style="display: none;">
     <div class="header">
-      <div>
-        <h1 id="player-title">Garden de La Selva</h1>
-        <p id="player-subtitle">Shaped by shakers grown from okra harvests</p>
-      </div>
-      <button id="minimize-btn">–</button>
+      <h1>Garden de La Selva</h1>
+      <h2>Shaped by shakers grown from okra harvests</h2>
     </div>
 
-    <div class="controls">
-      <button id="play-btn" class="circle-button">▶</button>
+    <div class="tracklist" id="tracklist"></div>
+
+    <div class="player-controls">
+      <button id="play-pause" class="play">&#9658;</button>
       <div class="progress-container">
-        <div id="progress" class="progress-bar"></div>
+        <div class="progress" id="progress"></div>
       </div>
-      <button id="switch-album-btn">Switch Album</button>
+      <div id="track-time">00:00 / 00:00</div>
     </div>
 
-    <ul id="tracklist" class="tracklist">
-      <!-- Populated by JS -->
-    </ul>
+    <!-- Minimize / Maximize -->
+    <div id="minimized-bar" style="display: none;">
+      <span>Garden de La Selva</span>
+      <button id="maximize-btn">+</button>
+    </div>
   </div>
 
-  <!-- Script -->
+  <!-- Audio Element -->
+  <audio id="audio" preload="metadata"></audio>
+
   <script src="audioPlayer.js"></script>
-  <script>
-    document.getElementById("info-btn").addEventListener("click", () => {
-      window.location.href = "https://info.discosuluulu.com";
-    });
-  </script>
 </body>
 </html>
