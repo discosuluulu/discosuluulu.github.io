@@ -2,218 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Discos Uluulu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      color: white;
-      background: transparent;
-    }
-
-    video#bg-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-    }
-
-    .audio-player {
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(8px);
-      padding: 20px;
-      max-width: 500px;
-      margin: 30px auto;
-      border-radius: 12px;
-    }
-
-    .player-header {
-      text-align: center;
-    }
-
-    .album-title {
-      font-size: 1.6em;
-      font-weight: bold;
-    }
-
-    .album-subtitle {
-      font-size: 0.9em;
-      color: #ddd;
-      margin-top: 4px;
-    }
-
-    .player-controls {
-      display: flex;
-      align-items: center;
-      margin: 15px 0;
-    }
-
-    .play-button {
-      background: none;
-      border: 2px solid white;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      margin-right: 12px;
-    }
-
-    .progress-bar {
-      flex: 1;
-      background: rgba(255,255,255,0.2);
-      height: 4px;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: white;
-      transition: width 0.2s linear;
-    }
-
-    ul.tracklist {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    ul.tracklist li {
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      display: flex;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-
-    .info-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      color: white;
-      font-size: 16px;
-      text-decoration: underline;
-      z-index: 10;
-    }
-  </style>
 </head>
 <body>
-
   <!-- Background Video -->
-  <video autoplay muted loop id="bg-video">
+  <video id="bg-video" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
   </video>
 
-  <!-- Garden de La Selva Player -->
-  <div class="audio-player" id="garden-player">
-    <div class="player-header">
-      <div class="album-title">Garden de La Selva</div>
-      <div class="album-subtitle">Shaped by shakers grown from okra harvests</div>
-    </div>
+  <!-- Top Info Button -->
+  <a href="https://info.discosuluulu.com" class="info-button">+info</a>
 
-    <div class="player-controls">
-      <button id="gardenPlay" class="play-button">▶</button>
-      <div class="progress-bar"><div id="gardenProgress" class="progress-fill"></div></div>
-    </div>
-
-    <ul class="tracklist" id="gardenTracks">
-      <li data-src="https://YOUR_LINK_1.mp3">01. Track One <span>2:44</span></li>
-      <li data-src="https://YOUR_LINK_2.mp3">02. Track Two <span>3:21</span></li>
-      <!-- Add your working Garden de La Selva tracklist here -->
-    </ul>
-
-    <audio id="gardenAudio"></audio>
+  <!-- Center Logo -->
+  <div class="logo-container">
+    <img src="logo.png" alt="Discos Uluulu Logo" class="logo" />
+    <button id="exploreBtn">explore music</button>
   </div>
 
-  <!-- O tú can Player -->
-  <div class="audio-player" id="otucan-player">
-    <div class="player-header">
-      <div class="album-title">O tú can</div>
-      <div class="album-subtitle">Recorded with one microphone in a palm frond wall rancho</div>
-    </div>
+  <!-- Audio Player (Initially hidden) -->
+  <div id="audioPlayerContainer" class="audio-player hidden"></div>
 
-    <div class="player-controls">
-      <button id="otucanPlay" class="play-button">▶</button>
-      <div class="progress-bar"><div id="otucanProgress" class="progress-fill"></div></div>
-    </div>
-
-    <ul class="tracklist" id="otucanTracks">
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3">01. Que Gata <span>2:58</span></li>
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3">02. Mi Amor <span>2:45</span></li>
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3">03. Forget the rest <span>3:02</span></li>
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2004%20Highlife.mp3">04. Highlife <span>2:50</span></li>
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2005%20Voy%20Pal%20Agua.mp3">05. Voy Pal Agua <span>2:40</span></li>
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2006%20Have%20ya%20had%20a%20Lemon.mp3">06. Have ya had a Lemon <span>2:55</span></li>
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3">07. Move ya body <span>3:10</span></li>
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3">08. Bom día <span>2:59</span></li>
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2009%20Ya.mp3">09. Ya <span>2:34</span></li>
-      <li data-src="https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3">10. Que disfrutes <span>3:01</span></li>
-    </ul>
-
-    <audio id="otucanAudio"></audio>
-  </div>
-
-  <!-- +info Button -->
-  <a class="info-button" href="https://info.discosuluulu.com" target="_blank">+info</a>
-
-  <!-- Script -->
-  <script>
-    function setupPlayer(playerId, playBtnId, audioId, tracklistId, progressId) {
-      const audio = document.getElementById(audioId);
-      const playBtn = document.getElementById(playBtnId);
-      const progress = document.getElementById(progressId);
-      const tracks = document.getElementById(tracklistId).getElementsByTagName('li');
-
-      let current = 0;
-
-      function loadTrack(index) {
-        audio.src = tracks[index].getAttribute('data-src');
-        audio.play();
-        playBtn.textContent = '⏸';
-        current = index;
-      }
-
-      for (let i = 0; i < tracks.length; i++) {
-        tracks[i].addEventListener('click', () => loadTrack(i));
-      }
-
-      playBtn.addEventListener('click', () => {
-        if (audio.paused) {
-          audio.play();
-          playBtn.textContent = '⏸';
-        } else {
-          audio.pause();
-          playBtn.textContent = '▶';
-        }
-      });
-
-      audio.addEventListener('ended', () => {
-        if (current + 1 < tracks.length) {
-          loadTrack(current + 1);
-        }
-      });
-
-      audio.addEventListener('timeupdate', () => {
-        const percent = (audio.currentTime / audio.duration) * 100;
-        progress.style.width = percent + '%';
-      });
-
-      loadTrack(0); // Autoplay first track
-    }
-
-    setupPlayer('garden-player', 'gardenPlay', 'gardenAudio', 'gardenTracks', 'gardenProgress');
-    setupPlayer('otucan-player', 'otucanPlay', 'otucanAudio', 'otucanTracks', 'otucanProgress');
-  </script>
+  <script src="audioPlayer.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
