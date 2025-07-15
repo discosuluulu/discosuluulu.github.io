@@ -7,36 +7,57 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Background video -->
   <video autoplay muted loop id="background-video">
     <source src="background.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
   </video>
 
-  <!-- Landing Screen -->
+  <!-- Landing -->
   <div class="landing">
     <img src="logo.png" alt="Discos Uluulu Logo" class="logo" />
     <button id="explore-btn">Explore Music</button>
     <a href="https://info.discosuluulu.com" class="info-btn">+info</a>
   </div>
 
-  <!-- Audio Player Hidden by Default -->
-  <div id="audio-player" class="audio-player hidden">
-    <div class="player-header">
-      <h2>Garden de La Selva</h2>
-      <p class="subtitle">Shaped by shakers grown from okra harvests</p>
+  <!-- Floating Audio Player (hidden by default) -->
+  <div id="audio-player-container" class="audio-player-container hidden">
+    <!-- Garden de La Selva Player -->
+    <div class="player" id="garden-player">
+      <div class="player-header">
+        <h2>Garden de La Selva</h2>
+        <p class="subtitle">Shaped by shakers grown from okra harvests</p>
+      </div>
+      <div class="tracklist" id="garden-tracklist"></div>
+      <div class="controls">
+        <button id="garden-prev">⏮</button>
+        <button id="garden-play-pause" class="svg-button">
+          <svg id="garden-play-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="garden-pause-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button id="garden-next">⏭</button>
+      </div>
+      <div class="progress-container"><div id="garden-progress" class="progress-bar"></div></div>
+      <audio id="garden-audio"></audio>
     </div>
-    <div class="tracklist" id="tracklist">
-      <!-- Tracklist gets inserted here -->
+
+    <!-- O tú can Player -->
+    <div class="player" id="otucan-player">
+      <div class="player-header">
+        <h2>O tú can</h2>
+        <p class="subtitle">Recorded with one microphone in a palm frond wall rancho</p>
+      </div>
+      <div class="tracklist" id="otucan-tracklist"></div>
+      <div class="controls">
+        <button id="otucan-prev">⏮</button>
+        <button id="otucan-play-pause" class="svg-button">
+          <svg id="otucan-play-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="otucan-pause-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button id="otucan-next">⏭</button>
+      </div>
+      <div class="progress-container"><div id="otucan-progress" class="progress-bar"></div></div>
+      <audio id="otucan-audio"></audio>
     </div>
-    <div class="controls">
-      <button id="prev">⏮</button>
-      <button id="play-pause">▶️</button>
-      <button id="next">⏭</button>
-    </div>
-    <div class="progress-container">
-      <div id="progress"></div>
-    </div>
-    <audio id="audio"></audio>
   </div>
 
   <script src="audioPlayer.js"></script>
