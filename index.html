@@ -3,41 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Discos Uluulu</title>
+  <title>Standalone Audio Player</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <video autoplay muted loop id="backgroundVideo">
-    <source src="background.mp4" type="video/mp4" />
-  </video>
-
-  <img src="logo.png" id="logo" alt="Logo" />
 
   <button id="exploreBtn">Explore Music</button>
-  <a id="infoLink" href="#">+INFO</a>
 
   <div id="audioPlayer" class="hidden">
-    <div id="playerHeader">
-      <div>
+    <div class="player-header">
+      <div class="album-info">
         <h2 id="albumTitle"></h2>
         <p id="albumSubtitle"></p>
       </div>
-      <button id="albumToggleBtn">Next Album</button>
       <button id="minimizeBtn">−</button>
     </div>
 
-    <div id="tracklist"></div>
+    <div id="tracklist" class="tracklist"></div>
 
-    <div id="playerControls">
-      <button id="prevBtn">⏮</button>
+    <div class="controls">
+      <button id="prevBtn">⏮️</button>
       <button id="playPauseBtn"></button>
-      <button id="nextBtn">⏭</button>
+      <button id="nextBtn">⏭️</button>
+      <button id="albumToggleBtn">Next Album</button>
     </div>
 
-    <input type="range" id="progressBar" min="0" value="0" step="0.01" />
-  </div>
+    <input type="range" id="progressBar" value="0" min="0" step="1" />
 
-  <button id="maximizeBtn" class="hidden">+</button>
+    <button id="maximizeBtn" class="hidden">+</button>
+  </div>
 
   <script src="audioplayer.js"></script>
 </body>
