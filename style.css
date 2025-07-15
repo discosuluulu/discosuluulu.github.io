@@ -1,35 +1,41 @@
-body, html {
+* {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  color: white;
   overflow: hidden;
 }
 
-#bgVideo {
+#backgroundVideo {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  min-width: 100%;
+  min-height: 100%;
   z-index: -1;
+  object-fit: cover;
 }
 
 #logo {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 300px;
   transform: translate(-50%, -50%);
-  transition: all 1s ease;
+  width: 300px;
+  transition: all 0.8s ease;
   z-index: 2;
 }
 
-#logo.top-left {
+.logo-top-left {
   top: 20px;
   left: 20px;
-  width: 120px;
   transform: none;
+  width: 100px;
 }
 
 #exploreBtn {
@@ -37,43 +43,41 @@ body, html {
   top: 70%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 15px 30px;
-  font-size: 1.2em;
-  z-index: 2;
+  font-size: 20px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
   cursor: pointer;
+  z-index: 2;
+  backdrop-filter: blur(10px);
 }
 
 #infoLink {
   position: absolute;
   bottom: 20px;
-  right: 20px;
-  font-size: 1.2em;
-  text-decoration: none;
-  background: rgba(255,255,255,0.2);
-  padding: 10px 15px;
-  border-radius: 5px;
+  left: 50%;
+  transform: translateX(-50%);
   color: white;
+  text-decoration: none;
+  font-size: 18px;
+  display: none;
   z-index: 2;
 }
 
-#infoLink.hidden {
-  display: none;
+#infoLink.show {
+  display: block;
 }
 
 #audioPlayer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px);
+  padding: 20px;
   color: white;
-  padding: 15px;
-  box-sizing: border-box;
   z-index: 3;
-}
-
-#audioPlayer.hidden {
-  display: none;
 }
 
 #playerHeader {
@@ -82,51 +86,80 @@ body, html {
   align-items: center;
 }
 
+#albumToggleBtn {
+  margin-left: auto;
+  margin-right: 10px;
+  background: none;
+  color: white;
+  border: 1px solid white;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+#minimizeBtn {
+  background: none;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#maximizeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  padding: 4px 10px;
+  display: none;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: none;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  z-index: 3;
+}
+
+#maximizeBtn.show {
+  display: block;
+}
+
 #tracklist {
+  margin-top: 10px;
   max-height: 200px;
   overflow-y: auto;
-  margin: 10px 0;
 }
 
 .track {
+  padding: 6px;
   display: flex;
   justify-content: space-between;
-  padding: 5px 0;
   cursor: pointer;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .track:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-#controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
+#playerControls {
   margin-top: 10px;
+  text-align: center;
+}
+
+#playerControls button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  margin: 0 10px;
+  cursor: pointer;
+  color: white;
 }
 
 #progressBar {
   width: 100%;
   margin-top: 10px;
+  cursor: pointer;
 }
 
-.header-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-#maximizeBtn {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  font-size: 1.5em;
-  z-index: 4;
-  padding: 5px 15px;
-}
-
-#maximizeBtn.hidden {
+.hidden {
   display: none;
 }
