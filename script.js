@@ -33,22 +33,10 @@ const otucanAlbum = {
   ]
 };
 
-const albums = [gardenAlbum, otucanAlbum];
+let albums = [gardenAlbum, otucanAlbum];
 let currentAlbumIndex = 0;
 let currentTrackIndex = 0;
-const audio = new Audio();
-
-const exploreBtn = document.getElementById("exploreBtn");
-const playerContainer = document.getElementById("playerContainer");
-const infoLink = document.getElementById("infoLink");
-
-exploreBtn.addEventListener("click", () => {
-  playerContainer.classList.remove("hidden");
-  infoLink.classList.remove("hidden");
-  exploreBtn.style.display = "none";
-  loadAlbum(currentAlbumIndex);
-  playTrack(currentTrackIndex);
-});
+let audio = new Audio();
 
 const albumTitle = document.getElementById("albumTitle");
 const albumSubtitle = document.getElementById("albumSubtitle");
@@ -64,20 +52,9 @@ function loadAlbum(index) {
   albumSubtitle.textContent = album.subtitle;
   tracklist.innerHTML = "";
   album.tracks.forEach((track, i) => {
-    const trackRow = document.createElement("div");
-    trackRow.className = "track-row";
-
-    const trackTitle = document.createElement("span");
-    trackTitle.className = "track-length";
-    trackTitle.textcontent = ${(i+1).toString().padStart(2, '0')}. ${track.title}';
-
-    const trackLength = document.createElement("span");
-    trackLength.className = "track-length";
-    trackLength.textContent = track.length;
-
-    trackRow.appendChild(trackTitle);
-    trackRow.appendChild(trackLength);
-    tracklist.appendChild(trackRow);
+    const div = document.createElement("div");
+    div.innerHTML = `<span>${(i + 1).toString().padStart(2, '0')}. ${track.title}</span><span>${track.length}</span>`;
+    tracklist.appendChild(div);
   });
 }
 
@@ -85,16 +62,16 @@ function playTrack(index) {
   const track = albums[currentAlbumIndex].tracks[index];
   audio.src = track.url;
   audio.play();
-  playPauseBtn.textContent = "⏸️";
+  playPauseBtn.innerHTML = "❚❚";
 }
 
 playPauseBtn.addEventListener("click", () => {
   if (audio.paused) {
     audio.play();
-    playPauseBtn.textContent = "⏸️";
+    playPauseBtn.innerHTML = "❚❚";
   } else {
     audio.pause();
-    playPauseBtn.textContent = "▶️";
+    playPauseBtn.innerHTML = "▶";
   }
 });
 
@@ -111,7 +88,7 @@ document.getElementById("prevBtn").addEventListener("click", () => {
 document.getElementById("albumToggleBtn").addEventListener("click", () => {
   currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
   loadAlbum(currentAlbumIndex);
-  playTrack(currentTrackIndex);
+  playTrack(0);
 });
 
 audio.addEventListener("timeupdate", () => {
@@ -121,4 +98,11 @@ audio.addEventListener("timeupdate", () => {
 
 progressBar.addEventListener("input", () => {
   audio.currentTime = progressBar.value;
+});
+
+document.getElementById("exploreBtn").addEventListener("click", () => {
+  document.getElementById("audioPlayer").style.display = "block";
+  document.getElementById("infoLink").style.display = "block";
+  loadAlbum(0);
+  playTrack(0);
 });
