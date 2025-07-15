@@ -3,34 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Standalone Audio Player</title>
+  <title>Test Player</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <button id="exploreBtn">Explore Music</button>
 
   <div id="audioPlayer" class="hidden">
-    <div class="player-header">
-      <div class="album-info">
-        <h2 id="albumTitle"></h2>
-        <p id="albumSubtitle"></p>
-      </div>
-      <button id="minimizeBtn">−</button>
+    <h2 id="albumTitle">Title</h2>
+    <p id="albumSubtitle">Subtitle</p>
+    <div id="tracklist"></div>
+    <div>
+      <button id="playPauseBtn">▶️</button>
     </div>
-
-    <div id="tracklist" class="tracklist"></div>
-
-    <div class="controls">
-      <button id="prevBtn">⏮️</button>
-      <button id="playPauseBtn"></button>
-      <button id="nextBtn">⏭️</button>
-      <button id="albumToggleBtn">Next Album</button>
-    </div>
-
-    <input type="range" id="progressBar" value="0" min="0" step="1" />
-
-    <button id="maximizeBtn" class="hidden">+</button>
   </div>
 
   <script src="audioplayer.js"></script>
