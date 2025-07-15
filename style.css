@@ -1,19 +1,11 @@
-/* Reset + Body */
-* {
-  box-sizing: border-box;
+/* General Reset */
+body, html {
   margin: 0;
   padding: 0;
-}
-
-body, html {
-  width: 100%;
-  height: 100%;
-  font-family: sans-serif;
   overflow: hidden;
-  color: #fff;
+  font-family: sans-serif;
 }
 
-/* Background Video */
 #background-video {
   position: fixed;
   top: 0;
@@ -24,14 +16,14 @@ body, html {
   z-index: -1;
 }
 
-/* Landing */
+/* Landing Screen */
 .landing {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.3);
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,113 +31,81 @@ body, html {
 }
 
 .logo {
-  width: 200px;
+  max-width: 200px;
   margin-bottom: 20px;
 }
 
-#explore-btn, .info-button {
-  padding: 12px 24px;
-  background: #fff;
-  color: #000;
+#explore-btn, .info-btn {
+  background: rgba(255,255,255,0.85);
   border: none;
-  cursor: pointer;
+  padding: 12px 24px;
   margin: 10px;
   font-size: 16px;
+  cursor: pointer;
 }
 
-.info-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: rgba(255, 255, 255, 0.6);
+.info-btn {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
 }
 
 /* Audio Player */
 .audio-player {
   position: absolute;
   bottom: 0;
+  left: 0;
   width: 100%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(255,255,255,0.85);
   padding: 20px;
+  box-sizing: border-box;
 }
 
-.audio-player .header {
-  text-align: center;
-  margin-bottom: 10px;
+.audio-player .player-header h2 {
+  margin: 0;
+  font-size: 20px;
 }
 
-.audio-player .header h1 {
-  font-size: 24px;
-}
-
-.audio-player .header h2 {
+.subtitle {
   font-size: 14px;
   opacity: 0.7;
 }
 
 .tracklist {
-  max-height: 160px;
+  margin-top: 10px;
+  max-height: 150px;
   overflow-y: auto;
-  margin-bottom: 15px;
 }
 
-.track {
-  padding: 6px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+.tracklist div {
+  padding: 5px 0;
 }
 
-.track.active {
-  background: rgba(255,255,255,0.1);
+.controls {
+  margin-top: 10px;
 }
 
-.player-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.play {
-  background: none;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  color: white;
-  width: 40px;
-  height: 40px;
+.controls button {
   font-size: 20px;
+  margin: 0 10px;
   cursor: pointer;
 }
 
 .progress-container {
-  flex: 1;
+  background: #ddd;
   height: 6px;
-  background: rgba(255,255,255,0.3);
-  border-radius: 3px;
+  width: 100%;
+  margin-top: 10px;
   position: relative;
 }
 
-.progress {
+#progress {
+  background: #444;
   height: 100%;
   width: 0%;
-  background: #fff;
-  border-radius: 3px;
+  transition: width 0.3s;
 }
 
-#track-time {
-  font-size: 12px;
-  width: 90px;
-  text-align: right;
-}
-
-/* Minimized bar */
-#minimized-bar {
-  position: absolute;
-  bottom: 0;
-  background: rgba(0,0,0,0.6);
-  width: 100%;
-  padding: 10px;
-  text-align: center;
-  font-size: 14px;
+.hidden {
+  display: none !important;
 }
