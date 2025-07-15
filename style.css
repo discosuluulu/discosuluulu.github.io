@@ -1,50 +1,127 @@
-/* Fullscreen video */
-#background-video {
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: sans-serif;
+  overflow: hidden;
+  background: black;
+}
+
+#bg-video {
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   z-index: -1;
 }
 
-/* Centered logo and button layout */
-#landing-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
+/* Landing Section */
+.landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
-#logo {
+.logo {
   width: 200px;
   margin-bottom: 20px;
 }
 
-#explore-btn,
-#info-btn {
+#exploreBtn {
   padding: 10px 20px;
-  font-size: 16px;
-  margin: 10px;
+  font-size: 18px;
   cursor: pointer;
 }
 
-/* Player container */
-#audio-players {
-  position: relative;
-  padding: 40px;
+/* Info Button */
+.info-button {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
   color: white;
-  background: rgba(0, 0, 0, 0.7);
+  text-decoration: none;
+  background: rgba(0,0,0,0.6);
+  padding: 5px 12px;
+  border-radius: 6px;
+  display: none;
+  z-index: 10;
 }
 
-.album-player {
-  margin-bottom: 40px;
+/* Audio Player */
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-.subtitle {
-  font-size: 0.9em;
-  font-weight: 300;
+.player-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.album-title {
+  font-weight: bold;
+}
+
+.album-subtitle {
+  font-size: 12px;
   color: #ccc;
+}
+
+.tracklist {
+  margin-top: 10px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.tracklist div {
+  padding: 4px 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  gap: 8px;
+}
+
+.controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#progressBar {
+  flex-grow: 1;
+}
+
+.player-footer {
+  text-align: center;
+  margin-top: 8px;
+}
+
+.minimize {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
 }
