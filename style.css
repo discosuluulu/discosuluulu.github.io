@@ -1,111 +1,50 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  font-family: sans-serif;
-}
-
+/* Fullscreen video */
 #background-video {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   z-index: -1;
 }
 
-.landing {
+/* Centered logo and button layout */
+#landing-content {
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  z-index: 2;
+  color: white;
 }
 
-.logo {
-  max-width: 220px;
+#logo {
+  width: 200px;
   margin-bottom: 20px;
 }
 
 #explore-btn,
-.info-btn {
-  background: rgba(255,255,255,0.85);
-  border: none;
-  padding: 12px 24px;
-  margin: 10px;
+#info-btn {
+  padding: 10px 20px;
   font-size: 16px;
+  margin: 10px;
   cursor: pointer;
 }
 
-.info-btn {
-  text-decoration: none;
-  color: black;
-  font-weight: bold;
+/* Player container */
+#audio-players {
+  position: relative;
+  padding: 40px;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
 }
 
-.audio-player-container {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background: rgba(255,255,255,0.85);
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-  z-index: 3;
-}
-
-.audio-player-container.hidden {
-  display: none;
-}
-
-.player {
-  margin-bottom: 30px;
-}
-
-.player-header h2 {
-  margin: 0;
-  font-size: 20px;
+.album-player {
+  margin-bottom: 40px;
 }
 
 .subtitle {
-  font-size: 14px;
-  opacity: 0.7;
-  margin-bottom: 10px;
-}
-
-.tracklist {
-  max-height: 140px;
-  overflow-y: auto;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.controls button {
-  font-size: 20px;
-  margin: 0 10px;
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-
-.progress-container {
-  background: #ddd;
-  height: 6px;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.progress-bar {
-  background: #222;
-  height: 100%;
-  width: 0%;
-  transition: width 0.3s;
+  font-size: 0.9em;
+  font-weight: 300;
+  color: #ccc;
 }
