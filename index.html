@@ -2,40 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Discos Uluulu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discos Uluulu Player</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Background Video -->
-  <video autoplay muted loop id="bgVideo">
-    <source src="background.mp4" type="video/mp4">
-    Your browser does not support the video tag.
+
+  <!-- Background video -->
+  <video autoplay muted loop id="backgroundVideo">
+    <source src="background.mp4" type="video/mp4" />
   </video>
 
-  <!-- Landing Content -->
-  <div class="landing">
-    <img src="logo.png" alt="Logo" class="logo" />
-    <button id="exploreBtn">Explore Music</button>
+  <!-- Logo -->
+  <img src="logo.png" alt="Discos Uluulu Logo" id="logo" />
+
+  <!-- Explore Music Button -->
+  <button id="exploreBtn">Explore Music</button>
+
+  <!-- Floating Audio Player Container (initially hidden) -->
+  <div id="playerContainer" class="hidden">
+    <div class="player-header">
+      <div>
+        <h2 id="albumTitle"></h2>
+        <p id="albumSubtitle"></p>
+      </div>
+      <button id="albumToggleBtn">Next Album</button>
+    </div>
+
+    <div id="tracklist" class="tracklist"></div>
+
+    <div class="controls">
+      <button id="prevBtn">⏮️</button>
+      <button id="playPauseBtn">▶️</button>
+      <button id="nextBtn">⏭️</button>
+    </div>
+
+    <input type="range" id="progressBar" value="0" step="1" />
   </div>
 
-  <!-- +info link (appears after explore) -->
-  <a href="https://info.discosuluulu.com" id="infoLink" target="_blank">+info</a>
-
-  <!-- Audio Player -->
-  <div id="audioPlayer" class="audio-player">
-    <div class="album-header">
-      <h2 id="albumTitle"></h2>
-      <p id="albumSubtitle"></p>
-    </div>
-    <div class="controls">
-      <button id="prevBtn" title="Previous">&#9664;</button>
-      <button id="playPauseBtn" title="Play/Pause">&#9658;</button>
-      <button id="nextBtn" title="Next">&#9654;</button>
-      <button id="albumToggleBtn" title="Switch Album">Switch Album</button>
-    </div>
-    <input type="range" id="progressBar" value="0">
-    <div id="tracklist"></div>
+  <!-- Info button (appears after explore) -->
+  <div id="infoLink" class="hidden">
+    <a href="https://discosuluulu.com/info" target="_blank">+INFO</a>
   </div>
 
   <script src="script.js"></script>
