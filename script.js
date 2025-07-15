@@ -33,10 +33,22 @@ const otucanAlbum = {
   ]
 };
 
-let albums = [gardenAlbum, otucanAlbum];
+const albums = [gardenAlbum, otucanAlbum];
 let currentAlbumIndex = 0;
 let currentTrackIndex = 0;
-let audio = new Audio();
+const audio = new Audio();
+
+const exploreBtn = document.getElementById("exploreBtn");
+const playerContainer = document.getElementById("playerContainer");
+const infoLink = document.getElementById("infoLink");
+
+exploreBtn.addEventListener("click", () => {
+  playerContainer.classList.remove("hidden");
+  infoLink.classList.remove("hidden");
+  exploreBtn.style.display = "none";
+  loadAlbum(currentAlbumIndex);
+  playTrack(currentTrackIndex);
+});
 
 const albumTitle = document.getElementById("albumTitle");
 const albumSubtitle = document.getElementById("albumSubtitle");
@@ -53,7 +65,7 @@ function loadAlbum(index) {
   tracklist.innerHTML = "";
   album.tracks.forEach((track, i) => {
     const div = document.createElement("div");
-    div.innerHTML = `<span>${(i + 1).toString().padStart(2, '0')}. ${track.title}</span><span>${track.length}</span>`;
+    div.textContent = `${(i + 1).toString().padStart(2, '0')}. ${track.title} (${track.length})`;
     tracklist.appendChild(div);
   });
 }
@@ -62,16 +74,16 @@ function playTrack(index) {
   const track = albums[currentAlbumIndex].tracks[index];
   audio.src = track.url;
   audio.play();
-  playPauseBtn.innerHTML = "❚❚";
+  playPauseBtn.textContent = "⏸️";
 }
 
 playPauseBtn.addEventListener("click", () => {
   if (audio.paused) {
     audio.play();
-    playPauseBtn.innerHTML = "❚❚";
+    playPauseBtn.textContent = "⏸️";
   } else {
     audio.pause();
-    playPauseBtn.innerHTML = "▶";
+    playPauseBtn.textContent = "▶️";
   }
 });
 
@@ -88,7 +100,7 @@ document.getElementById("prevBtn").addEventListener("click", () => {
 document.getElementById("albumToggleBtn").addEventListener("click", () => {
   currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
   loadAlbum(currentAlbumIndex);
-  playTrack(0);
+  playTrack(currentTrackIndex);
 });
 
 audio.addEventListener("timeupdate", () => {
@@ -98,11 +110,4 @@ audio.addEventListener("timeupdate", () => {
 
 progressBar.addEventListener("input", () => {
   audio.currentTime = progressBar.value;
-});
-
-document.getElementById("exploreBtn").addEventListener("click", () => {
-  document.getElementById("audioPlayer").style.display = "block";
-  document.getElementById("infoLink").style.display = "block";
-  loadAlbum(0);
-  playTrack(0);
 });
