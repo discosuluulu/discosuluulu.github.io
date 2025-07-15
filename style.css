@@ -1,76 +1,11 @@
 body {
-  margin: 0;
-  background-color: #111;
+  background-color: black;
   color: white;
   font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-#exploreBtn {
-  font-size: 1.5rem;
-  padding: 1rem 2rem;
-  margin-bottom: 20px;
-  cursor: pointer;
-}
-
-#audioPlayer {
-  position: fixed;
-  bottom: 20px;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(12px);
-  border-radius: 12px;
-  padding: 20px;
-  width: 90%;
-  max-width: 700px;
-  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  text-align: center;
+  padding: 50px;
 }
 
 .hidden {
   display: none;
-}
-
-.tracklist {
-  max-height: 150px;
-  overflow-y: auto;
-  margin: 10px 0;
-}
-
-.track {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 0;
-  cursor: pointer;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
-}
-
-#progressBar {
-  width: 100%;
-  margin-top: 10px;
-}
-
-.player-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.album-info h2, .album-info p {
-  margin: 0;
-}
-
-#minimizeBtn, #maximizeBtn {
-  font-size: 1.2rem;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
 }
