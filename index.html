@@ -2,51 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Discos Uluulu</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- Background Video -->
-  <video id="background-video" autoplay muted loop>
+  <video autoplay muted loop id="background-video">
     <source src="background.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
-  <!-- Landing Page -->
+  <!-- Landing Screen -->
   <div class="landing">
-    <a href="https://info.discosuluulu.com" class="info-button">+info</a>
     <img src="logo.png" alt="Discos Uluulu Logo" class="logo" />
     <button id="explore-btn">Explore Music</button>
+    <a href="https://info.discosuluulu.com" class="info-btn">+info</a>
   </div>
 
-  <!-- Audio Player Section (initially hidden) -->
-  <div id="audio-player" class="audio-player" style="display: none;">
-    <div class="header">
-      <h1>Garden de La Selva</h1>
-      <h2>Shaped by shakers grown from okra harvests</h2>
+  <!-- Audio Player Hidden by Default -->
+  <div id="audio-player" class="audio-player hidden">
+    <div class="player-header">
+      <h2>Garden de La Selva</h2>
+      <p class="subtitle">Shaped by shakers grown from okra harvests</p>
     </div>
-
-    <div class="tracklist" id="tracklist"></div>
-
-    <div class="player-controls">
-      <button id="play-pause" class="play">&#9658;</button>
-      <div class="progress-container">
-        <div class="progress" id="progress"></div>
-      </div>
-      <div id="track-time">00:00 / 00:00</div>
+    <div class="tracklist" id="tracklist">
+      <!-- Tracklist gets inserted here -->
     </div>
-
-    <!-- Minimize / Maximize -->
-    <div id="minimized-bar" style="display: none;">
-      <span>Garden de La Selva</span>
-      <button id="maximize-btn">+</button>
+    <div class="controls">
+      <button id="prev">⏮</button>
+      <button id="play-pause">▶️</button>
+      <button id="next">⏭</button>
     </div>
+    <div class="progress-container">
+      <div id="progress"></div>
+    </div>
+    <audio id="audio"></audio>
   </div>
-
-  <!-- Audio Element -->
-  <audio id="audio" preload="metadata"></audio>
 
   <script src="audioPlayer.js"></script>
 </body>
