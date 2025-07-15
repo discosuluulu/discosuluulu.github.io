@@ -20,16 +20,16 @@ const otucanAlbum = {
   title: "O tú can",
   subtitle: "Recorded with one microphone in a palm frond wall rancho",
   tracks: [
-    { title: "Que Gata", length: "2:45", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3" },
-    { title: "Mi Amor", length: "2:48", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3" },
-    { title: "Forget the rest", length: "3:10", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3" },
-    { title: "Highlife", length: "2:50", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2004%20Highlife.mp3" },
-    { title: "Voy Pal Agua", length: "3:00", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2005%20Voy%20Pal%20Agua.mp3" },
-    { title: "Have ya had a Lemon", length: "3:03", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2006%20Have%20ya%20had%20a%20Lemon.mp3" },
-    { title: "Move ya body", length: "3:15", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3" },
-    { title: "Bom día", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3" },
-    { title: "Ya", length: "3:30", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2009%20Ya.mp3" },
-    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" },
+    { title: "Que Gata", length: "2:45", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3" },
+    { title: "Mi Amor", length: "2:48", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3" },
+    { title: "Forget the rest", length: "3:10", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3" },
+    { title: "Highlife", length: "2:50", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2004%20Highlife.mp3" },
+    { title: "Voy Pal Agua", length: "3:00", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2005%20Voy%20Pal%20Agua.mp3" },
+    { title: "Have ya had a Lemon", length: "3:03", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2006%20Have%20ya%20had%20a%20Lemon.mp3" },
+    { title: "Move ya body", length: "3:15", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3" },
+    { title: "Bom día", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3" },
+    { title: "Ya", length: "3:30", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2009%20Ya.mp3" },
+    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" },
   ]
 };
 
@@ -43,6 +43,9 @@ const albumSubtitle = document.getElementById("albumSubtitle");
 const tracklist = document.getElementById("tracklist");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const progressBar = document.getElementById("progressBar");
+const infoLink = document.getElementById("infoLink");
+const audioPlayer = document.getElementById("audioPlayer");
+const maximizeBtn = document.getElementById("maximizeBtn");
 
 function loadAlbum(index) {
   currentAlbumIndex = index;
@@ -66,8 +69,8 @@ function loadAlbum(index) {
 
 function updatePlayPauseIcon() {
   playPauseBtn.innerHTML = audio.paused
-    ? `<svg viewBox="0 0 60 60" width="30" height="30"><polygon points="15,10 50,30 15,50" fill="black"/></svg>`
-    : `<svg viewBox="0 0 60 60" width="30" height="30"><rect x="15" y="10" width="8" height="40" fill="black"/><rect x="35" y="10" width="8" height="40" fill="black"/></svg>`;
+    ? `<svg viewBox="0 0 60 60" width="30" height="30"><polygon points="15,10 50,30 15,50" fill="white"/></svg>`
+    : `<svg viewBox="0 0 60 60" width="30" height="30"><rect x="15" y="10" width="8" height="40" fill="white"/><rect x="35" y="10" width="8" height="40" fill="white"/></svg>`;
 }
 
 function playTrack(index) {
@@ -79,8 +82,7 @@ function playTrack(index) {
 
 playPauseBtn.addEventListener("click", () => {
   if (!audio.src) playTrack(currentTrackIndex);
-  else if (audio.paused) audio.play();
-  else audio.pause();
+  else audio.paused ? audio.play() : audio.pause();
   updatePlayPauseIcon();
 });
 
@@ -105,15 +107,30 @@ audio.addEventListener("timeupdate", () => {
   progressBar.max = audio.duration || 0;
 });
 
-audio.addEventListener("ended", () => {
-  currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
-  playTrack(currentTrackIndex);
-});
-
 progressBar.addEventListener("input", () => {
   audio.currentTime = progressBar.value;
 });
 
-// Initialize
+document.getElementById("exploreBtn").addEventListener("click", () => {
+  audioPlayer.classList.remove("hidden");
+  document.getElementById("logo").classList.add("logo-top-left");
+  document.getElementById("exploreBtn").style.display = "none";
+  infoLink.classList.add("show");
+  playTrack(currentTrackIndex);
+});
+
+document.getElementById("minimizeBtn").addEventListener("click", () => {
+  audioPlayer.classList.add("hidden");
+  maximizeBtn.classList.add("show");
+  infoLink.classList.remove("show");
+});
+
+maximizeBtn.addEventListener("click", () => {
+  audioPlayer.classList.remove("hidden");
+  maximizeBtn.classList.remove("show");
+  infoLink.classList.add("show");
+});
+
+// Init
 loadAlbum(currentAlbumIndex);
 updatePlayPauseIcon();
