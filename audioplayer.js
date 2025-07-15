@@ -36,15 +36,13 @@ const otucanAlbum = {
 const albums = [gardenAlbum, otucanAlbum];
 let currentAlbumIndex = 0;
 let currentTrackIndex = 0;
-const audio = new Audio();
+let audio = new Audio();
 
 const albumTitle = document.getElementById("albumTitle");
 const albumSubtitle = document.getElementById("albumSubtitle");
 const tracklist = document.getElementById("tracklist");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const progressBar = document.getElementById("progressBar");
-const currentTimeEl = document.getElementById("currentTime");
-const durationEl = document.getElementById("duration");
 
 function loadAlbum(index) {
   const album = albums[index];
@@ -53,69 +51,73 @@ function loadAlbum(index) {
   tracklist.innerHTML = "";
 
   album.tracks.forEach((track, i) => {
-    const trackDiv = document.createElement("div");
-    trackDiv.className = "track";
-    trackDiv.innerHTML = `<span>${(i + 1).toString().padStart(2, '0')}. ${track.title}</span><span>${track.length}</span>`;
-    trackDiv.addEventListener("click", () => {
+    const div = document.createElement("div");
+    div.className = "track";
+    div.innerHTML = `<span>${String(i + 1).padStart(2, '0')}. ${track.title}</span><span>${track.length}</span>`;
+    div.addEventListener("click", () => {
       currentTrackIndex = i;
-      playTrack();
+      playTrack(i);
     });
-    tracklist.appendChild(trackDiv);
+    tracklist.appendChild(div);
   });
 }
 
-function playTrack() {
-  const track = albums[currentAlbumIndex].tracks[currentTrackIndex];
+function updatePlayPauseIcon() {
+  playPauseBtn.innerHTML = audio.paused
+    ? `<svg viewBox="0 0 60 60" width="28" height="28"><polygon points="15,10 50,30 15,50" fill="black"/></svg>`
+    : `<svg viewBox="0 0 60 60" width="28" height="28"><rect x="15" y="10" width="8" height="40" fill="black"/><rect x="35" y="10" width="8" height="40" fill="black"/></svg>`;
+}
+
+function playTrack(index) {
+  const track = albums[currentAlbumIndex].tracks[index];
   audio.src = track.url;
   audio.play();
   updatePlayPauseIcon();
 }
 
-function updatePlayPauseIcon() {
-  playPauseBtn.innerHTML = audio.paused
-    ? "▶️"
-    : "⏸️";
-}
-
 playPauseBtn.addEventListener("click", () => {
-  if (!audio.src) playTrack();
-  else if (audio.paused) audio.play();
-  else audio.pause();
-  updatePlayPauseIcon();
+  if (audio.src === "") {
+    playTrack(currentTrackIndex);
+  } else {
+    audio.paused ? audio.play() : audio.pause();
+    updatePlayPauseIcon();
+  }
 });
 
 document.getElementById("nextBtn").addEventListener("click", () => {
   currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
-  playTrack();
+  playTrack(currentTrackIndex);
 });
 
 document.getElementById("prevBtn").addEventListener("click", () => {
   currentTrackIndex = (currentTrackIndex - 1 + albums[currentAlbumIndex].tracks.length) % albums[currentAlbumIndex].tracks.length;
-  playTrack();
+  playTrack(currentTrackIndex);
 });
 
 document.getElementById("albumToggleBtn").addEventListener("click", () => {
   currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
-  currentTrackIndex = 0;
   loadAlbum(currentAlbumIndex);
-  playTrack();
+  playTrack(0);
+});
+
+document.getElementById("minimizeBtn").addEventListener("click", () => {
+  document.getElementById("audioPlayer").style.display = "none";
+  document.getElementById("maximizeBtn").style.display = "block";
+});
+
+document.getElementById("maximizeBtn").addEventListener("click", () => {
+  document.getElementById("audioPlayer").style.display = "block";
+  document.getElementById("maximizeBtn").style.display = "none";
 });
 
 audio.addEventListener("timeupdate", () => {
+  progressBar.max = audio.duration;
   progressBar.value = audio.currentTime;
-  progressBar.max = audio.duration || 0;
-  currentTimeEl.textContent = formatTime(audio.currentTime);
-  durationEl.textContent = formatTime(audio.duration);
 });
 
 progressBar.addEventListener("input", () => {
   audio.currentTime = progressBar.value;
 });
 
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
-}
-
 loadAlbum(currentAlbumIndex);
+updatePlayPauseIcon();
