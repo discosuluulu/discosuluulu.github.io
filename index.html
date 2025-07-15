@@ -3,32 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Discos ULUULU</title>
+  <title>Discos Uluulu</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Background video -->
-  <video id="bg-video" autoplay muted loop playsinline>
+  <!-- Background Video -->
+  <video id="background-video" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
-  <!-- +info button -->
-  <a href="https://info.discosuluulu.com" class="info-button">+info</a>
-
-  <!-- Centered logo and explore button -->
-  <div class="landing-content">
+  <!-- Landing Content -->
+  <div class="landing">
     <img src="logo.png" alt="Logo" class="logo" />
-    <button id="explore-btn">Explore Music</button>
+    <button id="explore-btn" class="explore-button">Explore Music</button>
+    <button id="info-btn" class="info-button">+info</button>
   </div>
 
-  <!-- Audio Player Container -->
-  <div id="audio-player-container" class="hidden">
-    <!-- Injected by audioPlayer.js -->
+  <!-- Minimized Bar -->
+  <div id="minimized-bar" class="minimized-bar" style="display: none;">
+    <span id="player-title-minimized">Discos Uluulu</span>
+    <button id="maximize-btn">+</button>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Audio Player -->
+  <div id="audio-player" class="audio-player">
+    <div class="header">
+      <div>
+        <h1 id="player-title">Garden de La Selva</h1>
+        <p id="player-subtitle">Shaped by shakers grown from okra harvests</p>
+      </div>
+      <button id="minimize-btn">–</button>
+    </div>
+
+    <div class="controls">
+      <button id="play-btn" class="circle-button">▶</button>
+      <div class="progress-container">
+        <div id="progress" class="progress-bar"></div>
+      </div>
+      <button id="switch-album-btn">Switch Album</button>
+    </div>
+
+    <ul id="tracklist" class="tracklist">
+      <!-- Populated by JS -->
+    </ul>
+  </div>
+
+  <!-- Script -->
   <script src="audioPlayer.js"></script>
+  <script>
+    document.getElementById("info-btn").addEventListener("click", () => {
+      window.location.href = "https://info.discosuluulu.com";
+    });
+  </script>
 </body>
 </html>
