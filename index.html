@@ -2,276 +2,255 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>discosuluulu</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Discos Uluulu</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
       background: black;
       color: white;
-      font-family: sans-serif;
-      overflow: hidden;
     }
 
-    .swiper {
-      width: 100vw;
-      height: 100vh;
-    }
-
-    .swiper-slide {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    video {
+    video.bg-video {
+      position: fixed;
+      top: 0; left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      z-index: -1;
     }
 
-    /* AUDIO PLAYER */
-    .audio-player {
-      position: fixed;
-      bottom: 20px;
+    .center-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      z-index: 2;
+    }
+
+    .center-logo img {
+      width: 150px;
+      height: auto;
+    }
+
+    .explore-button {
+      position: absolute;
+      bottom: 15%;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(255,255,255,0.1);
       color: white;
-      border-radius: 12px;
-      padding: 16px;
-      width: 90%;
-      max-width: 500px;
-      z-index: 9999;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-      transition: all 0.3s ease;
+      border: 1px solid white;
+      padding: 12px 24px;
+      cursor: pointer;
+      z-index: 2;
+      font-size: 1.1em;
     }
 
-    .audio-header {
-      text-align: center;
-      margin-bottom: 10px;
+    .audio-player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      display: none;
+      flex-direction: column;
+      z-index: 3;
+      padding: 10px 20px;
     }
 
-    .audio-title {
-      font-size: 20px;
+    .player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .player-title {
+      font-size: 1.2em;
       font-weight: bold;
     }
 
-    .audio-subtitle {
-      font-size: 14px;
-      color: #ccc;
-      margin-top: 4px;
-    }
-
     .tracklist {
-      max-height: 160px;
+      margin-top: 10px;
+      max-height: 200px;
       overflow-y: auto;
-      margin: 10px 0;
-      padding-right: 8px;
     }
 
     .track {
       display: flex;
       justify-content: space-between;
-      padding: 4px 0;
+      padding: 5px 0;
       cursor: pointer;
     }
 
-    .track:hover {
-      color: #f5c97d;
-    }
-
-    .player-controls {
+    .controls {
+      margin-top: 10px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-top: 10px;
+      gap: 10px;
     }
 
-    .play-pause {
-      background: none;
-      border: none;
+    .controls button {
+      padding: 6px 10px;
+      background: transparent;
+      border: 1px solid white;
+      color: white;
       cursor: pointer;
-      width: 40px;
-      height: 40px;
     }
 
-    .progress-container {
-      flex: 1;
-      height: 4px;
-      background: #555;
-      margin-left: 12px;
-      border-radius: 2px;
-      overflow: hidden;
+    .minimize-button {
+      margin-left: auto;
+      font-size: 1.2em;
+      cursor: pointer;
     }
 
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: #f5c97d;
-    }
-
-    /* Hide scrollbar for Webkit browsers */
-    .tracklist::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* Hide scrollbar for other browsers */
-    .tracklist {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    @media (max-width: 600px) {
-      .audio-title { font-size: 16px; }
-      .audio-subtitle { font-size: 12px; }
-    }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- Swiper Container -->
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <!-- Slide 1 -->
-      <div class="swiper-slide">
-        <video autoplay muted loop playsinline>
-          <source src="videos/slide1.mp4" type="video/mp4" />
-        </video>
-      </div>
+  <!-- Background Video -->
+  <video class="bg-video" id="bgVideo" autoplay muted loop playsinline>
+    <source src="background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
-      <!-- Slide 2 -->
-      <div class="swiper-slide">
-        <video autoplay muted loop playsinline>
-          <source src="videos/slide2.mp4" type="video/mp4" />
-        </video>
-      </div>
-
-      <!-- Slide 3 -->
-      <div class="swiper-slide">
-        <video autoplay muted loop playsinline>
-          <source src="videos/slide3.mp4" type="video/mp4" />
-        </video>
-      </div>
-    </div>
+  <!-- Centered Logo -->
+  <div class="center-logo">
+    <img src="logo.png" alt="Discos Uluulu logo">
   </div>
+
+  <!-- Explore Music Button -->
+  <button class="explore-button" onclick="showPlayer()">Explore Music</button>
 
   <!-- Floating Audio Player -->
-  <div class="audio-player">
-    <div class="audio-header">
-      <div class="audio-title">O tú can</div>
-      <div class="audio-subtitle">Recorded with one microphone in a palm frond wall rancho</div>
+  <div class="audio-player" id="audioPlayer">
+    <div class="player-header">
+      <div class="player-title" id="albumTitle">Garden de La Selva</div>
+      <div class="minimize-button" onclick="togglePlayer()">−</div>
     </div>
-
+    <div id="playerSubtitle" style="font-size: 0.9em; color: #ccc;">
+      Shaped by shakers grown from okra harvests
+    </div>
+    <div class="controls">
+      <button onclick="prevTrack()">⟸</button>
+      <button onclick="togglePlay()" id="playPause">►</button>
+      <button onclick="nextTrack()">⟹</button>
+      <button onclick="switchAlbum()">⇄ Album</button>
+    </div>
     <div class="tracklist" id="tracklist"></div>
-
-    <div class="player-controls">
-      <button class="play-pause" id="playPauseBtn">
-        <!-- SVG Play -->
-        <svg id="playIcon" viewBox="0 0 64 64" width="40" height="40" fill="#f5c97d">
-          <polygon points="16,0 64,32 16,64" />
-        </svg>
-        <!-- SVG Pause -->
-        <svg id="pauseIcon" viewBox="0 0 64 64" width="40" height="40" fill="#f5c97d" style="display:none;">
-          <rect x="12" y="0" width="16" height="64"/>
-          <rect x="36" y="0" width="16" height="64"/>
-        </svg>
-      </button>
-      <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-    </div>
+    <audio id="audio" onended="nextTrack()"></audio>
   </div>
 
-  <!-- Audio Element -->
-  <audio id="audio" preload="metadata"></audio>
-
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    // Swiper init
-    new Swiper(".swiper", {
-      direction: "horizontal",
-      loop: true,
-      threshold: 5,
-    });
-
-    // Track Data
-    const tracks = [
-      { title: "01. Que Gata", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/01%20Que%20Gata.mp3", duration: "1:15" },
-      { title: "02. Mi Amor", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/02%20Mi%20Amor.mp3", duration: "0:52" },
-      { title: "03. Forget the rest", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/03%20Forget%20the%20rest.mp3", duration: "1:17" },
-      { title: "04. Highlife", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/04%20Highlife.mp3", duration: "1:06" },
-      { title: "05. Voy Pal Agua", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/05%20Voy%20Pal%20Agua.mp3", duration: "1:24" },
-      { title: "06. Have ya had a Lemon", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/06%20Have%20ya%20had%20a%20Lemon.mp3", duration: "1:07" },
-      { title: "07. Move ya body", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/07%20Move%20ya%20body.mp3", duration: "1:10" },
-      { title: "08. Bom día", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/08%20Bom%20día.mp3", duration: "0:50" },
-      { title: "09. Ya", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/09%20Ya.mp3", duration: "1:25" },
-      { title: "10. Que disfrutes", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/10%20Que%20disfrutes.mp3", duration: "1:11" }
-    ];
-
-    const audio = document.getElementById("audio");
-    const playBtn = document.getElementById("playPauseBtn");
-    const playIcon = document.getElementById("playIcon");
-    const pauseIcon = document.getElementById("pauseIcon");
-    const progressBar = document.getElementById("progressBar");
-    const tracklist = document.getElementById("tracklist");
-
-    let currentTrack = 0;
-
-    // Load tracklist
-    tracks.forEach((track, index) => {
-      const div = document.createElement("div");
-      div.className = "track";
-      div.innerHTML = `<span>${track.title}</span><span>${track.duration}</span>`;
-      div.onclick = () => {
-        currentTrack = index;
-        loadTrack();
-        playAudio();
-      };
-      tracklist.appendChild(div);
-    });
-
-    function loadTrack() {
-      audio.src = tracks[currentTrack].url;
-    }
-
-    function playAudio() {
-      audio.play();
-      playIcon.style.display = "none";
-      pauseIcon.style.display = "block";
-    }
-
-    function pauseAudio() {
-      audio.pause();
-      playIcon.style.display = "block";
-      pauseIcon.style.display = "none";
-    }
-
-    playBtn.addEventListener("click", () => {
-      if (audio.paused) {
-        playAudio();
-      } else {
-        pauseAudio();
+    const albums = {
+      'Garden de La Selva': {
+        subtitle: 'Shaped by shakers grown from okra harvests',
+        tracks: [
+          { title: "Rubba Dubba", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2001%20Rubba%20Dubba.mp3", length: "3:12" },
+          { title: "Blue", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2002%20Blue.mp3", length: "2:57" },
+          { title: "Jam 3", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2003%20Jam%203.mp3", length: "3:44" },
+          { title: "Groove 1", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2004%20Groove%201.mp3", length: "2:46" },
+          { title: "Vamos Limón", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2005%20Vamos%20Limón.mp3", length: "3:25" },
+          { title: "Mi Ritmo", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2006%20Mi%20Ritmo.mp3", length: "3:08" },
+          { title: "Valle Azul", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2007%20Valle%20Azul.mp3", length: "4:01" },
+          { title: "Yellow", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2008%20Yellow.mp3", length: "2:59" },
+          { title: "Manzanillo", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2009%20Manzanillo.mp3", length: "3:17" },
+          { title: "Dear Familia", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2010%20Dear%20Familia.mp3", length: "3:40" },
+          { title: "Shake It", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3", length: "3:20" }
+        ]
+      },
+      'O tú can': {
+        subtitle: 'Recorded with one microphone in a palm frond wall rancho',
+        tracks: [
+          { title: "Que Gata", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3", length: "2:54" },
+          { title: "Mi Amor", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3", length: "3:06" },
+          { title: "Forget the rest", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3", length: "2:41" },
+          { title: "Highlife", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2004%20Highlife.mp3", length: "2:53" },
+          { title: "Voy Pal Agua", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2005%20Voy%20Pal%20Agua.mp3", length: "3:01" },
+          { title: "Have ya had a Lemon", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2006%20Have%20ya%20had%20a%20Lemon.mp3", length: "3:12" },
+          { title: "Move ya body", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3", length: "3:03" },
+          { title: "Bom día", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3", length: "3:25" },
+          { title: "Ya", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2009%20Ya.mp3", length: "2:44" },
+          { title: "Que disfrutes", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3", length: "3:22" }
+        ]
       }
-    });
+    };
 
-    audio.addEventListener("timeupdate", () => {
-      const progress = (audio.currentTime / audio.duration) * 100;
-      progressBar.style.width = progress + "%";
-    });
+    let currentAlbum = 'Garden de La Selva';
+    let currentTrackIndex = 0;
+    const audio = document.getElementById('audio');
 
-    audio.addEventListener("ended", () => {
-      currentTrack = (currentTrack + 1) % tracks.length;
-      loadTrack();
-      playAudio();
-    });
+    function showPlayer() {
+      document.querySelector('.audio-player').style.display = 'flex';
+      document.querySelector('.explore-button').style.display = 'none';
+      document.querySelector('.center-logo').style.display = 'none';
+      loadAlbum(currentAlbum);
+    }
 
-    // Autoplay first track
-    window.addEventListener("DOMContentLoaded", () => {
-      loadTrack();
-    });
+    function loadAlbum(name) {
+      currentAlbum = name;
+      currentTrackIndex = 0;
+      const album = albums[name];
+      document.getElementById('albumTitle').textContent = name;
+      document.getElementById('playerSubtitle').textContent = album.subtitle;
+
+      const tracklist = document.getElementById('tracklist');
+      tracklist.innerHTML = '';
+      album.tracks.forEach((track, i) => {
+        const div = document.createElement('div');
+        div.className = 'track';
+        div.innerHTML = `<span>${String(i + 1).padStart(2, '0')}. ${track.title}</span><span>${track.length}</span>`;
+        div.onclick = () => {
+          currentTrackIndex = i;
+          playTrack();
+        };
+        tracklist.appendChild(div);
+      });
+      playTrack();
+    }
+
+    function playTrack() {
+      const track = albums[currentAlbum].tracks[currentTrackIndex];
+      audio.src = track.url;
+      audio.play();
+      document.getElementById('playPause').textContent = '❚❚';
+    }
+
+    function nextTrack() {
+      currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbum].tracks.length;
+      playTrack();
+    }
+
+    function prevTrack() {
+      currentTrackIndex = (currentTrackIndex - 1 + albums[currentAlbum].tracks.length) % albums[currentAlbum].tracks.length;
+      playTrack();
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        document.getElementById('playPause').textContent = '❚❚';
+      } else {
+        audio.pause();
+        document.getElementById('playPause').textContent = '►';
+      }
+    }
+
+    function switchAlbum() {
+      currentAlbum = (currentAlbum === 'Garden de La Selva') ? 'O tú can' : 'Garden de La Selva';
+      loadAlbum(currentAlbum);
+    }
+
+    function togglePlayer() {
+      const player = document.getElementById('audioPlayer');
+      player.classList.toggle('hidden');
+    }
   </script>
 </body>
 </html>
