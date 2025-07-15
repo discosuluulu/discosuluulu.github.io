@@ -1,101 +1,121 @@
-const gardenAlbum = {
-  title: "Garden de La Selva",
-  subtitle: "Shaped by shakers grown from okra harvests",
-  tracks: [
-    { title: "Rubba Dubba", length: "3:12", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2001%20Rubba%20Dubba.mp3" },
-    { title: "Blue", length: "2:57", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2002%20Blue.mp3" },
-    { title: "Jam 3", length: "3:44", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2003%20Jam%203.mp3" },
-    { title: "Groove 1", length: "2:46", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2004%20Groove%201.mp3" },
-    { title: "Vamos Limón", length: "3:25", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2005%20Vamos%20Limón.mp3" },
-    { title: "Mi Ritmo", length: "3:08", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2006%20Mi%20Ritmo.mp3" },
-    { title: "Valle Azul", length: "4:01", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2007%20Valle%20Azul.mp3" },
-    { title: "Yellow", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2008%20Yellow.mp3" },
-    { title: "Manzanillo", length: "3:17", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2009%20Manzanillo.mp3" },
-    { title: "Dear Familia", length: "3:40", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2010%20Dear%20Familia.mp3" },
-    { title: "Shake It", length: "3:20", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3" },
-  ]
-};
+const albums = [
+  {
+    title: "Garden de La Selva",
+    subtitle: "Shaped by shakers grown from okra harvests",
+    tracks: [
+      { title: "1. Son del Mercado", url: "https://raw.githubusercontent.com/discosuluulu/garden-audio/main/01%20Son%20del%20Mercado.mp3", duration: "2:41" },
+      { title: "2. Lluvia", url: "https://raw.githubusercontent.com/discosuluulu/garden-audio/main/02%20Lluvia.mp3", duration: "3:00" },
+      { title: "3. Cosas Naturales", url: "https://raw.githubusercontent.com/discosuluulu/garden-audio/main/03%20Cosas%20Naturales.mp3", duration: "2:48" },
+      { title: "4. Danzón de la Selva", url: "https://raw.githubusercontent.com/discosuluulu/garden-audio/main/04%20Danzon%20de%20la%20Selva.mp3", duration: "2:37" },
+    ]
+  },
+  {
+    title: "O tú can",
+    subtitle: "Recorded with one microphone in a palm frond wall rancho",
+    tracks: [
+      { title: "1. Que Gata", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3", duration: "2:32" },
+      { title: "2. Mi Amor", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3", duration: "2:28" },
+      { title: "3. Forget the rest", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3", duration: "3:10" },
+      { title: "4. Highlife", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/Discos%20Uluulu%20-%2004%20Highlife.mp3", duration: "2:50" },
+    ]
+  }
+];
 
-const otucanAlbum = {
-  title: "O tú can",
-  subtitle: "Recorded with one microphone in a palm frond wall rancho",
-  tracks: [
-    { title: "Que Gata", length: "2:45", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2001%20Que%20Gata.mp3" },
-    { title: "Mi Amor", length: "2:48", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2002%20Mi%20Amor.mp3" },
-    { title: "Forget the rest", length: "3:10", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2003%20Forget%20the%20rest.mp3" },
-    { title: "Highlife", length: "2:50", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2004%20Highlife.mp3" },
-    { title: "Voy Pal Agua", length: "3:00", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2005%20Voy%20Pal%20Agua.mp3" },
-    { title: "Have ya had a Lemon", length: "3:03", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2006%20Have%20ya%20had%20a%20Lemon.mp3" },
-    { title: "Move ya body", length: "3:15", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3" },
-    { title: "Bom día", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3" },
-    { title: "Ya", length: "3:30", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2009%20Ya.mp3" },
-    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" },
-  ]
-};
-
-let albums = [gardenAlbum, otucanAlbum];
 let currentAlbumIndex = 0;
 let currentTrackIndex = 0;
 let audio = new Audio();
-
-const albumTitle = document.getElementById("albumTitle");
-const albumSubtitle = document.getElementById("albumSubtitle");
-const tracklist = document.getElementById("tracklist");
-const playPauseBtn = document.getElementById("playPauseBtn");
-const progressBar = document.getElementById("progressBar");
+let isPlaying = false;
+let progressInterval;
 
 function loadAlbum(index) {
-  currentAlbumIndex = index;
-  currentTrackIndex = 0;
   const album = albums[index];
-  albumTitle.textContent = album.title;
-  albumSubtitle.textContent = album.subtitle;
+  document.getElementById("album-title").textContent = album.title;
+  document.getElementById("album-subtitle").textContent = album.subtitle;
+
+  const tracklist = document.getElementById("tracklist");
   tracklist.innerHTML = "";
   album.tracks.forEach((track, i) => {
-    const div = document.createElement("div");
-    div.textContent = `${(i + 1).toString().padStart(2, '0')}. ${track.title} (${track.length})`;
-    tracklist.appendChild(div);
+    const li = document.createElement("li");
+    li.textContent = `${track.title} (${track.duration})`;
+    li.addEventListener("click", () => {
+      currentTrackIndex = i;
+      loadTrack();
+      playAudio();
+    });
+    tracklist.appendChild(li);
+  });
+
+  loadTrack();
+}
+
+function loadTrack() {
+  const track = albums[currentAlbumIndex].tracks[currentTrackIndex];
+  audio.src = track.url;
+  highlightTrack();
+}
+
+function highlightTrack() {
+  const items = document.querySelectorAll("#tracklist li");
+  items.forEach((item, i) => {
+    item.classList.toggle("active", i === currentTrackIndex);
   });
 }
 
-function playTrack(index) {
-  const track = albums[currentAlbumIndex].tracks[index];
-  audio.src = track.url;
+function playAudio() {
   audio.play();
-  playPauseBtn.textContent = "⏸️";
+  isPlaying = true;
+  document.getElementById("play-pause").textContent = "⏸";
+
+  progressInterval = setInterval(updateProgress, 500);
 }
 
-playPauseBtn.addEventListener("click", () => {
-  if (audio.paused) {
-    audio.play();
-    playPauseBtn.textContent = "⏸️";
-  } else {
-    audio.pause();
-    playPauseBtn.textContent = "▶️";
-  }
-});
+function pauseAudio() {
+  audio.pause();
+  isPlaying = false;
+  document.getElementById("play-pause").textContent = "▶";
+  clearInterval(progressInterval);
+}
 
-document.getElementById("nextBtn").addEventListener("click", () => {
-  currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
-  playTrack(currentTrackIndex);
-});
+function togglePlayPause() {
+  isPlaying ? pauseAudio() : playAudio();
+}
 
-document.getElementById("prevBtn").addEventListener("click", () => {
-  currentTrackIndex = (currentTrackIndex - 1 + albums[currentAlbumIndex].tracks.length) % albums[currentAlbumIndex].tracks.length;
-  playTrack(currentTrackIndex);
-});
+function nextTrack() {
+  const album = albums[currentAlbumIndex];
+  currentTrackIndex = (currentTrackIndex + 1) % album.tracks.length;
+  loadTrack();
+  playAudio();
+}
 
-document.getElementById("albumToggleBtn").addEventListener("click", () => {
+function prevTrack() {
+  const album = albums[currentAlbumIndex];
+  currentTrackIndex = (currentTrackIndex - 1 + album.tracks.length) % album.tracks.length;
+  loadTrack();
+  playAudio();
+}
+
+function updateProgress() {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  document.getElementById("progress-bar").style.width = percent + "%";
+  document.getElementById("timestamp").textContent = formatTime(audio.currentTime);
+}
+
+function formatTime(sec) {
+  const min = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60).toString().padStart(2, "0");
+  return `${min}:${s}`;
+}
+
+document.getElementById("play-pause").addEventListener("click", togglePlayPause);
+document.getElementById("next-track").addEventListener("click", nextTrack);
+document.getElementById("prev-track").addEventListener("click", prevTrack);
+document.getElementById("next-album").addEventListener("click", () => {
   currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
+  currentTrackIndex = 0;
   loadAlbum(currentAlbumIndex);
-  playTrack(currentTrackIndex);
+  playAudio();
 });
 
-audio.addEventListener("timeupdate", () => {
-  progressBar.value = audio.currentTime;
-  progressBar.max = audio.duration || 0;
-});
+audio.addEventListener("ended", nextTrack);
 
-progressBar.addEventListener("input", () => {
-  audio.currentTime = progressBar.value;
-});
+loadAlbum(currentAlbumIndex);
