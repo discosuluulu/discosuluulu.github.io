@@ -64,9 +64,20 @@ function loadAlbum(index) {
   albumSubtitle.textContent = album.subtitle;
   tracklist.innerHTML = "";
   album.tracks.forEach((track, i) => {
-    const div = document.createElement("div");
-    div.textContent = `${(i + 1).toString().padStart(2, '0')}. ${track.title} (${track.length})`;
-    tracklist.appendChild(div);
+    const trackRow = document.createElement("div");
+    trackRow.className = "track-row";
+
+    const trackTitle = document.createElement("span");
+    trackTitle.className = "track-length";
+    trackTitle.textcontent = ${(i+1).toString().padStart(2, '0')}. ${track.title}';
+
+    const trackLength = document.createElement("span");
+    trackLength.className = "track-length";
+    trackLength.textContent = track.length;
+
+    trackRow.appendChild(trackTitle);
+    trackRow.appendChild(trackLength);
+    tracklist.appendChild(trackRow);
   });
 }
 
