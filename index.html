@@ -7,15 +7,14 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <video autoplay muted loop id="bgVideo">
-    <source src="your-background-video.mp4" type="video/mp4" />
+  <video autoplay muted loop id="backgroundVideo">
+    <source src="background.mp4" type="video/mp4" />
   </video>
 
-  <img id="logo" src="logo.png" alt="Discos Uluulu Logo" />
+  <img src="logo.png" id="logo" alt="Logo" />
 
   <button id="exploreBtn">Explore Music</button>
-
-  <a href="https://yourinfo.link" id="infoLink" target="_blank">+INFO</a>
+  <a id="infoLink" href="#">+INFO</a>
 
   <div id="audioPlayer" class="hidden">
     <div id="playerHeader">
@@ -23,52 +22,23 @@
         <h2 id="albumTitle"></h2>
         <p id="albumSubtitle"></p>
       </div>
-      <div class="header-buttons">
-        <button id="albumToggleBtn">Next Album</button>
-        <button id="minimizeBtn">−</button>
-      </div>
+      <button id="albumToggleBtn">Next Album</button>
+      <button id="minimizeBtn">−</button>
     </div>
 
     <div id="tracklist"></div>
 
-    <div id="controls">
-      <button id="prevBtn">⏮️</button>
+    <div id="playerControls">
+      <button id="prevBtn">⏮</button>
       <button id="playPauseBtn"></button>
-      <button id="nextBtn">⏭️</button>
+      <button id="nextBtn">⏭</button>
     </div>
 
-    <input type="range" id="progressBar" min="0" max="100" value="0" step="0.1" />
+    <input type="range" id="progressBar" min="0" value="0" step="0.01" />
   </div>
 
   <button id="maximizeBtn" class="hidden">+</button>
 
   <script src="audioplayer.js"></script>
-  <script>
-    const exploreBtn = document.getElementById("exploreBtn");
-    const logo = document.getElementById("logo");
-    const audioPlayer = document.getElementById("audioPlayer");
-    const maximizeBtn = document.getElementById("maximizeBtn");
-    const minimizeBtn = document.getElementById("minimizeBtn");
-    const infoLink = document.getElementById("infoLink");
-
-    exploreBtn.addEventListener("click", () => {
-      logo.classList.add("top-left");
-      exploreBtn.style.display = "none";
-      audioPlayer.classList.remove("hidden");
-      infoLink.classList.remove("hidden");
-    });
-
-    minimizeBtn.addEventListener("click", () => {
-      audioPlayer.classList.add("hidden");
-      maximizeBtn.classList.remove("hidden");
-      infoLink.classList.add("hidden");
-    });
-
-    maximizeBtn.addEventListener("click", () => {
-      audioPlayer.classList.remove("hidden");
-      maximizeBtn.classList.add("hidden");
-      infoLink.classList.remove("hidden");
-    });
-  </script>
 </body>
 </html>
