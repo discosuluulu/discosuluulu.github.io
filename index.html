@@ -3,29 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Discos Uluulu</title>
+  <title>Discos ULUULU</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Background Video -->
+
+  <!-- Background video -->
   <video id="bg-video" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4" />
-    Your browser does not support HTML5 video.
+    Your browser does not support the video tag.
   </video>
 
-  <!-- Top Info Button -->
+  <!-- +info button -->
   <a href="https://info.discosuluulu.com" class="info-button">+info</a>
 
-  <!-- Center Logo -->
-  <div class="logo-container">
-    <img src="logo.png" alt="Discos Uluulu Logo" class="logo" />
-    <button id="exploreBtn">explore music</button>
+  <!-- Centered logo and explore button -->
+  <div class="landing-content">
+    <img src="logo.png" alt="Logo" class="logo" />
+    <button id="explore-btn">Explore Music</button>
   </div>
 
-  <!-- Audio Player (Initially hidden) -->
-  <div id="audioPlayerContainer" class="audio-player hidden"></div>
+  <!-- Audio Player Container -->
+  <div id="audio-player-container" class="hidden">
+    <!-- Injected by audioPlayer.js -->
+  </div>
 
-  <script src="audioPlayer.js"></script>
   <script src="script.js"></script>
+  <script src="audioPlayer.js"></script>
 </body>
 </html>
