@@ -1,4 +1,3 @@
-// Album data
 const gardenAlbum = {
   title: "Garden de La Selva",
   subtitle: "Shaped by shakers grown from okra harvests",
@@ -13,7 +12,7 @@ const gardenAlbum = {
     { title: "Yellow", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2008%20Yellow.mp3" },
     { title: "Manzanillo", length: "3:17", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2009%20Manzanillo.mp3" },
     { title: "Dear Familia", length: "3:40", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2010%20Dear%20Familia.mp3" },
-    { title: "Shake It", length: "3:20", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3" }
+    { title: "Shake It", length: "3:20", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3" },
   ]
 };
 
@@ -30,104 +29,116 @@ const otucanAlbum = {
     { title: "Move ya body", length: "3:15", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3" },
     { title: "Bom día", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3" },
     { title: "Ya", length: "3:30", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2009%20Ya.mp3" },
-    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" }
+    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" },
   ]
 };
 
-// Audio Player Logic
 let currentAlbum = gardenAlbum;
 let currentTrackIndex = 0;
 const audio = new Audio();
-audio.preload = 'metadata';
 
-const albumTitle = document.getElementById('albumTitle');
-const albumSubtitle = document.getElementById('albumSubtitle');
-const trackList = document.getElementById('trackList');
-const progressBar = document.getElementById('progress');
-const currentTimeEl = document.getElementById('currentTime');
-const playPauseBtn = document.getElementById('playPause');
-const prevBtn = document.getElementById('prevTrack');
-const nextBtn = document.getElementById('nextTrack');
+const albumTitle = document.getElementById("album-title");
+const albumSubtitle = document.getElementById("album-subtitle");
+const trackList = document.getElementById("track-list");
+const playBtn = document.getElementById("play");
+const playIcon = document.getElementById("play-icon");
+const pauseIcon = document.getElementById("pause-icon");
+const prevBtn = document.getElementById("prev");
+const nextBtn = document.getElementById("next");
+const progress = document.getElementById("progress");
+const timeDisplay = document.getElementById("time-display");
 
-function loadAlbum(album) {
-  currentAlbum = album;
+document.getElementById("toggle-album").onclick = () => {
+  currentAlbum = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
   currentTrackIndex = 0;
-  albumTitle.textContent = album.title;
-  albumSubtitle.textContent = album.subtitle;
-  trackList.innerHTML = '';
-  album.tracks.forEach((track, index) => {
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${index + 1}. ${track.title}</span><span>${track.length}</span>`;
-    li.addEventListener('click', () => playTrack(index));
-    trackList.appendChild(li);
-  });
-  playTrack(0);
-}
+  loadAlbum();
+};
 
-function playTrack(index) {
-  currentTrackIndex = index;
-  audio.src = currentAlbum.tracks[index].url;
-  audio.play();
-  highlightTrack();
-  updatePlayPauseIcon();
-}
+document.getElementById("minimize").onclick = () => {
+  document.getElementById("player").style.display = "none";
+  document.getElementById("maximize").style.display = "block";
+};
 
-function highlightTrack() {
-  const listItems = trackList.querySelectorAll('li');
-  listItems.forEach((li, i) => {
-    li.classList.toggle('active', i === currentTrackIndex);
-  });
-}
+document.getElementById("maximize").onclick = () => {
+  document.getElementById("player").style.display = "block";
+  document.getElementById("maximize").style.display = "none";
+};
 
-function togglePlayPause() {
+playBtn.onclick = () => {
   if (audio.paused) {
     audio.play();
   } else {
     audio.pause();
   }
-  updatePlayPauseIcon();
+};
+
+audio.onplay = () => {
+  playIcon.style.display = "none";
+  pauseIcon.style.display = "inline";
+};
+
+audio.onpause = () => {
+  playIcon.style.display = "inline";
+  pauseIcon.style.display = "none";
+};
+
+audio.ontimeupdate = () => {
+  const progressPercent = (audio.currentTime / audio.duration) * 100;
+  progress.value = progressPercent || 0;
+  timeDisplay.textContent = formatTime(audio.currentTime) + " / " + formatTime(audio.duration);
+};
+
+progress.oninput = () => {
+  audio.currentTime = (progress.value / 100) * audio.duration;
+};
+
+prevBtn.onclick = () => {
+  if (currentTrackIndex > 0) {
+    currentTrackIndex--;
+    playTrack();
+  }
+};
+
+nextBtn.onclick = () => {
+  if (currentTrackIndex < currentAlbum.tracks.length - 1) {
+    currentTrackIndex++;
+    playTrack();
+  }
+};
+
+function loadAlbum() {
+  albumTitle.textContent = currentAlbum.title;
+  albumSubtitle.textContent = currentAlbum.subtitle;
+  trackList.innerHTML = "";
+  currentAlbum.tracks.forEach((track, i) => {
+    const li = document.createElement("li");
+    li.textContent = `${i + 1}. ${track.title}`;
+    const span = document.createElement("span");
+    span.textContent = track.length;
+    li.appendChild(span);
+    li.onclick = () => {
+      currentTrackIndex = i;
+      playTrack();
+    };
+    trackList.appendChild(li);
+  });
+  playTrack();
 }
 
-function updatePlayPauseIcon() {
-  playPauseBtn.innerHTML = audio.paused ? '▶️' : '⏸️'; // Replace with SVGs in HTML
-}
-
-function nextTrack() {
-  currentTrackIndex = (currentTrackIndex + 1) % currentAlbum.tracks.length;
-  playTrack(currentTrackIndex);
-}
-
-function prevTrack() {
-  currentTrackIndex = (currentTrackIndex - 1 + currentAlbum.tracks.length) % currentAlbum.tracks.length;
-  playTrack(currentTrackIndex);
-}
-
-function updateProgressBar() {
-  const percent = (audio.currentTime / audio.duration) * 100;
-  progressBar.value = percent || 0;
-  currentTimeEl.textContent = formatTime(audio.currentTime);
+function playTrack() {
+  const allTracks = trackList.querySelectorAll("li");
+  allTracks.forEach(t => t.classList.remove("active"));
+  if (allTracks[currentTrackIndex]) {
+    allTracks[currentTrackIndex].classList.add("active");
+  }
+  audio.src = currentAlbum.tracks[currentTrackIndex].url;
+  audio.play();
 }
 
 function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  const min = Math.floor(seconds / 60) || 0;
+  const sec = Math.floor(seconds % 60) || 0;
+  return `${min}:${sec < 10 ? "0" + sec : sec}`;
 }
 
-progressBar.addEventListener('input', () => {
-  audio.currentTime = (progressBar.value / 100) * audio.duration;
-});
-
-audio.addEventListener('timeupdate', updateProgressBar);
-audio.addEventListener('ended', nextTrack);
-
-document.getElementById('nextAlbum').addEventListener('click', () => {
-  loadAlbum(currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum);
-});
-
-playPauseBtn.addEventListener('click', togglePlayPause);
-prevBtn.addEventListener('click', prevTrack);
-nextBtn.addEventListener('click', nextTrack);
-
-// Initialize player
-loadAlbum(gardenAlbum);
+loadAlbum();
