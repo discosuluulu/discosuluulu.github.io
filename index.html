@@ -2,54 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Discos Uluulu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discos Uluulu Player</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Background Video -->
-  <video id="background-video" autoplay muted loop playsinline>
+
+  <!-- Background video -->
+  <video autoplay muted loop id="backgroundVideo">
     <source src="background.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
   </video>
 
-  <!-- Landing Content -->
-  <div id="landing" class="center-content">
-    <img src="logo.png" alt="Discos Uluulu Logo" class="logo" />
-    <button id="explore-btn">Explore Music</button>
-  </div>
+  <!-- Logo -->
+  <img src="logo.png" alt="Discos Uluulu Logo" id="logo" />
 
-  <!-- Audio Player Container (Hidden by default) -->
-  <div id="audio-player-container" class="hidden">
-    <!-- Album Title -->
-    <div class="album-header">
-      <h2 id="album-title">Garden de La Selva</h2>
-      <p id="album-subtitle">Shaped by shakers grown from okra harvests</p>
-    </div>
+  <!-- Explore Music Button -->
+  <button id="exploreBtn">Explore Music</button>
 
-    <!-- Player Controls -->
-    <div class="player-controls">
-      <button id="prev-track">⏮</button>
-      <button id="play-pause">▶</button>
-      <button id="next-track">⏭</button>
-      <div class="progress-bar">
-        <div id="progress"></div>
+  <!-- Floating Audio Player Container (initially hidden) -->
+  <div id="playerContainer" class="hidden">
+    <div class="player-header">
+      <div>
+        <h2 id="albumTitle"></h2>
+        <p id="albumSubtitle"></p>
       </div>
-      <span id="timestamp">0:00</span>
+      <button id="albumToggleBtn">Next Album</button>
     </div>
 
-    <!-- Tracklist -->
-    <ul id="tracklist"></ul>
+    <div id="tracklist" class="tracklist"></div>
 
-    <!-- Album Switch -->
-    <button id="next-album">Next Album</button>
+    <div class="controls">
+      <button id="prevBtn">⏮️</button>
+      <button id="playPauseBtn">▶️</button>
+      <button id="nextBtn">⏭️</button>
+    </div>
+
+    <input type="range" id="progressBar" value="0" step="1" />
   </div>
 
-  <!-- Info Button (Hidden until Explore) -->
-  <a href="https://info.discosuluulu.com" target="_blank" id="info-btn" class="hidden">+info</a>
+  <!-- Info button (appears after explore) -->
+  <div id="infoLink" class="hidden">
+    <a href="https://discosuluulu.com/info" target="_blank">+INFO</a>
+  </div>
 
-  <!-- Scripts -->
-  <script src="audioPlayer.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
