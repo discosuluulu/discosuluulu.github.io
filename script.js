@@ -1,3 +1,4 @@
+// Album data
 const gardenAlbum = {
   title: "Garden de La Selva",
   subtitle: "Shaped by shakers grown from okra harvests",
@@ -12,7 +13,7 @@ const gardenAlbum = {
     { title: "Yellow", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2008%20Yellow.mp3" },
     { title: "Manzanillo", length: "3:17", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2009%20Manzanillo.mp3" },
     { title: "Dear Familia", length: "3:40", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2010%20Dear%20Familia.mp3" },
-    { title: "Shake It", length: "3:20", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3" },
+    { title: "Shake It", length: "3:20", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2011%20Shake%20It.mp3" }
   ]
 };
 
@@ -29,9 +30,104 @@ const otucanAlbum = {
     { title: "Move ya body", length: "3:15", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2007%20Move%20ya%20body.mp3" },
     { title: "Bom día", length: "2:59", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2008%20Bom%20día.mp3" },
     { title: "Ya", length: "3:30", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2009%20Ya.mp3" },
-    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" },
+    { title: "Que disfrutes", length: "2:58", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/refs/heads/main/Discos%20Uluulu%20-%2010%20Que%20disfrutes.mp3" }
   ]
 };
 
-// Full script continues (initializing audio player, track switching, album toggle, progress bar, etc.)
-// Let me know if you want me to paste the full script logic next.
+// Audio Player Logic
+let currentAlbum = gardenAlbum;
+let currentTrackIndex = 0;
+const audio = new Audio();
+audio.preload = 'metadata';
+
+const albumTitle = document.getElementById('albumTitle');
+const albumSubtitle = document.getElementById('albumSubtitle');
+const trackList = document.getElementById('trackList');
+const progressBar = document.getElementById('progress');
+const currentTimeEl = document.getElementById('currentTime');
+const playPauseBtn = document.getElementById('playPause');
+const prevBtn = document.getElementById('prevTrack');
+const nextBtn = document.getElementById('nextTrack');
+
+function loadAlbum(album) {
+  currentAlbum = album;
+  currentTrackIndex = 0;
+  albumTitle.textContent = album.title;
+  albumSubtitle.textContent = album.subtitle;
+  trackList.innerHTML = '';
+  album.tracks.forEach((track, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${index + 1}. ${track.title}</span><span>${track.length}</span>`;
+    li.addEventListener('click', () => playTrack(index));
+    trackList.appendChild(li);
+  });
+  playTrack(0);
+}
+
+function playTrack(index) {
+  currentTrackIndex = index;
+  audio.src = currentAlbum.tracks[index].url;
+  audio.play();
+  highlightTrack();
+  updatePlayPauseIcon();
+}
+
+function highlightTrack() {
+  const listItems = trackList.querySelectorAll('li');
+  listItems.forEach((li, i) => {
+    li.classList.toggle('active', i === currentTrackIndex);
+  });
+}
+
+function togglePlayPause() {
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
+  }
+  updatePlayPauseIcon();
+}
+
+function updatePlayPauseIcon() {
+  playPauseBtn.innerHTML = audio.paused ? '▶️' : '⏸️'; // Replace with SVGs in HTML
+}
+
+function nextTrack() {
+  currentTrackIndex = (currentTrackIndex + 1) % currentAlbum.tracks.length;
+  playTrack(currentTrackIndex);
+}
+
+function prevTrack() {
+  currentTrackIndex = (currentTrackIndex - 1 + currentAlbum.tracks.length) % currentAlbum.tracks.length;
+  playTrack(currentTrackIndex);
+}
+
+function updateProgressBar() {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressBar.value = percent || 0;
+  currentTimeEl.textContent = formatTime(audio.currentTime);
+}
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+progressBar.addEventListener('input', () => {
+  audio.currentTime = (progressBar.value / 100) * audio.duration;
+});
+
+audio.addEventListener('timeupdate', updateProgressBar);
+audio.addEventListener('ended', nextTrack);
+
+document.getElementById('nextAlbum').addEventListener('click', () => {
+  loadAlbum(currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum);
+});
+
+playPauseBtn.addEventListener('click', togglePlayPause);
+prevBtn.addEventListener('click', prevTrack);
+nextBtn.addEventListener('click', nextTrack);
+
+// Initialize player
+loadAlbum(gardenAlbum);
