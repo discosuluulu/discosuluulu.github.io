@@ -1,172 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Discos Uluulu</title>
   <style>
-    html, body {
-      margin: 0; padding: 0;
-      height: 100%; width: 100%;
-      overflow: hidden;
-      font-family: sans-serif;
-      color: white;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: sans-serif; background: #000; overflow: hidden; }
+    
     video#bgVideo {
       position: fixed;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw; height: 100vh;
       object-fit: cover;
       z-index: -1;
     }
-    .overlay {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-      background: rgba(0,0,0,0.3);
-    }
-    .explore-btn {
-      padding: 16px 32px;
-      background: rgba(255,255,255,0.9);
-      color: black;
-      font-size: 18px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .explore-btn:hover {
-      background: white;
-    }
+
     .info-link {
       position: fixed;
-      top: 20px;
+      top: 30px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10;
-      color: white;
-      font-weight: bold;
-      font-size: 16px;
-      text-decoration: none;
-      background: rgba(0,0,0,0.4);
-      padding: 6px 12px;
-      border-radius: 6px;
-    }
-    .floating-player {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 500px;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 16px;
-      border-radius: 12px;
-      color: white;
       z-index: 20;
-      display: none;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      font-weight: bold;
     }
+
+    .center-button {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.9);
+      color: black;
+      padding: 14px 28px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .floating-player {
+      display: none;
+      position: fixed;
+      bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      width: 90%; max-width: 500px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 12px;
+      border-radius: 12px;
+      color: #fff;
+      z-index: 20;
+    }
+
     .player-header {
       text-align: center;
       margin-bottom: 8px;
     }
-    .album-switch {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-    .album-switch button {
-      background: rgba(255,255,255,0.2);
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .album-switch button.active {
-      background: white;
-      color: black;
-    }
+
     .controls {
       display: flex;
       align-items: center;
-      gap: 10px;
       justify-content: center;
+      gap: 12px;
     }
+
     .play-btn {
       width: 40px;
       height: 40px;
       border: none;
-      background: white;
-      color: black;
+      background: #fff;
+      color: #000;
       border-radius: 50%;
-      font-size: 18px;
+      font-size: 20px;
       cursor: pointer;
     }
-    .progress {
-      flex: 1;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 3px;
-      position: relative;
-      cursor: pointer;
-    }
-    .progress-inner {
-      height: 100%;
-      width: 0%;
-      background: white;
-      border-radius: 3px;
-    }
-    #timeDisplay {
-      font-size: 12px;
-      white-space: nowrap;
-    }
+
     .tracklist {
-      margin-top: 10px;
-      max-height: 120px;
+      margin-top: 8px;
+      max-height: 140px;
       overflow-y: auto;
-      font-size: 14px;
+      font-size: 13px;
     }
+
     .track {
       display: flex;
       justify-content: space-between;
       padding: 4px 0;
       cursor: pointer;
     }
+
     .track.active {
       font-weight: bold;
+    }
+
+    .progress {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .progress-inner {
+      height: 100%;
+      width: 0%;
+      background: #fff;
+      border-radius: 3px;
+    }
+
+    #timeDisplay {
+      font-size: 12px;
+      margin-left: 8px;
+      white-space: nowrap;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Video -->
-  <video id="bgVideo" autoplay muted loop playsinline></video>
+  <video id="bgVideo" autoplay muted playsinline></video>
 
-  <!-- +info Link -->
   <a class="info-link" href="https://info.discosuluulu.com">+info</a>
 
-  <!-- Explore Button -->
-  <div class="overlay" id="overlay">
-    <button class="explore-btn" onclick="startExperience()">Explore Music</button>
-  </div>
+  <button class="center-button" onclick="showPlayer()">Explore Music</button>
 
-  <!-- Floating Audio Player -->
-  <div class="floating-player" id="player">
+  <div class="floating-player" id="floatingPlayer">
     <div class="player-header">
       <strong id="albumTitle">Garden de La Selva</strong><br>
-      <span id="albumSubtitle" style="opacity:0.7; font-size:12px;">Shaped by shakers grown from okra harvests</span>
-    </div>
-    <div class="album-switch">
-      <button onclick="loadAlbum('garden')" id="btn-garden" class="active">Garden</button>
-      <button onclick="loadAlbum('otu')" id="btn-otu">O tú can</button>
+      <span id="albumSubtitle" style="opacity:0.7; font-size:12px;">
+        Shaped by shakers grown from okra harvests
+      </span>
     </div>
     <div class="controls">
       <button class="play-btn" onclick="togglePlay()">▶</button>
@@ -179,117 +145,141 @@
   </div>
 
   <script>
-    // Background video shuffle from root
+    // 🎥 Video Shuffle
     const videoElement = document.getElementById('bgVideo');
     const videoBank = [
       "https://discosuluulu.github.io/background.mp4",
       "https://discosuluulu.github.io/backgroundshop.mp4"
     ];
-    let currentVideo = Math.floor(Math.random() * videoBank.length);
-    videoElement.src = videoBank[currentVideo];
-    videoElement.onended = () => {
-      currentVideo = (currentVideo + 1) % videoBank.length;
-      videoElement.src = videoBank[currentVideo];
-      videoElement.play();
-    };
 
-    // Music player logic
-    const audio = new Audio();
-    let currentTrack = 0;
-    let currentAlbum = 'garden';
+    function getRandomVideo() {
+      return videoBank[Math.floor(Math.random() * videoBank.length)];
+    }
 
+    function playRandomVideo() {
+      const video = getRandomVideo();
+      videoElement.src = video;
+      videoElement.load();
+      videoElement.play().catch(console.error);
+    }
+
+    videoElement.addEventListener('ended', () => {
+      playRandomVideo();
+    });
+
+    playRandomVideo(); // Start on load
+
+    // 🎵 Audio Player Logic
     const albums = {
-      garden: {
-        title: "Garden de La Selva",
+      "Garden de La Selva": {
         subtitle: "Shaped by shakers grown from okra harvests",
         tracks: [
-          { title: "01. Rubba Dubba", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2001%20Rubba%20Dubba.mp3", duration: "3:12" },
-          { title: "02. Blue", url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2002%20Blue.mp3", duration: "2:57" }
+          {
+            title: "01. Rubba Dubba",
+            url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2001%20Rubba%20Dubba.mp3",
+            duration: "3:12"
+          },
+          {
+            title: "02. Blue",
+            url: "https://raw.githubusercontent.com/discosuluulu/Garden-de-La-Selva-audio-/main/Discos%20Uluulu%20-%20Garden%20de%20La%20Selva%20-%2002%20Blue.mp3",
+            duration: "2:57"
+          }
+          // Add more tracks...
         ]
       },
-      otu: {
-        title: "O tú can",
+      "O tú can": {
         subtitle: "Recorded with one microphone in a palm frond wall rancho",
         tracks: [
-          { title: "01. Que Gata", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/01%20Que%20Gata.mp3", duration: "2:50" },
-          { title: "02. Mi Amor", url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/02%20Mi%20Amor.mp3", duration: "3:05" }
+          {
+            title: "01. Que Gata",
+            url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/01%20Que%20Gata.mp3",
+            duration: "2:48"
+          },
+          {
+            title: "02. Mi Amor",
+            url: "https://raw.githubusercontent.com/discosuluulu/Otucan/main/02%20Mi%20Amor.mp3",
+            duration: "3:10"
+          }
+          // Add more tracks...
         ]
       }
     };
 
+    let currentAlbum = "Garden de La Selva";
+    let currentTrackIndex = 0;
+    const audio = new Audio();
     const playBtn = document.querySelector('.play-btn');
-    const tracklistEl = document.getElementById('tracklist');
     const progressInner = document.getElementById('progressInner');
     const timeDisplay = document.getElementById('timeDisplay');
 
-    function startExperience() {
-      document.getElementById('overlay').style.display = 'none';
-      document.getElementById('player').style.display = 'block';
-      loadAlbum('garden');
+    function showPlayer() {
+      document.querySelector('.center-button').style.display = 'none';
+      document.getElementById('floatingPlayer').style.display = 'block';
+      loadAlbum(currentAlbum);
     }
 
-    function loadAlbum(albumKey) {
-      currentAlbum = albumKey;
-      const album = albums[albumKey];
-      document.getElementById('albumTitle').textContent = album.title;
+    function loadAlbum(name) {
+      const album = albums[name];
+      document.getElementById('albumTitle').textContent = name;
       document.getElementById('albumSubtitle').textContent = album.subtitle;
-      document.querySelectorAll('.album-switch button').forEach(btn => btn.classList.remove('active'));
-      document.getElementById('btn-' + albumKey).classList.add('active');
-      tracklistEl.innerHTML = '';
+      const tracklist = document.getElementById('tracklist');
+      tracklist.innerHTML = '';
       album.tracks.forEach((track, i) => {
         const div = document.createElement('div');
         div.className = 'track';
         div.innerHTML = `<span>${track.title}</span><span>${track.duration}</span>`;
         div.onclick = () => selectTrack(i);
-        tracklistEl.appendChild(div);
+        tracklist.appendChild(div);
       });
       selectTrack(0);
     }
 
-    function selectTrack(i) {
-      currentTrack = i;
-      const track = albums[currentAlbum].tracks[i];
+    function selectTrack(index) {
+      currentTrackIndex = index;
+      const track = albums[currentAlbum].tracks[index];
       audio.src = track.url;
       audio.play();
       updateUI();
     }
 
     function togglePlay() {
-      if (!audio.src) selectTrack(0);
-      else if (audio.paused) audio.play();
+      if (!audio.src) return;
+      if (audio.paused) audio.play();
       else audio.pause();
       updateUI();
     }
 
     function updateUI() {
-      playBtn.textContent = audio.paused ? '▶' : '⏸';
       document.querySelectorAll('.track').forEach((el, i) => {
-        el.classList.toggle('active', i === currentTrack);
+        el.classList.toggle('active', i === currentTrackIndex);
       });
+      playBtn.textContent = audio.paused ? '▶' : '⏸';
     }
 
-    function seek(e) {
-      const r = e.currentTarget.getBoundingClientRect();
-      const percent = (e.clientX - r.left) / r.width;
-      audio.currentTime = percent * audio.duration;
-    }
-
-    function formatTime(s) {
-      const m = Math.floor(s / 60), sec = Math.floor(s % 60);
-      return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    function seek(event) {
+      const rect = event.currentTarget.getBoundingClientRect();
+      const pct = (event.clientX - rect.left) / rect.width;
+      audio.currentTime = pct * audio.duration;
     }
 
     audio.addEventListener('timeupdate', () => {
       const pct = (audio.currentTime / audio.duration) * 100 || 0;
       progressInner.style.width = pct + '%';
-      timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+      timeDisplay.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
     });
 
     audio.addEventListener('ended', () => {
       const album = albums[currentAlbum];
-      currentTrack = (currentTrack + 1) % album.tracks.length;
-      selectTrack(currentTrack);
+      currentTrackIndex = (currentTrackIndex + 1) % album.tracks.length;
+      selectTrack(currentTrackIndex);
     });
+
+    function formatTime(s) {
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    }
   </script>
+
 </body>
 </html>
