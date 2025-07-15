@@ -1,113 +1,128 @@
-* {
+/* Reset */
+body, html {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-body, html {
   height: 100%;
-  font-family: sans-serif;
-  color: white;
+  font-family: 'Helvetica Neue', sans-serif;
   overflow: hidden;
+  background: transparent;
 }
 
-#bgVideo {
+/* Background video */
+#backgroundVideo {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   z-index: -1;
 }
 
-.landing {
+/* Logo */
+#logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 50px;
+}
+
+/* Explore Music Button */
+#exploreBtn {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.logo {
-  max-width: 300px;
-  margin-bottom: 20px;
-}
-
-#exploreBtn {
-  padding: 12px 24px;
+  padding: 14px 30px;
   font-size: 18px;
+  background: rgba(255,255,255,0.8);
   border: none;
-  background-color: rgba(255,255,255,0.8);
-  color: #000;
   cursor: pointer;
-  border-radius: 4px;
-  transition: background 0.3s;
-}
-
-#exploreBtn:hover {
-  background-color: rgba(255,255,255,1);
-}
-
-#infoLink {
-  display: none;
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  text-decoration: none;
-  font-size: 18px;
   z-index: 10;
 }
 
-.audio-player {
-  display: none;
-  position: fixed;
-  bottom: 0;
+/* Info Link */
+#infoLink {
+  position: absolute;
+  top: 20px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 20px;
-  backdrop-filter: blur(10px);
   text-align: center;
+  font-size: 16px;
+  color: white;
+  z-index: 11;
 }
 
-.album-header h2, .album-header p {
-  margin: 5px 0;
+#infoLink a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Hidden class */
+.hidden {
+  display: none;
+}
+
+/* Player Container */
+#playerContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+/* Header */
+.player-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.player-header p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Tracklist */
+.tracklist {
+  margin-top: 15px;
+  max-height: 120px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .controls {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin: 10px 0;
+  margin-top: 10px;
 }
 
 .controls button {
   background: none;
+  border: none;
   color: white;
-  font-size: 20px;
-  border: 1px solid white;
-  border-radius: 5px;
-  padding: 6px 10px;
+  font-size: 24px;
+  margin: 0 10px;
   cursor: pointer;
 }
 
 #progressBar {
   width: 100%;
-  margin: 10px 0;
-}
-
-#tracklist {
   margin-top: 10px;
-  max-height: 150px;
-  overflow-y: auto;
-  font-size: 14px;
-  text-align: left;
-}
-
-#tracklist div {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  appearance: none;
+  height: 4px;
+  background: #ccc;
 }
