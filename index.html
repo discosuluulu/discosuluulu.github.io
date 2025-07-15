@@ -1,50 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Discos Uluulu Player</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Discos Uluulu</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Background video -->
   <video autoplay muted loop id="backgroundVideo">
-    <source src="background.mp4" type="video/mp4" />
+    <source src="background.mp4" type="video/mp4">
   </video>
 
-  <!-- Logo -->
-  <img src="logo.png" alt="Discos Uluulu Logo" id="logo" />
+  <img src="logo.png" id="logo">
 
-  <!-- Explore Music Button -->
   <button id="exploreBtn">Explore Music</button>
 
-  <!-- Floating Audio Player Container (initially hidden) -->
+  <div id="infoLink" class="hidden">
+    <a href="#">+INFO</a>
+  </div>
+
   <div id="playerContainer" class="hidden">
     <div class="player-header">
       <div>
         <h2 id="albumTitle"></h2>
         <p id="albumSubtitle"></p>
       </div>
-      <button id="albumToggleBtn">Next Album</button>
+      <button id="albumToggleBtn" class="right-btn">Next Album</button>
+      <button id="minimizeBtn" class="top-right-btn">−</button>
     </div>
 
     <div id="tracklist" class="tracklist"></div>
 
     <div class="controls">
-      <button id="prevBtn">⏮️</button>
-      <button id="playPauseBtn">▶️</button>
-      <button id="nextBtn">⏭️</button>
+      <button id="prevBtn" class="icon-btn" title="Previous">
+        <svg viewBox="0 0 60 60" width="30" height="30">
+          <polygon points="35,10 15,30 35,50" fill="white"/>
+          <rect x="40" y="10" width="5" height="40" fill="white"/>
+        </svg>
+      </button>
+
+      <button id="playPauseBtn" class="icon-btn" title="Play/Pause">
+        <!-- Filled via JS -->
+      </button>
+
+      <button id="nextBtn" class="icon-btn" title="Next">
+        <svg viewBox="0 0 60 60" width="30" height="30">
+          <polygon points="25,10 45,30 25,50" fill="white"/>
+          <rect x="15" y="10" width="5" height="40" fill="white"/>
+        </svg>
+      </button>
     </div>
 
-    <input type="range" id="progressBar" value="0" step="1" />
+    <div class="progress-container">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progressBar" value="0">
+      <span id="duration">0:00</span>
+    </div>
   </div>
 
-  <!-- Info button (appears after explore) -->
-  <div id="infoLink" class="hidden">
-    <a href="https://discosuluulu.com/info" target="_blank">+INFO</a>
-  </div>
+  <button id="maximizeBtn" class="hidden">+</button>
 
-  <script src="script.js"></script>
+  <script src="audioplayer.js"></script>
+  <script>
+    document.getElementById("exploreBtn").addEventListener("click", () => {
+      document.getElementById("playerContainer").classList.remove("hidden");
+      document.getElementById("exploreBtn").classList.add("hidden");
+      document.getElementById("logo").classList.add("logo-small");
+      document.getElementById("infoLink").classList.remove("hidden");
+    });
+
+    document.getElementById("minimizeBtn").addEventListener("click", () => {
+      document.getElementById("playerContainer").classList.add("hidden");
+      document.getElementById("maximizeBtn").classList.remove("hidden");
+      document.getElementById("infoLink").classList.add("hidden");
+    });
+
+    document.getElementById("maximizeBtn").addEventListener("click", () => {
+      document.getElementById("playerContainer").classList.remove("hidden");
+      document.getElementById("maximizeBtn").classList.add("hidden");
+      document.getElementById("infoLink").classList.remove("hidden");
+    });
+  </script>
 </body>
 </html>
