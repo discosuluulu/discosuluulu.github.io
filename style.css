@@ -1,11 +1,16 @@
-/* Reset */
+/* Reset & Base */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+body, html {
+  height: 100%;
+  overflow: hidden;
 }
 
-/* Background video */
+/* Background Video */
 #backgroundVideo {
   position: fixed;
   top: 0;
@@ -13,37 +18,54 @@
   width: 100vw;
   height: 100vh;
   object-fit: cover;
-  z-index: -1;
+  z-index: -2;
 }
 
-/* Logo animation */
+/* Logo */
 #logo {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 200px;
   transform: translate(-50%, -50%);
+  width: 40vw;
+  max-width: 300px;
   transition: all 1s ease;
-  z-index: 1;
+  z-index: 2;
 }
-body.player-active #logo {
+#logo.shrink {
   top: 20px;
   left: 20px;
-  width: 80px;
-  transform: translate(0, 0);
+  transform: none;
+  width: 100px;
 }
 
-/* Maximize (Explore Music) Button */
-#maximizePlayer {
-  position: absolute;
+/* Info Link */
+#infoLink {
+  position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 2;
-  padding: 10px 18px;
-  background: #fff;
-  border: none;
-  cursor: pointer;
+  color: white;
+  background: rgba(0,0,0,0.5);
+  padding: 6px 12px;
+  text-decoration: none;
   font-weight: bold;
+  border-radius: 5px;
+  z-index: 3;
+}
+
+/* Maximize Player Button */
+#maximizePlayer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 12px 24px;
+  font-size: 1.2em;
+  background: rgba(255,255,255,0.8);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 2;
 }
 
 /* Audio Player */
@@ -51,92 +73,127 @@ body.player-active #logo {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  color: white;
   padding: 15px;
-  z-index: 3;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.4);
   display: none;
-  transition: all 0.3s ease-in-out;
+  flex-direction: column;
+  z-index: 3;
 }
 
+/* Show when active */
+#audioPlayer.show {
+  display: flex;
+}
+
+/* Player Header */
 .player-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
-.top-buttons {
-  display: flex;
-  gap: 10px;
+.player-header h1 {
+  font-size: 1.5em;
+}
+.player-header h2 {
+  font-size: 1em;
+  font-weight: 400;
+  color: #ddd;
 }
 
+/* Buttons in header */
+.top-buttons button {
+  margin-left: 10px;
+  padding: 6px 10px;
+  font-size: 1em;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Tracklist */
 #trackList {
-  max-height: 150px;
-  overflow-y: auto;
-  margin: 10px 0;
-  padding: 0;
   list-style: none;
+  margin-top: 10px;
+  max-height: 8em;
+  overflow-y: auto;
+  padding-right: 5px;
 }
 #trackList li {
   display: flex;
   justify-content: space-between;
   padding: 5px 0;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
   cursor: pointer;
 }
-#trackList li.active {
-  font-weight: bold;
+#trackList li:hover {
+  background: rgba(255,255,255,0.1);
 }
 
+/* Controls */
 .controls {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  margin-top: 10px;
 }
 .controls button {
   background: none;
   border: none;
+  color: white;
+  margin: 0 10px;
   cursor: pointer;
 }
 .controls svg {
-  width: 24px;
-  height: 24px;
-  fill: #000;
+  width: 28px;
+  height: 28px;
+  fill: white;
 }
 
-.progress-container {
+/* Progress Bar */
+#progressContainer {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 10px;
 }
 #progressBar {
-  flex-grow: 1;
+  flex: 1;
+  appearance: none;
+  height: 5px;
+  background: #888;
+  border-radius: 3px;
+}
+#progressBar::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+#progressContainer span {
+  font-size: 0.9em;
+  min-width: 40px;
 }
 
-/* +INFO button */
-#infoLink {
-  position: absolute;
-  bottom: 80px;
-  right: 20px;
-  background: #fff;
-  padding: 10px;
-  text-decoration: none;
-  font-weight: bold;
-  z-index: 2;
-}
-
-/* Show player */
-body.player-active #audioPlayer {
-  display: block;
-}
-
-/* Responsive */
+/* Responsive Behavior */
 @media (max-width: 600px) {
   #logo {
-    width: 150px;
+    width: 60vw;
   }
-  body.player-active #logo {
-    width: 60px;
+  .player-header h1 {
+    font-size: 1.2em;
+  }
+  .player-header h2 {
+    font-size: 0.9em;
+  }
+  .controls svg {
+    width: 24px;
+    height: 24px;
   }
 }
