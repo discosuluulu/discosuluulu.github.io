@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <!-- Background Video -->
   <video autoplay muted loop id="backgroundVideo">
     <source src="background.mp4" type="video/mp4" />
@@ -16,49 +17,53 @@
   <!-- Logo -->
   <img src="logo.png" id="logo" alt="Discos Uluulu Logo" />
 
-  <!-- Explore Music Button (Maximize) -->
+  <!-- Maximize Player Button -->
   <button id="maximizePlayer">Explore Music</button>
+
+  <!-- Info Link -->
+  <a href="#" id="infoLink">+INFO</a>
 
   <!-- Audio Player -->
   <div id="audioPlayer">
+    <!-- Header -->
     <div class="player-header">
       <div>
         <h1 id="albumTitle"></h1>
-        <p id="albumSubtitle"></p>
+        <h2 id="albumSubtitle"></h2>
       </div>
       <div class="top-buttons">
-        <button id="nextAlbumBtn">Next Album</button>
+        <button id="nextAlbum">Next Album</button>
         <button id="minimizePlayer">−</button>
       </div>
     </div>
 
-    <!-- Tracklist -->
+    <!-- Track List -->
     <ul id="trackList"></ul>
 
     <!-- Controls -->
     <div class="controls">
-      <button id="prevTrack" title="Previous Track">
-        <svg viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6L11 18zm1-6l8.5 6V6L12 12z"/></svg>
+      <button id="prevTrack" title="Previous">
+        <svg viewBox="0 0 24 24"><path d="M6 19V5h2v14H6zm3.5-7L18 5v14l-8.5-7z"/></svg>
       </button>
       <button id="playPause" title="Play/Pause">
         <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
       </button>
-      <button id="nextTrack" title="Next Track">
-        <svg viewBox="0 0 24 24"><path d="M4.5 6v12l8.5-6-8.5-6zM14 6v12h2V6h-2z"/></svg>
+      <button id="nextTrack" title="Next">
+        <svg viewBox="0 0 24 24"><path d="M16 5v14h2V5h-2zM5.5 12L14 19V5l-8.5 7z"/></svg>
       </button>
     </div>
 
     <!-- Progress Bar -->
-    <div class="progress-container">
+    <div id="progressContainer">
       <span id="currentTime">0:00</span>
-      <input type="range" id="progressBar" min="0" value="0" />
+      <input type="range" id="progressBar" value="0" min="0" step="1" />
       <span id="duration">0:00</span>
     </div>
   </div>
 
-  <!-- +INFO Button -->
-  <a id="infoLink" href="#" target="_blank">+INFO</a>
+  <!-- Audio Element -->
+  <audio id="audio"></audio>
 
   <!-- Scripts -->
   <script src="audioPlayer.js"></script>
