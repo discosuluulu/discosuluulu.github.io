@@ -1,125 +1,119 @@
-let currentAlbumIndex = 0;
-const albums = [gardenAlbum, otucanAlbum];
+let currentAlbum = gardenAlbum;
 let currentTrackIndex = 0;
-const audio = document.getElementById("audio");
+const audio = new Audio();
 
-const albumTitle = document.getElementById("album-title");
-const albumSubtitle = document.getElementById("album-subtitle");
-const tracklist = document.getElementById("tracklist");
-const playBtn = document.getElementById("play-pause-btn");
-const playIcon = document.getElementById("play-icon");
-const pauseIcon = document.getElementById("pause-icon");
-const prevBtn = document.getElementById("prev-btn");
-const nextBtn = document.getElementById("next-btn");
-const toggleAlbumBtn = document.getElementById("toggle-album");
-const progressBar = document.getElementById("progress-bar");
-const currentTimeDisplay = document.getElementById("current-time");
-const durationDisplay = document.getElementById("duration");
-const minimizeBtn = document.getElementById("minimize-btn");
-const maximizeBtn = document.getElementById("maximize-btn");
-const playerContainer = document.querySelector(".player-container");
+const albumTitle = document.getElementById("albumTitle");
+const albumSubtitle = document.getElementById("albumSubtitle");
+const trackList = document.getElementById("trackList");
+const playPauseBtn = document.getElementById("playPauseBtn");
+const playIcon = document.getElementById("playIcon");
+const pauseIcon = document.getElementById("pauseIcon");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const progressBar = document.getElementById("progressBar");
+const currentTimeDisplay = document.getElementById("currentTime");
+const totalTimeDisplay = document.getElementById("totalTime");
+const nextAlbumBtn = document.getElementById("nextAlbumBtn");
+const exploreBtn = document.getElementById("exploreBtn");
+const audioPlayerContainer = document.getElementById("audioPlayerContainer");
+const minimizeBtn = document.getElementById("minimizeBtn");
 
-function loadAlbum(index) {
-  const album = albums[index];
+function loadAlbum(album) {
+  currentAlbum = album;
   albumTitle.textContent = album.title;
   albumSubtitle.textContent = album.subtitle;
-  tracklist.innerHTML = "";
-  album.tracks.forEach((track, i) => {
+  trackList.innerHTML = "";
+  album.tracks.forEach((track, index) => {
     const li = document.createElement("li");
-    li.textContent = `${track.title}`;
-    const span = document.createElement("span");
-    span.textContent = track.duration;
-    li.appendChild(span);
-    li.addEventListener("click", () => {
-      currentTrackIndex = i;
-      loadTrack();
-      playAudio();
-    });
-    tracklist.appendChild(li);
+    li.innerHTML = `<span>${index + 1}. ${track.title}</span><span>${track.length}</span>`;
+    li.addEventListener("click", () => playTrack(index));
+    trackList.appendChild(li);
   });
-  loadTrack();
+  playTrack(0);
 }
 
-function loadTrack() {
-  const track = albums[currentAlbumIndex].tracks[currentTrackIndex];
+function playTrack(index) {
+  currentTrackIndex = index;
+  const track = currentAlbum.tracks[index];
   audio.src = track.url;
-  updateTrackHighlight();
-}
-
-function playAudio() {
   audio.play();
-  playIcon.style.display = "none";
-  pauseIcon.style.display = "inline";
+  updatePlayPauseIcon();
+  highlightCurrentTrack();
 }
 
-function pauseAudio() {
-  audio.pause();
-  playIcon.style.display = "inline";
-  pauseIcon.style.display = "none";
-}
-
-function updateTrackHighlight() {
-  const items = tracklist.querySelectorAll("li");
-  items.forEach((item, idx) => {
-    item.classList.toggle("active", idx === currentTrackIndex);
+function highlightCurrentTrack() {
+  [...trackList.children].forEach((li, i) => {
+    li.style.fontWeight = i === currentTrackIndex ? "bold" : "normal";
   });
 }
 
-playBtn.addEventListener("click", () => {
+function togglePlayPause() {
   if (audio.paused) {
-    playAudio();
+    audio.play();
   } else {
-    pauseAudio();
+    audio.pause();
   }
-});
+  updatePlayPauseIcon();
+}
 
-prevBtn.addEventListener("click", () => {
-  currentTrackIndex = (currentTrackIndex - 1 + albums[currentAlbumIndex].tracks.length) % albums[currentAlbumIndex].tracks.length;
-  loadTrack();
-  playAudio();
-});
+function updatePlayPauseIcon() {
+  if (audio.paused) {
+    playIcon.style.display = "block";
+    pauseIcon.style.display = "none";
+  } else {
+    playIcon.style.display = "none";
+    pauseIcon.style.display = "block";
+  }
+}
 
-nextBtn.addEventListener("click", () => {
-  currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbumIndex].tracks.length;
-  loadTrack();
-  playAudio();
-});
+function playNext() {
+  currentTrackIndex = (currentTrackIndex + 1) % currentAlbum.tracks.length;
+  playTrack(currentTrackIndex);
+}
 
-toggleAlbumBtn.addEventListener("click", () => {
-  currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
-  currentTrackIndex = 0;
-  loadAlbum(currentAlbumIndex);
-  playAudio();
-});
+function playPrev() {
+  currentTrackIndex =
+    (currentTrackIndex - 1 + currentAlbum.tracks.length) %
+    currentAlbum.tracks.length;
+  playTrack(currentTrackIndex);
+}
 
-audio.addEventListener("loadedmetadata", () => {
-  progressBar.max = Math.floor(audio.duration);
-  durationDisplay.textContent = formatTime(audio.duration);
-});
+function formatTime(seconds) {
+  const min = Math.floor(seconds / 60);
+  const sec = Math.floor(seconds % 60).toString().padStart(2, "0");
+  return `${min}:${sec}`;
+}
 
 audio.addEventListener("timeupdate", () => {
-  progressBar.value = Math.floor(audio.currentTime);
+  progressBar.max = audio.duration;
+  progressBar.value = audio.currentTime;
   currentTimeDisplay.textContent = formatTime(audio.currentTime);
+  totalTimeDisplay.textContent = formatTime(audio.duration || 0);
 });
 
 progressBar.addEventListener("input", () => {
   audio.currentTime = progressBar.value;
 });
 
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
-  return `${mins}:${secs}`;
-}
+audio.addEventListener("ended", playNext);
+
+playPauseBtn.addEventListener("click", togglePlayPause);
+nextBtn.addEventListener("click", playNext);
+prevBtn.addEventListener("click", playPrev);
+nextAlbumBtn.addEventListener("click", () => {
+  loadAlbum(currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum);
+});
 
 minimizeBtn.addEventListener("click", () => {
-  playerContainer.style.display = "none";
-  maximizeBtn.style.display = "block";
+  audioPlayerContainer.classList.add("hidden");
+  exploreBtn.style.display = "block";
 });
 
-maximizeBtn.addEventListener("click", () => {
-  playerContainer.style.display = "block";
-  maximizeBtn.style.display = "none";
+exploreBtn.addEventListener("click", () => {
+  audioPlayerContainer.classList.remove("hidden");
+  exploreBtn.style.display = "none";
 });
 
-loadAlbum(currentAlbumIndex);
+// Start the player visible and load first album
+loadAlbum(gardenAlbum);
+audioPlayerContainer.classList.remove("hidden");
