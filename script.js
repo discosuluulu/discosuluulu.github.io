@@ -2,118 +2,109 @@ let currentAlbum = gardenAlbum;
 let currentTrackIndex = 0;
 const audio = new Audio();
 
-const albumTitle = document.getElementById("albumTitle");
-const albumSubtitle = document.getElementById("albumSubtitle");
-const trackList = document.getElementById("trackList");
-const playPauseBtn = document.getElementById("playPauseBtn");
-const playIcon = document.getElementById("playIcon");
-const pauseIcon = document.getElementById("pauseIcon");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const progressBar = document.getElementById("progressBar");
-const currentTimeDisplay = document.getElementById("currentTime");
-const totalTimeDisplay = document.getElementById("totalTime");
-const nextAlbumBtn = document.getElementById("nextAlbumBtn");
-const exploreBtn = document.getElementById("exploreBtn");
-const audioPlayerContainer = document.getElementById("audioPlayerContainer");
-const minimizeBtn = document.getElementById("minimizeBtn");
+const albumTitle = document.getElementById('albumTitle');
+const albumSubtitle = document.getElementById('albumSubtitle');
+const trackList = document.getElementById('trackList');
+const playPauseBtn = document.getElementById('playPause');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
+const prevBtn = document.getElementById('prevTrack');
+const nextBtn = document.getElementById('nextTrack');
+const progressBar = document.getElementById('progressBar');
+const currentTimeEl = document.getElementById('currentTime');
+const durationEl = document.getElementById('duration');
+
+const nextAlbumBtn = document.getElementById('nextAlbumBtn');
+const maximizePlayer = document.getElementById('maximizePlayer');
+const minimizePlayer = document.getElementById('minimizePlayer');
 
 function loadAlbum(album) {
-  currentAlbum = album;
   albumTitle.textContent = album.title;
   albumSubtitle.textContent = album.subtitle;
-  trackList.innerHTML = "";
-  album.tracks.forEach((track, index) => {
-    const li = document.createElement("li");
-    li.innerHTML = `<span>${index + 1}. ${track.title}</span><span>${track.length}</span>`;
-    li.addEventListener("click", () => playTrack(index));
+  trackList.innerHTML = '';
+  album.tracks.forEach((track, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${i + 1}. ${track.title}</span><span>${track.length}</span>`;
+    li.addEventListener('click', () => {
+      currentTrackIndex = i;
+      playTrack();
+    });
     trackList.appendChild(li);
   });
-  playTrack(0);
 }
 
-function playTrack(index) {
-  currentTrackIndex = index;
-  const track = currentAlbum.tracks[index];
-  audio.src = track.url;
-  audio.play();
-  updatePlayPauseIcon();
-  highlightCurrentTrack();
-}
-
-function highlightCurrentTrack() {
+function highlightTrack() {
   [...trackList.children].forEach((li, i) => {
-    li.style.fontWeight = i === currentTrackIndex ? "bold" : "normal";
+    li.classList.toggle('active', i === currentTrackIndex);
   });
 }
 
-function togglePlayPause() {
-  if (audio.paused) {
-    audio.play();
+function playTrack() {
+  const track = currentAlbum.tracks[currentTrackIndex];
+  audio.src = track.url;
+  audio.play();
+  updatePlayPauseIcons();
+  highlightTrack();
+}
+
+function updatePlayPauseIcons() {
+  const isPaused = audio.paused;
+  playIcon.style.display = isPaused ? 'inline' : 'none';
+  pauseIcon.style.display = isPaused ? 'none' : 'inline';
+}
+
+playPauseBtn.addEventListener('click', () => {
+  if (audio.src) {
+    audio.paused ? audio.play() : audio.pause();
   } else {
-    audio.pause();
+    playTrack();
   }
-  updatePlayPauseIcon();
-}
-
-function updatePlayPauseIcon() {
-  if (audio.paused) {
-    playIcon.style.display = "block";
-    pauseIcon.style.display = "none";
-  } else {
-    playIcon.style.display = "none";
-    pauseIcon.style.display = "block";
-  }
-}
-
-function playNext() {
-  currentTrackIndex = (currentTrackIndex + 1) % currentAlbum.tracks.length;
-  playTrack(currentTrackIndex);
-}
-
-function playPrev() {
-  currentTrackIndex =
-    (currentTrackIndex - 1 + currentAlbum.tracks.length) %
-    currentAlbum.tracks.length;
-  playTrack(currentTrackIndex);
-}
-
-function formatTime(seconds) {
-  const min = Math.floor(seconds / 60);
-  const sec = Math.floor(seconds % 60).toString().padStart(2, "0");
-  return `${min}:${sec}`;
-}
-
-audio.addEventListener("timeupdate", () => {
-  progressBar.max = audio.duration;
-  progressBar.value = audio.currentTime;
-  currentTimeDisplay.textContent = formatTime(audio.currentTime);
-  totalTimeDisplay.textContent = formatTime(audio.duration || 0);
+  updatePlayPauseIcons();
 });
 
-progressBar.addEventListener("input", () => {
+prevBtn.addEventListener('click', () => {
+  currentTrackIndex = (currentTrackIndex - 1 + currentAlbum.tracks.length) % currentAlbum.tracks.length;
+  playTrack();
+});
+
+nextBtn.addEventListener('click', () => {
+  currentTrackIndex = (currentTrackIndex + 1) % currentAlbum.tracks.length;
+  playTrack();
+});
+
+audio.addEventListener('timeupdate', () => {
+  progressBar.value = audio.currentTime;
+  currentTimeEl.textContent = formatTime(audio.currentTime);
+});
+
+audio.addEventListener('loadedmetadata', () => {
+  progressBar.max = audio.duration;
+  durationEl.textContent = formatTime(audio.duration);
+});
+
+progressBar.addEventListener('input', () => {
   audio.currentTime = progressBar.value;
 });
 
-audio.addEventListener("ended", playNext);
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
 
-playPauseBtn.addEventListener("click", togglePlayPause);
-nextBtn.addEventListener("click", playNext);
-prevBtn.addEventListener("click", playPrev);
-nextAlbumBtn.addEventListener("click", () => {
-  loadAlbum(currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum);
+nextAlbumBtn.addEventListener('click', () => {
+  currentAlbum = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
+  currentTrackIndex = 0;
+  loadAlbum(currentAlbum);
+  playTrack();
 });
 
-minimizeBtn.addEventListener("click", () => {
-  audioPlayerContainer.classList.add("hidden");
-  exploreBtn.style.display = "block";
+maximizePlayer.addEventListener('click', () => {
+  document.body.classList.add('player-active');
 });
 
-exploreBtn.addEventListener("click", () => {
-  audioPlayerContainer.classList.remove("hidden");
-  exploreBtn.style.display = "none";
+minimizePlayer.addEventListener('click', () => {
+  document.body.classList.remove('player-active');
 });
 
-// Start the player visible and load first album
-loadAlbum(gardenAlbum);
-audioPlayerContainer.classList.remove("hidden");
+loadAlbum(currentAlbum);
