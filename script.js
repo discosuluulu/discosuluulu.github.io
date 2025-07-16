@@ -1,110 +1,119 @@
+// Load albums from audioPlayer.js
 let currentAlbum = gardenAlbum;
 let currentTrackIndex = 0;
-const audio = new Audio();
 
+const audio = new Audio();
+const logo = document.getElementById('logo');
+const audioPlayer = document.getElementById('audioPlayer');
+const maximizeBtn = document.getElementById('maximizePlayer');
+const minimizeBtn = document.getElementById('minimizePlayer');
 const albumTitle = document.getElementById('albumTitle');
 const albumSubtitle = document.getElementById('albumSubtitle');
 const trackList = document.getElementById('trackList');
-const playPauseBtn = document.getElementById('playPause');
-const playIcon = document.getElementById('playIcon');
-const pauseIcon = document.getElementById('pauseIcon');
-const prevBtn = document.getElementById('prevTrack');
-const nextBtn = document.getElementById('nextTrack');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 const progressBar = document.getElementById('progressBar');
-const currentTimeEl = document.getElementById('currentTime');
-const durationEl = document.getElementById('duration');
-
+const currentTimeDisplay = document.getElementById('currentTime');
+const durationDisplay = document.getElementById('duration');
 const nextAlbumBtn = document.getElementById('nextAlbumBtn');
-const maximizePlayer = document.getElementById('maximizePlayer');
-const minimizePlayer = document.getElementById('minimizePlayer');
 
+// Show player
+maximizeBtn.addEventListener('click', () => {
+  audioPlayer.classList.add('show');
+  maximizeBtn.style.display = 'none';
+  logo.classList.add('shrink');
+});
+
+// Minimize player
+minimizeBtn.addEventListener('click', () => {
+  audioPlayer.classList.remove('show');
+  maximizeBtn.style.display = 'block';
+});
+
+// Load album into player
 function loadAlbum(album) {
   albumTitle.textContent = album.title;
   albumSubtitle.textContent = album.subtitle;
   trackList.innerHTML = '';
-  album.tracks.forEach((track, i) => {
+
+  album.tracks.forEach((track, index) => {
     const li = document.createElement('li');
-    li.innerHTML = `<span>${i + 1}. ${track.title}</span><span>${track.length}</span>`;
-    li.addEventListener('click', () => {
-      currentTrackIndex = i;
-      playTrack();
-    });
+    li.innerHTML = `<span>${index + 1}. ${track.title}</span><span>${track.length}</span>`;
+    li.addEventListener('click', () => playTrack(index));
     trackList.appendChild(li);
   });
 }
 
-function highlightTrack() {
-  [...trackList.children].forEach((li, i) => {
-    li.classList.toggle('active', i === currentTrackIndex);
-  });
-}
-
-function playTrack() {
-  const track = currentAlbum.tracks[currentTrackIndex];
+// Play track
+function playTrack(index) {
+  currentTrackIndex = index;
+  const track = currentAlbum.tracks[index];
   audio.src = track.url;
   audio.play();
-  updatePlayPauseIcons();
-  highlightTrack();
+  updatePlayPauseButton();
 }
 
-function updatePlayPauseIcons() {
-  const isPaused = audio.paused;
-  playIcon.style.display = isPaused ? 'inline' : 'none';
-  pauseIcon.style.display = isPaused ? 'none' : 'inline';
-}
-
-playPauseBtn.addEventListener('click', () => {
-  if (audio.src) {
-    audio.paused ? audio.play() : audio.pause();
+// Toggle play/pause
+function togglePlayPause() {
+  if (audio.paused) {
+    audio.play();
   } else {
-    playTrack();
+    audio.pause();
   }
-  updatePlayPauseIcons();
-});
-
-prevBtn.addEventListener('click', () => {
-  currentTrackIndex = (currentTrackIndex - 1 + currentAlbum.tracks.length) % currentAlbum.tracks.length;
-  playTrack();
-});
-
-nextBtn.addEventListener('click', () => {
-  currentTrackIndex = (currentTrackIndex + 1) % currentAlbum.tracks.length;
-  playTrack();
-});
-
-audio.addEventListener('timeupdate', () => {
-  progressBar.value = audio.currentTime;
-  currentTimeEl.textContent = formatTime(audio.currentTime);
-});
-
-audio.addEventListener('loadedmetadata', () => {
-  progressBar.max = audio.duration;
-  durationEl.textContent = formatTime(audio.duration);
-});
-
-progressBar.addEventListener('input', () => {
-  audio.currentTime = progressBar.value;
-});
-
-function formatTime(sec) {
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60);
-  return `${m}:${s < 10 ? '0' : ''}${s}`;
+  updatePlayPauseButton();
 }
 
+// Update play/pause button SVG
+function updatePlayPauseButton() {
+  playPauseBtn.innerHTML = audio.paused
+    ? `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>` // play icon
+    : `<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>`; // pause icon
+}
+
+// Go to next/previous track
+function nextTrack() {
+  if (currentTrackIndex < currentAlbum.tracks.length - 1) {
+    playTrack(currentTrackIndex + 1);
+  }
+}
+function prevTrack() {
+  if (currentTrackIndex > 0) {
+    playTrack(currentTrackIndex - 1);
+  }
+}
+
+// Progress bar logic
+audio.addEventListener('timeupdate', () => {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressBar.value = percent || 0;
+  currentTimeDisplay.textContent = formatTime(audio.currentTime);
+  durationDisplay.textContent = formatTime(audio.duration);
+});
+progressBar.addEventListener('input', () => {
+  const seekTime = (progressBar.value / 100) * audio.duration;
+  audio.currentTime = seekTime;
+});
+
+// Format time helper
+function formatTime(seconds) {
+  if (isNaN(seconds)) return "0:00";
+  const min = Math.floor(seconds / 60);
+  const sec = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${min}:${sec}`;
+}
+
+// Switch albums
 nextAlbumBtn.addEventListener('click', () => {
   currentAlbum = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
-  currentTrackIndex = 0;
   loadAlbum(currentAlbum);
-  playTrack();
+  playTrack(0);
 });
 
-maximizePlayer.addEventListener('click', () => {
-  document.body.classList.add('player-active');
-});
+// Event listeners
+playPauseBtn.addEventListener('click', togglePlayPause);
+prevBtn.addEventListener('click', prevTrack);
+nextBtn.addEventListener('click', nextTrack);
 
-minimizePlayer.addEventListener('click', () => {
-  document.body.classList.remove('player-active');
-});
-
+// Initialize
 loadAlbum(currentAlbum);
