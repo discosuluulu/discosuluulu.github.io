@@ -7,40 +7,43 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <div class="logo-container">
-    <img src="logo.png" class="logo" alt="Discos Uluulu" />
-    <button id="exploreBtn">Explore Music</button>
-  </div>
-
-  <div id="audioPlayer" class="player hidden">
+  <div class="player-container">
     <div class="player-header">
-      <div>
-        <h2 id="albumTitle">Album Title</h2>
-        <p id="albumSubtitle">Album Subtitle</p>
-      </div>
-      <div class="player-controls-top">
-        <button id="toggleAlbumBtn" title="Next Album">⟳</button>
-        <button id="minimizeBtn" title="Minimize">−</button>
+      <h1 id="album-title"></h1>
+      <p id="album-subtitle"></p>
+      <div class="top-right-buttons">
+        <button id="toggle-album">Next Album</button>
+        <button id="minimize-btn">−</button>
       </div>
     </div>
 
-    <div id="trackList" class="track-list"></div>
+    <ul id="tracklist"></ul>
 
-    <div class="playback-controls">
-      <button id="prevBtn" title="Previous Track">⏮</button>
-      <button id="playPauseBtn" title="Play/Pause">▶</button>
-      <button id="nextBtn" title="Next Track">⏭</button>
+    <div class="controls">
+      <button id="prev-btn" aria-label="Previous Track">
+        <svg viewBox="0 0 24 24"><path d="M6 19V5l8.5 7z"/></svg>
+      </button>
+
+      <button id="play-pause-btn" aria-label="Play/Pause">
+        <svg id="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pause-icon" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6zm8-14v14h4V5h-4z"/></svg>
+      </button>
+
+      <button id="next-btn" aria-label="Next Track">
+        <svg viewBox="0 0 24 24"><path d="M16 5v14l-8.5-7z"/></svg>
+      </button>
     </div>
 
     <div class="progress-container">
-      <span id="currentTime">0:00</span>
-      <input type="range" id="progressBar" value="0" step="1">
-      <span id="totalTime">0:00</span>
+      <span id="current-time">0:00</span>
+      <input type="range" id="progress-bar" value="0" min="0" max="100" step="1">
+      <span id="duration">0:00</span>
     </div>
   </div>
 
-  <button id="maximizeBtn" class="hidden" title="Maximize">+</button>
+  <button id="maximize-btn" style="display: none;">＋</button>
+
+  <audio id="audio"></audio>
 
   <script src="audioPlayer.js"></script>
   <script src="script.js"></script>
