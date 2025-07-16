@@ -2,49 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Discos Uluulu Player</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Background video -->
-  <video autoplay muted loop id="backgroundVideo">
-    <source src="background.mp4" type="video/mp4" />
-  </video>
+  <div class="logo-container">
+    <img src="logo.png" class="logo" alt="Discos Uluulu" />
+    <button id="exploreBtn">Explore Music</button>
+  </div>
 
-  <!-- Logo -->
-  <img src="logo.png" alt="Discos Uluulu Logo" id="logo" />
-
-  <!-- Explore Music Button -->
-  <button id="exploreBtn">Explore Music</button>
-
-  <!-- Floating Audio Player Container -->
-  <div id="playerContainer">
+  <div id="audioPlayer" class="player hidden">
     <div class="player-header">
       <div>
-        <h2 id="albumTitle"></h2>
-        <p id="albumSubtitle"></p>
+        <h2 id="albumTitle">Album Title</h2>
+        <p id="albumSubtitle">Album Subtitle</p>
       </div>
-      <button id="albumToggleBtn">Next Album</button>
+      <div class="player-controls-top">
+        <button id="toggleAlbumBtn" title="Next Album">⟳</button>
+        <button id="minimizeBtn" title="Minimize">−</button>
+      </div>
     </div>
 
-    <div id="tracklist" class="tracklist"></div>
+    <div id="trackList" class="track-list"></div>
 
-    <div class="controls">
-      <button id="prevBtn">⏮️</button>
-      <button id="playPauseBtn">▶️</button>
-      <button id="nextBtn">⏭️</button>
+    <div class="playback-controls">
+      <button id="prevBtn" title="Previous Track">⏮</button>
+      <button id="playPauseBtn" title="Play/Pause">▶</button>
+      <button id="nextBtn" title="Next Track">⏭</button>
     </div>
 
-    <input type="range" id="progressBar" value="0" step="1" />
+    <div class="progress-container">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progressBar" value="0" step="1">
+      <span id="totalTime">0:00</span>
+    </div>
   </div>
 
-  <!-- Info button -->
-  <div id="infoLink">
-    <a href="https://discosuluulu.com/info" target="_blank">+INFO</a>
-  </div>
+  <button id="maximizeBtn" class="hidden" title="Maximize">+</button>
 
+  <script src="audioPlayer.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
