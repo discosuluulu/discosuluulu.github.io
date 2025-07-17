@@ -1,15 +1,12 @@
 /* Reset and base styles */
-* {
+body, html {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-body, html {
-  height: 100%;
   font-family: 'Helvetica Neue', sans-serif;
-  color: white;
+  height: 100%;
   overflow: hidden;
+  background: black;
+  color: white;
 }
 
 /* Background video */
@@ -17,218 +14,213 @@ body, html {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
   z-index: -1;
 }
 
 /* Logo animation */
 #logo {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
-  width: 200px;
+  width: 300px;
   transform: translate(-50%, -50%);
-  transition: all 1s ease-in-out;
-  z-index: 2;
+  transition: all 0.8s ease;
+  z-index: 5;
 }
 
-.logo-small {
+.audio-visible #logo {
   top: 20px;
   left: 20px;
   width: 100px;
   transform: none;
 }
 
-/* Explore Music & +INFO Buttons */
-#maximizePlayer,
-#infoLink {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  border: 1px solid white;
-  padding: 8px 12px;
-  margin-left: 10px;
-  cursor: pointer;
-  z-index: 3;
-  font-size: 14px;
-  transition: background 0.3s ease;
-}
-
-#infoLink {
-  right: 120px;
-}
-
-#maximizePlayer:hover,
-#infoLink:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Audio Player container */
+/* Audio player container */
 #audioPlayer {
-  display: none; /* Hidden by default */
-  flex-direction: column;
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  max-height: 60%;
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
-  padding: 20px;
-  z-index: 2;
-}
-
-/* Show player when triggered */
-#audioPlayer.show {
+  color: white;
+  z-index: 10;
   display: flex;
+  flex-direction: column;
+  transition: transform 0.4s ease;
 }
 
-/* Player header: album info and buttons */
+#audioPlayer.minimized {
+  transform: translateY(100%);
+}
+
+/* Player header */
 .player-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
 }
 
-.album-info {
+.player-header h1 {
+  margin: 0;
+  font-size: 20px;
   text-align: center;
-  flex-grow: 1;
 }
 
-.album-title {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.album-subtitle {
+.player-header h2 {
+  margin: 4px 0 0;
   font-size: 14px;
-  opacity: 0.8;
+  font-weight: normal;
+  text-align: center;
+  color: #ccc;
 }
 
-/* Buttons in header */
-#nextAlbum, #minimizePlayer {
-  background: none;
+/* Minimize and Next Album buttons */
+#minimizeButton, #nextAlbumButton {
+  position: absolute;
+  top: 10px;
+  padding: 6px 12px;
+  font-size: 16px;
+  font-weight: bold;
   border: none;
+  background: none;
   color: white;
-  font-size: 20px;
   cursor: pointer;
-  padding: 0 10px;
-  transition: opacity 0.3s ease;
 }
 
-#nextAlbum:hover,
-#minimizePlayer:hover {
-  opacity: 0.7;
+#minimizeButton {
+  right: 40px;
 }
 
-#nextAlbum {
-  margin-left: auto;
+#nextAlbumButton {
+  right: 10px;
 }
 
-/* Tracklist */
-.tracklist {
-  max-height: 160px; /* fits ~4 tracks */
+/* Tracklist styles */
+#trackList {
   overflow-y: auto;
-  padding-right: 5px;
-  margin-bottom: 15px;
+  padding: 10px 20px;
+  flex-grow: 1;
 }
 
 .track {
   display: flex;
   justify-content: space-between;
-  padding: 5px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  align-items: center;
+  padding: 6px 0;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .track:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.track.playing {
-  font-weight: bold;
-  color: #00ffaa;
+.track-number {
+  margin-right: 10px;
+  color: #aaa;
+}
+
+.track-title {
+  flex-grow: 1;
+}
+
+.track-duration {
+  color: #888;
+  font-size: 14px;
 }
 
 /* Playback controls */
-.controls {
+#controls {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 10px;
+  padding: 12px;
 }
 
-.controls button {
+.control-button {
   background: none;
   border: none;
   color: white;
-  font-size: 24px;
+  margin: 0 10px;
   cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.controls button:hover {
-  transform: scale(1.2);
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Progress bar */
-.progress-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 0 10px;
-}
-
-#progress {
-  flex-grow: 1;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
-  overflow: hidden;
+#progressContainer {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
   cursor: pointer;
+  position: relative;
 }
 
-#progressFilled {
-  height: 100%;
-  background: #00ffaa;
+#progressBar {
   width: 0%;
+  height: 100%;
+  background: white;
 }
 
-#currentTime, #duration {
-  font-size: 12px;
-  opacity: 0.8;
-  white-space: nowrap;
+/* +INFO button (centered) */
+#infoLink {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 12px 24px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+  z-index: 20;
+  display: none;
+  transition: opacity 0.3s ease;
 }
 
-/* Scrollbar for tracklist */
-.tracklist::-webkit-scrollbar {
+/* Explore Music button (top right) */
+#exploreButton {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 18px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 20;
+  transition: background-color 0.2s ease;
+}
+
+#exploreButton:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+/* Scrollbar styling */
+#trackList::-webkit-scrollbar {
   width: 6px;
 }
-.tracklist::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
+#trackList::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 3px;
 }
 
-/* Responsive */
-@media screen and (max-width: 600px) {
-  #logo {
-    width: 150px;
-  }
-
-  .logo-small {
-    width: 80px;
-  }
-
-  .album-title {
-    font-size: 16px;
-  }
-
-  .controls button {
-    font-size: 20px;
-  }
+/* Limit tracklist height to show 4 tracks */
+#trackList {
+  max-height: 180px;
+  overflow-y: auto;
 }
