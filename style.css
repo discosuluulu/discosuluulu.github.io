@@ -46,7 +46,7 @@ body, html {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: rgba(255, 255, 255, 0.2);
+  background: none;
   padding: 8px 16px;
   border: none;
   color: white;
@@ -106,7 +106,7 @@ body, html {
 }
 
 .controls svg {
-  fill: white;
+  fill: none;
   margin: 0 10px;
   cursor: pointer;
 }
