@@ -72,8 +72,8 @@ body, html {
 /* Top Buttons: Next Album & Minimize */
 .top-buttons {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 1rem;
+  right: 1rem;
   display: flex;
   gap: 10px;
   z-index: 6;
