@@ -3,57 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Discos Suluulu</title>
+  <title>Discos Uluulu</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <!-- Background Video -->
-  <video id="backgroundVideo" autoplay muted loop>
-    <source src="background.mp4" type="video/mp4" />
+  <video autoplay muted loop id="backgroundVideo">
+    <source src="background.mp4" type="video/mp4">
   </video>
 
   <!-- Logo -->
-  <img src="logo.png" id="logo" alt="Logo" />
+  <img id="logo" src="logo.png" alt="Logo" />
 
-  <!-- +INFO Button -->
-  <a href="https://info.discosuluulu.com" id="infoLink" target="_blank">+INFO</a>
-
-  <!-- Explore Music Button -->
-  <button id="exploreButton">Explore Music</button>
+  <!-- Top Buttons -->
+  <div id="topButtons">
+    <a id="infoLink" href="https://info.discosuluulu.com" target="_blank">+INFO</a>
+    <button id="exploreButton">Explore Music</button>
+  </div>
 
   <!-- Audio Player -->
   <div id="audioPlayer" class="minimized">
     <div class="player-header">
-      <h1 id="albumTitle">Album Title</h1>
-      <h2 id="albumSubtitle">Album Subtitle</h2>
-      <button id="minimizeButton">−</button>
-      <button id="nextAlbumButton">Next Album</button>
+      <div>
+        <h2 id="albumTitle"></h2>
+        <p id="albumSubtitle"></p>
+      </div>
+      <div class="player-controls-top">
+        <button id="nextAlbumButton">Next Album</button>
+        <button id="minimizeButton">−</button>
+      </div>
     </div>
-
     <div id="trackList"></div>
-
-    <div id="controls">
-      <button class="control-button" id="prevButton">
-        <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
-          <path d="M11 18V6l-8.5 6L11 18zm1-12v12l8.5-6L12 6z"/>
-        </svg>
+    <div id="playerControls">
+      <button id="prevButton">
+        <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M11 18V6l-8.5 6L11 18zm1-12v12l8.5-6L12 6z"/></svg>
       </button>
-
-      <button class="control-button" id="playButton"></button>
-
-      <button class="control-button" id="nextButton">
-        <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
-          <path d="M13 6v12l8.5-6L13 6zM3 6v12l8.5-6L3 6z"/>
-        </svg>
+      <button id="playButton">
+        <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button id="nextButton">
+        <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M5 6v12l8.5-6L5 6zm9 0v12h2V6h-2z"/></svg>
       </button>
     </div>
-
-    <div id="progressContainer">
-      <div id="progressBar"></div>
-    </div>
+    <div id="progressContainer"><div id="progressBar"></div></div>
   </div>
 
+  <script type="module" src="audioPlayer.js"></script>
   <script type="module" src="script.js"></script>
 </body>
 </html>
