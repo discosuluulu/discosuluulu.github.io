@@ -18,6 +18,7 @@ const controls = {
 const progressContainer = document.getElementById('progressContainer');
 const progressBar = document.getElementById('progressBar');
 
+// Load album
 function loadAlbum(album) {
   currentAlbum = album;
   currentTrackIndex = 0;
@@ -31,7 +32,7 @@ function loadAlbum(album) {
     trackDiv.innerHTML = `
       <span class="track-number">${index + 1}.</span>
       <span class="track-title">${track.title}</span>
-      <span class="track-duration">${track.duration}</span>
+      <span class="track-duration">${track.length}</span>
     `;
     trackDiv.addEventListener('click', () => {
       currentTrackIndex = index;
@@ -50,8 +51,9 @@ function loadTrack(index) {
 }
 
 function highlightTrack(index) {
-  document.querySelectorAll('.track').forEach((el, i) => {
-    el.style.backgroundColor = i === index ? 'rgba(255,255,255,0.1)' : 'transparent';
+  const tracks = document.querySelectorAll('.track');
+  tracks.forEach((t, i) => {
+    t.style.backgroundColor = i === index ? 'rgba(255,255,255,0.1)' : 'transparent';
   });
 }
 
@@ -61,12 +63,6 @@ function playTrack() {
   updatePlayButton();
 }
 
-function updatePlayButton() {
-  controls.play.innerHTML = audio.paused
-    ? `<svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`
-    : `<svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-}
-
 function togglePlayPause() {
   if (audio.paused) {
     audio.play();
@@ -74,6 +70,12 @@ function togglePlayPause() {
     audio.pause();
   }
   updatePlayButton();
+}
+
+function updatePlayButton() {
+  controls.play.innerHTML = audio.paused
+    ? `<svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`
+    : `<svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
 }
 
 function playNextTrack() {
@@ -86,7 +88,6 @@ function playPreviousTrack() {
   playTrack();
 }
 
-// Progress bar
 audio.addEventListener('timeupdate', () => {
   const progress = (audio.currentTime / audio.duration) * 100;
   progressBar.style.width = `${progress}%`;
@@ -98,7 +99,6 @@ progressContainer.addEventListener('click', (e) => {
   audio.currentTime = percent * audio.duration;
 });
 
-// UI Button Events
 exploreButton.addEventListener('click', () => {
   audioPlayer.classList.remove('minimized');
   document.body.classList.add('audio-visible');
@@ -112,16 +112,16 @@ minimizeButton.addEventListener('click', () => {
 });
 
 nextAlbumButton.addEventListener('click', () => {
-  loadAlbum(currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum);
+  const next = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
+  loadAlbum(next);
 });
 
-// Controls
 controls.play.addEventListener('click', togglePlayPause);
-controls.next.addEventListener('click', playNextTrack);
 controls.prev.addEventListener('click', playPreviousTrack);
+controls.next.addEventListener('click', playNextTrack);
 audio.addEventListener('ended', playNextTrack);
 
-// Initialize
+// Initial Setup
 audioPlayer.classList.add('minimized');
 exploreButton.style.display = 'block';
 infoLink.style.display = 'block';
