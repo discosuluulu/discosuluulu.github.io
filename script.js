@@ -18,7 +18,6 @@ const controls = {
 const progressContainer = document.getElementById('progressContainer');
 const progressBar = document.getElementById('progressBar');
 
-// Load album
 function loadAlbum(album) {
   currentAlbum = album;
   currentTrackIndex = 0;
@@ -32,7 +31,7 @@ function loadAlbum(album) {
     trackDiv.innerHTML = `
       <span class="track-number">${index + 1}.</span>
       <span class="track-title">${track.title}</span>
-      <span class="track-duration">${track.length}</span>
+      <span class="track-duration">${track.duration}</span>
     `;
     trackDiv.addEventListener('click', () => {
       currentTrackIndex = index;
@@ -88,6 +87,7 @@ function playPreviousTrack() {
   playTrack();
 }
 
+// Progress bar
 audio.addEventListener('timeupdate', () => {
   const progress = (audio.currentTime / audio.duration) * 100;
   progressBar.style.width = `${progress}%`;
@@ -99,29 +99,33 @@ progressContainer.addEventListener('click', (e) => {
   audio.currentTime = percent * audio.duration;
 });
 
+// Explore button
 exploreButton.addEventListener('click', () => {
   audioPlayer.classList.remove('minimized');
   document.body.classList.add('audio-visible');
   exploreButton.style.display = 'none';
 });
 
+// Minimize
 minimizeButton.addEventListener('click', () => {
   audioPlayer.classList.add('minimized');
   document.body.classList.remove('audio-visible');
   exploreButton.style.display = 'block';
 });
 
+// Album switch
 nextAlbumButton.addEventListener('click', () => {
   const next = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
   loadAlbum(next);
 });
 
+// Controls
 controls.play.addEventListener('click', togglePlayPause);
 controls.prev.addEventListener('click', playPreviousTrack);
 controls.next.addEventListener('click', playNextTrack);
 audio.addEventListener('ended', playNextTrack);
 
-// Initial Setup
+// Initial state
 audioPlayer.classList.add('minimized');
 exploreButton.style.display = 'block';
 infoLink.style.display = 'block';
