@@ -5,69 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Discos Uluulu</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="audioPlayer.js"></script>
-<script src="script.js"></script>
 </head>
 <body>
-
   <!-- Background Video -->
   <video autoplay muted loop id="backgroundVideo">
-    <source src="background.mp4" type="video/mp4" />
+    <source src="background.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
   <!-- Logo -->
-  <img src="logo.png" id="logo" alt="Discos Uluulu Logo" />
+  <img src="logo.png" alt="Discos Uluulu Logo" id="logo" />
 
-  <!-- Maximize Player Button -->
+  <!-- Explore Music / +INFO Buttons -->
   <button id="maximizePlayer">Explore Music</button>
-
-  <!-- Info Link -->
-  <a href="#" id="infoLink">+INFO</a>
+  <a href="https://discosuluulu.com/info" id="infoLink" target="_blank">+INFO</a>
 
   <!-- Audio Player -->
   <div id="audioPlayer">
-    <!-- Header -->
     <div class="player-header">
-      <div>
-        <h1 id="albumTitle"></h1>
-        <h2 id="albumSubtitle"></h2>
+      <div class="album-info">
+        <div class="album-title" id="albumTitle"></div>
+        <div class="album-subtitle" id="albumSubtitle"></div>
       </div>
-      <div class="top-buttons">
-        <button id="nextAlbum">Next Album</button>
-        <button id="minimizePlayer">−</button>
-      </div>
+      <button id="nextAlbum" title="Next Album">⟳</button>
+      <button id="minimizePlayer" title="Minimize Player">−</button>
     </div>
 
-    <!-- Track List -->
-    <ul id="trackList"></ul>
+    <div class="tracklist" id="trackList"></div>
 
-    <!-- Controls -->
     <div class="controls">
-      <button id="prevTrack" title="Previous">
-        <svg viewBox="0 0 24 24"><path d="M6 19V5h2v14H6zm3.5-7L18 5v14l-8.5-7z"/></svg>
+      <button id="prevBtn" title="Previous Track">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 19 2 12 11 5 11 19"></polygon>
+          <line x1="22" y1="19" x2="22" y2="5"></line>
+        </svg>
       </button>
-      <button id="playPause" title="Play/Pause">
-        <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+
+      <button id="playPauseBtn" title="Play/Pause">
+        <svg id="playIcon" width="30" height="30" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="6,4 20,12 6,20" />
+        </svg>
+        <svg id="pauseIcon" width="30" height="30" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+          <rect x="6" y="4" width="4" height="16"/>
+          <rect x="14" y="4" width="4" height="16"/>
+        </svg>
       </button>
-      <button id="nextTrack" title="Next">
-        <svg viewBox="0 0 24 24"><path d="M16 5v14h2V5h-2zM5.5 12L14 19V5l-8.5 7z"/></svg>
+
+      <button id="nextBtn" title="Next Track">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 5 22 12 13 19 13 5"></polygon>
+          <line x1="2" y1="5" x2="2" y2="19"></line>
+        </svg>
       </button>
     </div>
 
-    <!-- Progress Bar -->
-    <div id="progressContainer">
+    <div class="progress-container">
       <span id="currentTime">0:00</span>
-      <input type="range" id="progressBar" value="0" min="0" step="1" />
+      <div id="progress"><div id="progressFilled"></div></div>
       <span id="duration">0:00</span>
     </div>
+
+    <audio id="audio"></audio>
   </div>
 
-  <!-- Audio Element -->
-  <audio id="audio"></audio>
-
-  <!-- Scripts -->
   <script src="audioPlayer.js"></script>
   <script src="script.js"></script>
 </body>
