@@ -8,20 +8,26 @@
 </head>
 <body>
 
+  <!-- Background video -->
   <video autoplay muted loop id="bgVideo">
     <source src="background.mp4" type="video/mp4">
   </video>
 
+  <!-- Logo -->
   <img src="logo.png" id="logo" alt="Discos Uluulu Logo" />
 
+  <!-- Explore & Info Buttons -->
   <a id="infoLink" href="https://info.discosuluulu.com" target="_blank">+INFO</a>
   <button id="maximizePlayer">Explore Music</button>
 
+  <!-- Audio Player -->
   <div id="audioPlayer" class="player-container hidden">
+
+    <!-- Header: Title/Sub and Buttons -->
     <div class="player-header">
-      <div>
-        <h1 id="albumTitle"></h1>
-        <p id="albumSubtitle"></p>
+      <div class="title-subtitle">
+        <h1>Discos Uluulu</h1>
+        <p id="albumSubtitle">Garden de La Selva</p>
       </div>
       <div class="top-buttons">
         <button id="nextAlbum">Next Album</button>
@@ -29,37 +35,36 @@
       </div>
     </div>
 
-    <div id="tracklist" class="tracklist"></div>
-
-    <div class="controls">
-      <button id="prevTrack" aria-label="Previous">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <polygon points="11,12 18,18 18,6"/><polygon points="6,12 13,18 13,6"/>
-        </svg>
-      </button>
-      <button id="playPause" aria-label="Play/Pause">
-        <svg id="playIcon" viewBox="0 0 24 24" width="24" height="24">
-          <polygon points="5,3 19,12 5,21"/>
-        </svg>
-        <svg id="pauseIcon" viewBox="0 0 24 24" width="24" height="24" style="display:none;">
-          <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-        </svg>
-      </button>
-      <button id="nextTrack" aria-label="Next">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <polygon points="6,6 13,12 6,18"/><polygon points="11,6 18,12 11,18"/>
-        </svg>
-      </button>
-    </div>
-
+    <!-- Progress Bar -->
     <div id="progress" class="progress-bar">
       <div id="progressFilled" class="progress-filled"></div>
     </div>
 
+    <!-- Time -->
     <div class="time-display">
       <span id="currentTime">0:00</span>
       <span id="duration">0:00</span>
     </div>
+
+    <!-- Playback Controls -->
+    <div class="controls">
+      <svg id="prevTrack" viewBox="0 0 24 24" width="28" height="28">
+        <polygon points="11,12 18,18 18,6"/><polygon points="6,12 13,18 13,6"/>
+      </svg>
+      <svg id="playPause" viewBox="0 0 24 24" width="28" height="28">
+        <polygon id="playIcon" points="5,3 19,12 5,21"/>
+        <g id="pauseIcon" style="display: none;">
+          <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+        </g>
+      </svg>
+      <svg id="nextTrack" viewBox="0 0 24 24" width="28" height="28">
+        <polygon points="6,6 13,12 6,18"/><polygon points="11,6 18,12 11,18"/>
+      </svg>
+    </div>
+
+    <!-- Tracklist -->
+    <div id="tracklist" class="tracklist"></div>
+
   </div>
 
   <script src="audioPlayer.js"></script>
