@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const audio = new Audio();
+  const audio = document.getElementById('audio');
   let currentAlbum = gardenAlbum;
   let currentTrackIndex = 0;
 
   const albumTitleEl = document.getElementById('albumTitle');
   const albumSubtitleEl = document.getElementById('albumSubtitle');
-  const tracklistEl = document.getElementById('tracklist');
-  const playPauseBtn = document.getElementById('playPause');
-  const nextBtn = document.getElementById('nextTrack');
-  const prevBtn = document.getElementById('prevTrack');
+  const tracklistEl = document.getElementById('trackList');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
   const nextAlbumBtn = document.getElementById('nextAlbum');
   const progress = document.getElementById('progress');
   const progressFilled = document.getElementById('progressFilled');
@@ -20,14 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const minimizePlayerBtn = document.getElementById('minimizePlayer');
   const logo = document.getElementById('logo');
 
+  const playIcon = document.getElementById('playIcon');
+  const pauseIcon = document.getElementById('pauseIcon');
+
   maximizePlayerBtn.addEventListener('click', () => {
     audioPlayer.classList.add('show');
     logo.classList.add('logo-small');
+    maximizePlayerBtn.style.display = 'none';
   });
 
   minimizePlayerBtn.addEventListener('click', () => {
     audioPlayer.classList.remove('show');
     logo.classList.remove('logo-small');
+    maximizePlayerBtn.style.display = 'inline-block';
   });
 
   function loadAlbum(album) {
@@ -45,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const trackEl = document.createElement('div');
       trackEl.classList.add('track');
       trackEl.innerHTML = `
-        <span>${index + 1}. ${track.title}</span>
-        <span>${track.length}</span>
+        <span class="track-title">${index + 1}. ${track.title}</span>
+        <span class="track-length">${track.length}</span>
       `;
       trackEl.addEventListener('click', () => {
         currentTrackIndex = index;
@@ -73,12 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function playAudio() {
     audio.play();
-    playPauseBtn.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'inline-block';
   }
 
   function pauseAudio() {
     audio.pause();
-    playPauseBtn.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24"><polygon points="5,3 19,12 5,21"/></svg>';
+    pauseIcon.style.display = 'none';
+    playIcon.style.display = 'inline-block';
   }
 
   playPauseBtn.addEventListener('click', () => {
@@ -127,5 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${minutes}:${seconds}`;
   }
 
+  // Load default album
   loadAlbum(currentAlbum);
 });
