@@ -18,6 +18,7 @@ const controls = {
 const progressContainer = document.getElementById('progressContainer');
 const progressBar = document.getElementById('progressBar');
 
+// Load initial album and tracklist
 function loadAlbum(album) {
   currentAlbum = album;
   currentTrackIndex = 0;
@@ -31,7 +32,7 @@ function loadAlbum(album) {
     trackDiv.innerHTML = `
       <span class="track-number">${index + 1}.</span>
       <span class="track-title">${track.title}</span>
-      <span class="track-duration">${track.duration}</span>
+      <span class="track-duration">${track.length}</span>
     `;
     trackDiv.addEventListener('click', () => {
       currentTrackIndex = index;
@@ -87,7 +88,7 @@ function playPreviousTrack() {
   playTrack();
 }
 
-// Progress bar
+// Progress Bar
 audio.addEventListener('timeupdate', () => {
   const progress = (audio.currentTime / audio.duration) * 100;
   progressBar.style.width = `${progress}%`;
@@ -99,21 +100,21 @@ progressContainer.addEventListener('click', (e) => {
   audio.currentTime = percent * audio.duration;
 });
 
-// Explore button
+// Explore Music
 exploreButton.addEventListener('click', () => {
   audioPlayer.classList.remove('minimized');
   document.body.classList.add('audio-visible');
   exploreButton.style.display = 'none';
 });
 
-// Minimize
+// Minimize player
 minimizeButton.addEventListener('click', () => {
   audioPlayer.classList.add('minimized');
   document.body.classList.remove('audio-visible');
   exploreButton.style.display = 'block';
 });
 
-// Album switch
+// Next Album
 nextAlbumButton.addEventListener('click', () => {
   const next = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
   loadAlbum(next);
@@ -125,7 +126,7 @@ controls.prev.addEventListener('click', playPreviousTrack);
 controls.next.addEventListener('click', playNextTrack);
 audio.addEventListener('ended', playNextTrack);
 
-// Initial state
+// Init
 audioPlayer.classList.add('minimized');
 exploreButton.style.display = 'block';
 infoLink.style.display = 'block';
