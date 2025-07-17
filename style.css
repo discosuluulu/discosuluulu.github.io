@@ -20,18 +20,18 @@ body, html {
 #logo {
   position: absolute;
   top: 10px;
-  left: 50px;
+  left: 5px;
   width: 170px;
-  height: 170px;
+  height: 150px;
   transition: all 1s ease-in-out;
   z-index: 5;
 }
 
 #infoLink, #maximizePlayer {
   position: absolute;
-  top: 40px;
+  top: 20px;
   background: none;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border: none;
   color: white;
   cursor: pointer;
