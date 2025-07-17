@@ -7,33 +7,52 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- Background Video -->
   <video autoplay muted loop id="backgroundVideo">
-    <source src="background.mp4" type="video/mp4" />
+    <source src="background.mp4" type="video/mp4">
   </video>
 
-  <img src="logo.png" alt="Logo" id="logo" />
+  <!-- Centered Logo -->
+  <img src="logo.png" id="logo" alt="Discos Uluulu Logo">
 
+  <!-- Top Buttons -->
   <button id="infoLink">+INFO</button>
   <button id="exploreButton">Explore Music</button>
 
+  <!-- Audio Player -->
   <div id="audioPlayer" class="minimized">
-    <div id="playerHeader">
-      <h1 id="albumTitle"></h1>
-      <p id="albumSubtitle"></p>
-      <div id="playerButtons">
+    <div class="player-header">
+      <div>
+        <h2 id="albumTitle">Album Title</h2>
+        <h3 id="albumSubtitle">Album Subtitle</h3>
+      </div>
+      <div class="top-buttons">
         <button id="nextAlbumButton">Next Album</button>
         <button id="minimizeButton">−</button>
       </div>
     </div>
 
-    <div id="trackListContainer">
-      <div id="trackList"></div>
-    </div>
+    <div id="trackList"></div>
 
-    <div id="controls">
-      <button id="prevButton">⏮️</button>
-      <button id="playButton"></button>
-      <button id="nextButton">⏭️</button>
+    <div class="controls">
+      <button id="prevButton" aria-label="Previous">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+          <polygon points="11,12 18,18 18,6"/>
+          <polygon points="6,12 13,18 13,6"/>
+        </svg>
+      </button>
+      <button id="playButton" aria-label="Play/Pause">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+          <polygon points="5,3 19,12 5,21"/>
+        </svg>
+      </button>
+      <button id="nextButton" aria-label="Next">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+          <polygon points="6,6 13,12 6,18"/>
+          <polygon points="11,6 18,12 11,18"/>
+        </svg>
+      </button>
     </div>
 
     <div id="progressContainer">
@@ -41,6 +60,8 @@
     </div>
   </div>
 
+  <!-- JavaScript -->
   <script type="module" src="script.js"></script>
+  <script type="module" src="audioPlayer.js"></script>
 </body>
 </html>
