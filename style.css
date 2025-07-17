@@ -1,25 +1,75 @@
-/* Updated title & subtitle centered on one line */
-.player-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-}
-
-.player-header h1,
-.player-header h2 {
-  margin: 0 6px;
-  display: inline;
-  font-size: 1rem;
-  font-weight: normal;
-  white-space: nowrap;
+/* Base Reset & Layout */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
   color: white;
+  overflow: hidden;
 }
 
-/* Next album and minimize buttons stay top right */
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+#logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100px;
+  height: auto;
+  transition: all 1s ease-in-out;
+  z-index: 5;
+}
+
+#infoLink, #maximizePlayer {
+  position: absolute;
+  top: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 4px;
+  z-index: 5;
+  text-decoration: none;
+}
+#infoLink {
+  left: 50%;
+  transform: translateX(-50%);
+}
+#maximizePlayer {
+  right: 20px;
+}
+
+/* Audio Player Container */
+.player-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  color: white;
+  box-sizing: border-box;
+  padding: 20px 0 10px 0;
+  z-index: 4;
+  transition: all 0.3s ease;
+}
+
+.player-container.hidden {
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  pointer-events: none;
+}
+
+/* Top Buttons: Next Album & Minimize */
 .top-buttons {
   position: absolute;
   top: 10px;
@@ -39,12 +89,40 @@
   border-radius: 4px;
 }
 
-/* Progress bar just below title */
+/* Title and Subtitle Centered */
+.player-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  padding-top: 10px;
+}
+
+.title-subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.title-subtitle h1,
+.title-subtitle p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+/* Progress Bar */
 .progress-bar {
   background: #888;
   height: 4px;
   width: 80%;
-  margin: 5px auto 10px auto;
+  margin: 6px auto 4px auto;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -57,11 +135,20 @@
   border-radius: 2px;
 }
 
-/* Playback controls - SVGs only (no background) */
+/* Time Display */
+.time-display {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin: 0 auto 8px auto;
+  width: 80%;
+}
+
+/* Playback Controls */
 .controls {
   display: flex;
   justify-content: center;
-  gap: 25px;
+  gap: 30px;
   margin: 10px 0;
 }
 
@@ -77,7 +164,7 @@
   transform: scale(1.1);
 }
 
-/* Scrollable tracklist - 4 items max height, no borders */
+/* Scrollable Tracklist */
 .tracklist {
   max-height: 160px;
   overflow-y: auto;
@@ -96,34 +183,8 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Remove previous borders */
+/* Remove lines */
 .tracklist,
 .tracklist div {
   border: none;
-}
-
-/* Player container styling */
-.player-container {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(10px);
-  color: white;
-  box-sizing: border-box;
-  padding: 20px 0 10px 0;
-  z-index: 4;
-  transition: all 0.3s ease;
-}
-
-/* Optional: consistent button styling */
-#maximizePlayer, #infoLink {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  z-index: 5;
-  border-radius: 4px;
 }
