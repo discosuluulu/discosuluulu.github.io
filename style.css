@@ -1,131 +1,128 @@
-/* Reset and base layout */
+/* Reset */
 body, html {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  color: white;
+  height: 100%;
+  font-family: 'Helvetica Neue', sans-serif;
   overflow: hidden;
+  background: transparent;
 }
 
-#bgVideo {
+/* Background video */
+#backgroundVideo {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -2;
+  z-index: -1;
 }
 
+/* Logo */
 #logo {
   position: absolute;
   top: 20px;
   left: 20px;
-  width: 100px;
-  height: auto;
-  transition: all 1s ease-in-out;
-  z-index: 5;
+  height: 50px;
 }
 
+/* Explore Music Button */
+#exploreBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 14px 30px;
+  font-size: 18px;
+  background: rgba(255,255,255,0.8);
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Info Link */
 #infoLink {
   position: absolute;
   top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none;
-  z-index: 5;
-}
-
-#maximizePlayer {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  z-index: 5;
-}
-
-/* Audio player container */
-.player-container {
-  position: fixed;
-  bottom: 0;
   width: 100%;
-  background: rgba(10, 10, 10, 0.85);
-  backdrop-filter: blur(10px);
+  text-align: center;
+  font-size: 16px;
   color: white;
-  padding: 20px;
-  box-sizing: border-box;
-  z-index: 4;
-  transition: all 0.3s ease;
+  z-index: 11;
 }
 
+#infoLink a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Hidden class */
 .hidden {
   display: none;
 }
 
+/* Player Container */
+#playerContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+
+/* Header */
 .player-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
-.top-buttons button {
-  margin-left: 10px;
+.player-header h2 {
+  margin: 0;
+  font-size: 20px;
 }
 
+.player-header p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Tracklist */
 .tracklist {
-  max-height: 160px;
+  margin-top: 15px;
+  max-height: 120px;
   overflow-y: auto;
-  margin-top: 10px;
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  padding-top: 10px;
-}
-
-.tracklist div {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 0;
-  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .controls {
   display: flex;
   justify-content: center;
-  margin: 10px 0;
+  margin-top: 10px;
 }
 
-.controls svg {
-  fill: white;
+.controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
   margin: 0 10px;
   cursor: pointer;
 }
 
-.progress-bar {
-  background: #555;
-  height: 4px;
+#progressBar {
   width: 100%;
-  cursor: pointer;
-}
-
-.progress-filled {
-  background: #fff;
-  height: 100%;
-  width: 0%;
-}
-
-.time-display {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
+  margin-top: 10px;
+  appearance: none;
+  height: 4px;
+  background: #ccc;
 }
