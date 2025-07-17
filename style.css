@@ -6,99 +6,94 @@
 
 body, html {
   height: 100%;
-  font-family: sans-serif;
-  overflow: hidden;
+  font-family: Arial, sans-serif;
   color: white;
+  overflow: hidden;
 }
 
-#bgVideo {
+#backgroundVideo {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
+  min-width: 100%;
+  min-height: 100%;
   z-index: -1;
+  object-fit: cover;
 }
 
 #logo {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1.5);
+  top: 20px;
+  left: 20px;
+  width: 120px;
   transition: all 1s ease;
   z-index: 2;
 }
 
-.audio-visible #logo {
-  top: 20px;
-  left: 20px;
-  transform: scale(0.5);
+#audioPlayer.minimized ~ #logo {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.8);
 }
 
-#maximizePlayer, #infoLink {
+#exploreButton {
   position: absolute;
-  background: rgba(0,0,0,0.5);
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  z-index: 2;
-  font-size: 14px;
-}
-
-#maximizePlayer {
   top: 20px;
   right: 20px;
+  padding: 8px 14px;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  z-index: 2;
+  cursor: pointer;
 }
 
 #infoLink {
+  position: absolute;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  display: block;
-}
-
-.player-container {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(10px);
-  padding: 15px;
-  transition: transform 0.5s ease;
+  color: white;
+  text-decoration: none;
+  background: rgba(0,0,0,0.5);
+  padding: 8px 14px;
+  border-radius: 4px;
   z-index: 2;
 }
 
-.player-container.minimized {
+#audioPlayer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+  color: white;
+  transition: transform 0.5s ease;
+  z-index: 1;
+  padding: 16px;
+}
+
+#audioPlayer.minimized {
   transform: translateY(100%);
 }
 
-.player-header {
+#playerHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.player-header h1 {
-  font-size: 18px;
+#playerHeader h2 {
+  margin-bottom: 4px;
 }
 
-.player-header p {
-  font-size: 14px;
-  opacity: 0.8;
+#playerHeader .header-buttons {
+  display: flex;
+  gap: 8px;
 }
 
-.top-buttons button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  background: transparent;
-  color: white;
-  border: 1px solid white;
-  cursor: pointer;
-}
-
-.tracklist {
+#trackListContainer {
   max-height: 160px;
   overflow-y: auto;
   margin: 10px 0;
@@ -107,55 +102,46 @@ body, html {
 .track {
   display: flex;
   justify-content: space-between;
-  padding: 4px 0;
+  padding: 6px 0;
   cursor: pointer;
 }
 
-.track-number {
-  margin-right: 8px;
-  opacity: 0.8;
+.track:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.track-number, .track-title, .track-duration {
+  flex: 1;
+  padding: 0 6px;
 }
 
 .track-title {
-  flex-grow: 1;
+  flex: 2;
 }
 
-.track-duration {
-  margin-left: 10px;
-  opacity: 0.6;
-}
-
-.controls {
+#controls {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 16px;
   margin: 10px 0;
 }
 
-.controls button {
+#controls button {
   background: none;
   border: none;
   cursor: pointer;
-  fill: white;
 }
 
-.progress-bar {
+#progressContainer {
+  width: 100%;
   height: 6px;
   background: rgba(255,255,255,0.2);
   cursor: pointer;
   position: relative;
-  width: 100%;
 }
 
-.progress-filled {
+#progressBar {
   height: 100%;
   background: white;
   width: 0%;
-}
-
-.time-display {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  margin-top: 4px;
 }
