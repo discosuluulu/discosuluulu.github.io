@@ -21,7 +21,7 @@ body, html {
   position: absolute;
   top: 20px;
   left: 20px;
-  width: 100px;
+  width: 200px;
   height: 200px;
   transition: all 1s ease-in-out;
   z-index: 5;
@@ -106,14 +106,14 @@ body, html {
 }
 
 .controls svg {
-  fill: none;
+  fill: white;
   margin: 0 10px;
   cursor: pointer;
 }
 
 .progress-bar {
   background: #555;
-  height: 4px;
+  height: 20px;
   width: 100%;
   cursor: pointer;
 }
