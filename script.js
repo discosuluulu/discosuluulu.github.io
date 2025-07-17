@@ -1,154 +1,134 @@
-let currentAlbumIndex = 0;
-const albums = [gardenAlbum, otucanAlbum];
-let currentTrackIndex = 0;
-let isPlaying = false;
+import { gardenAlbum, otucanAlbum } from './audioPlayer.js';
 
-const albumTitle = document.getElementById("albumTitle");
-const albumSubtitle = document.getElementById("albumSubtitle");
-const tracklist = document.getElementById("tracklist");
-const playPauseBtn = document.getElementById("playPause");
-const prevBtn = document.getElementById("prevTrack");
-const nextBtn = document.getElementById("nextTrack");
-const progress = document.getElementById("progress");
-const progressFilled = document.getElementById("progressFilled");
-const currentTimeDisplay = document.getElementById("currentTime");
-const durationDisplay = document.getElementById("duration");
+let currentAlbum = gardenAlbum;
+let currentTrackIndex = 0;
 
 const audio = new Audio();
+const audioPlayer = document.getElementById('audioPlayer');
+const exploreButton = document.getElementById('exploreButton');
+const infoLink = document.getElementById('infoLink');
+const minimizeButton = document.getElementById('minimizeButton');
+const nextAlbumButton = document.getElementById('nextAlbumButton');
+const trackList = document.getElementById('trackList');
+const controls = {
+  play: document.getElementById('playButton'),
+  prev: document.getElementById('prevButton'),
+  next: document.getElementById('nextButton')
+};
+const progressContainer = document.getElementById('progressContainer');
+const progressBar = document.getElementById('progressBar');
 
-function loadAlbum(index) {
-  const album = albums[index];
-  albumTitle.textContent = album.title;
-  albumSubtitle.textContent = album.subtitle;
+// Load initial album and tracklist
+function loadAlbum(album) {
+  currentAlbum = album;
+  currentTrackIndex = 0;
+  document.getElementById('albumTitle').textContent = album.title;
+  document.getElementById('albumSubtitle').textContent = album.subtitle;
+  trackList.innerHTML = '';
 
-  tracklist.innerHTML = "";
-  album.tracks.forEach((track, i) => {
-    const trackDiv = document.createElement("div");
-    trackDiv.classList.add("track");
-    trackDiv.dataset.index = i;
-    trackDiv.innerHTML = `<span>${i + 1}. ${track.title}</span><span>${track.length}</span>`;
-    tracklist.appendChild(trackDiv);
+  album.tracks.forEach((track, index) => {
+    const trackDiv = document.createElement('div');
+    trackDiv.classList.add('track');
+    trackDiv.innerHTML = `
+      <span class="track-number">${index + 1}.</span>
+      <span class="track-title">${track.title}</span>
+      <span class="track-duration">${track.duration}</span>
+    `;
+    trackDiv.addEventListener('click', () => {
+      currentTrackIndex = index;
+      playTrack();
+    });
+    trackList.appendChild(trackDiv);
   });
 
-  loadTrack(0);
-  updateTrackHighlight();
+  loadTrack(currentTrackIndex);
 }
 
 function loadTrack(index) {
-  const track = albums[currentAlbumIndex].tracks[index];
+  const track = currentAlbum.tracks[index];
   audio.src = track.url;
-  currentTrackIndex = index;
+  highlightTrack(index);
 }
 
-function updateTrackHighlight() {
-  document.querySelectorAll(".track").forEach(el => el.classList.remove("playing"));
-  const currentTrack = tracklist.querySelector(`[data-index="${currentTrackIndex}"]`);
-  if (currentTrack) currentTrack.classList.add("playing");
+function highlightTrack(index) {
+  const tracks = document.querySelectorAll('.track');
+  tracks.forEach((t, i) => {
+    t.style.backgroundColor = i === index ? 'rgba(255,255,255,0.1)' : 'transparent';
+  });
 }
 
 function playTrack() {
+  loadTrack(currentTrackIndex);
   audio.play();
-  isPlaying = true;
-  updatePlayPauseIcon();
+  updatePlayButton();
 }
 
-function pauseTrack() {
-  audio.pause();
-  isPlaying = false;
-  updatePlayPauseIcon();
-}
-
-function updatePlayPauseIcon() {
-  playPauseBtn.innerHTML = isPlaying
-    ? `<svg viewBox="0 0 24 24" width="24" height="24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`
-    : `<svg viewBox="0 0 24 24" width="24" height="24"><polygon points="5,3 19,12 5,21"/></svg>`;
-}
-
-function nextTrack() {
-  currentTrackIndex++;
-  if (currentTrackIndex >= albums[currentAlbumIndex].tracks.length) {
-    currentTrackIndex = 0;
+function togglePlayPause() {
+  if (audio.paused) {
+    audio.play();
+  } else {
+    audio.pause();
   }
-  loadTrack(currentTrackIndex);
-  playTrack();
-  updateTrackHighlight();
+  updatePlayButton();
 }
 
-function prevTrack() {
-  currentTrackIndex--;
-  if (currentTrackIndex < 0) {
-    currentTrackIndex = albums[currentAlbumIndex].tracks.length - 1;
-  }
-  loadTrack(currentTrackIndex);
-  playTrack();
-  updateTrackHighlight();
+function updatePlayButton() {
+  controls.play.innerHTML = audio.paused
+    ? `<svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`
+    : `<svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
 }
 
-playPauseBtn.addEventListener("click", () => {
-  isPlaying ? pauseTrack() : playTrack();
-});
-
-nextBtn.addEventListener("click", nextTrack);
-prevBtn.addEventListener("click", prevTrack);
-
-tracklist.addEventListener("click", e => {
-  const trackEl = e.target.closest(".track");
-  if (trackEl) {
-    const index = parseInt(trackEl.dataset.index);
-    loadTrack(index);
-    playTrack();
-    updateTrackHighlight();
-  }
-});
-
-document.getElementById("nextAlbum").addEventListener("click", () => {
-  currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
-  loadAlbum(currentAlbumIndex);
+function playNextTrack() {
+  currentTrackIndex = (currentTrackIndex + 1) % currentAlbum.tracks.length;
   playTrack();
-  updateTrackHighlight();
+}
+
+function playPreviousTrack() {
+  currentTrackIndex = (currentTrackIndex - 1 + currentAlbum.tracks.length) % currentAlbum.tracks.length;
+  playTrack();
+}
+
+// Progress Bar
+audio.addEventListener('timeupdate', () => {
+  const progress = (audio.currentTime / audio.duration) * 100;
+  progressBar.style.width = `${progress}%`;
 });
 
-audio.addEventListener("ended", nextTrack);
-
-audio.addEventListener("timeupdate", () => {
-  const percent = (audio.currentTime / audio.duration) * 100;
-  progressFilled.style.width = percent + "%";
-  currentTimeDisplay.textContent = formatTime(audio.currentTime);
-  durationDisplay.textContent = formatTime(audio.duration);
-});
-
-progress.addEventListener("click", (e) => {
-  const clickX = e.offsetX;
-  const width = progress.clientWidth;
-  const percent = clickX / width;
+progressContainer.addEventListener('click', (e) => {
+  const rect = progressContainer.getBoundingClientRect();
+  const percent = (e.clientX - rect.left) / rect.width;
   audio.currentTime = percent * audio.duration;
 });
 
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60) || 0;
-  const secs = Math.floor(seconds % 60) || 0;
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
-}
-
-// Minimize/Maximize
-const audioPlayer = document.getElementById("audioPlayer");
-const maximizeBtn = document.getElementById("maximizePlayer");
-const minimizeBtn = document.getElementById("minimizePlayer");
-const logo = document.getElementById("logo");
-const infoLink = document.getElementById("infoLink");
-
-maximizeBtn.addEventListener("click", () => {
-  audioPlayer.classList.add("show");
-  logo.classList.add("logo-small");
-  infoLink.style.display = "block";
+// Explore Music button click
+exploreButton.addEventListener('click', () => {
+  audioPlayer.classList.remove('minimized');
+  document.body.classList.add('audio-visible');
+  exploreButton.style.display = 'none';
 });
 
-minimizeBtn.addEventListener("click", () => {
-  audioPlayer.classList.remove("show");
-  logo.classList.remove("logo-small");
+// Minimize player
+minimizeButton.addEventListener('click', () => {
+  audioPlayer.classList.add('minimized');
+  document.body.classList.remove('audio-visible');
+  exploreButton.style.display = 'block';
 });
 
-// Initial Load
-window.addEventListener("DOMContentLoaded", () => {
-  loadAlbum(currentAlbumIndex);
+// Next Album
+nextAlbumButton.addEventListener('click', () => {
+  const next = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
+  loadAlbum(next);
 });
+
+// Event listeners
+controls.play.addEventListener('click', togglePlayPause);
+controls.prev.addEventListener('click', playPreviousTrack);
+controls.next.addEventListener('click', playNextTrack);
+audio.addEventListener('ended', playNextTrack);
+
+// Initial state
+audioPlayer.classList.add('minimized');
+exploreButton.style.display = 'block';
+infoLink.style.display = 'block';
+loadAlbum(gardenAlbum);
+updatePlayButton();
