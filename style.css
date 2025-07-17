@@ -1,131 +1,129 @@
-/* Reset and base layout */
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  color: white;
-  overflow: hidden;
-}
-
-#bgVideo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-}
-
-#logo {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 100px;
-  height: auto;
-  transition: all 1s ease-in-out;
-  z-index: 5;
-}
-
-#infoLink {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none;
-  z-index: 5;
-}
-
-#maximizePlayer {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  z-index: 5;
-}
-
-/* Audio player container */
-.player-container {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: transparent;
-  backdrop-filter: none;
-  color: white;
-  padding: 0;
-  box-sizing: border-box;
-  z-index: 4;
-  transition: all 0.3s ease;
-}
-
-.hidden {
-  display: none;
-}
-
+/* Updated title & subtitle centered on one line */
 .player-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  flex-direction: column;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.player-header h1,
+.player-header h2 {
+  margin: 0 6px;
+  display: inline;
+  font-size: 1rem;
+  font-weight: normal;
+  white-space: nowrap;
+  color: white;
+}
+
+/* Next album and minimize buttons stay top right */
+.top-buttons {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 6;
 }
 
 .top-buttons button {
-  margin-left: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.tracklist {
-  max-height: 160px;
-  overflow-y: auto;
-  margin-top: 10px;
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  padding-top: 10px;
-}
-
-.tracklist div {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 0;
+/* Progress bar just below title */
+.progress-bar {
+  background: #888;
+  height: 4px;
+  width: 80%;
+  margin: 5px auto 10px auto;
+  border-radius: 2px;
   cursor: pointer;
 }
 
+.progress-filled {
+  background: white;
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Playback controls - SVGs only (no background) */
 .controls {
   display: flex;
   justify-content: center;
+  gap: 25px;
   margin: 10px 0;
 }
 
 .controls svg {
   fill: white;
-  margin: 0 10px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.progress-bar {
-  background: #555;
-  height: 4px;
-  width: 100%;
-  cursor: pointer;
+.controls svg:hover {
+  transform: scale(1.1);
 }
 
-.progress-filled {
-  background: #fff;
-  height: 100%;
-  width: 0%;
+/* Scrollable tracklist - 4 items max height, no borders */
+.tracklist {
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 10px 20px;
 }
 
-.time-display {
+.tracklist div {
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
+  padding: 6px 0;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.tracklist div:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Remove previous borders */
+.tracklist,
+.tracklist div {
+  border: none;
+}
+
+/* Player container styling */
+.player-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  color: white;
+  box-sizing: border-box;
+  padding: 20px 0 10px 0;
+  z-index: 4;
+  transition: all 0.3s ease;
+}
+
+/* Optional: consistent button styling */
+#maximizePlayer, #infoLink {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  z-index: 5;
+  border-radius: 4px;
 }
