@@ -11,18 +11,16 @@
     <source src="background.mp4" type="video/mp4" />
   </video>
 
-  <img src="logo.png" id="logo" alt="Logo" />
+  <img src="logo.png" alt="Logo" id="logo" />
 
+  <button id="infoLink">+INFO</button>
   <button id="exploreButton">Explore Music</button>
-  <a href="#" id="infoLink">+INFO</a>
 
   <div id="audioPlayer" class="minimized">
     <div id="playerHeader">
-      <div>
-        <h2 id="albumTitle"></h2>
-        <p id="albumSubtitle"></p>
-      </div>
-      <div class="header-buttons">
+      <h1 id="albumTitle"></h1>
+      <p id="albumSubtitle"></p>
+      <div id="playerButtons">
         <button id="nextAlbumButton">Next Album</button>
         <button id="minimizeButton">−</button>
       </div>
@@ -33,17 +31,9 @@
     </div>
 
     <div id="controls">
-      <button id="prevButton">
-        <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
-          <path d="M6 19h2V5H6v14zm3-7l9 7V5l-9 7z"/>
-        </svg>
-      </button>
+      <button id="prevButton">⏮️</button>
       <button id="playButton"></button>
-      <button id="nextButton">
-        <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
-          <path d="M16 5v14h2V5h-2zm-3 7L4 5v14l9-7z"/>
-        </svg>
-      </button>
+      <button id="nextButton">⏭️</button>
     </div>
 
     <div id="progressContainer">
