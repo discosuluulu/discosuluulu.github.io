@@ -7,17 +7,17 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- Background Video -->
   <video autoplay muted loop id="backgroundVideo">
-    <source src="background.mp4" type="video/mp4">
+    <source src="background.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
   </video>
 
-  <!-- Centered Logo -->
-  <img src="logo.png" id="logo" alt="Discos Uluulu Logo">
+  <img src="logo.png" id="logo" alt="Logo" />
 
-  <!-- Top Buttons -->
-  <button id="infoLink">+INFO</button>
+  <!-- +INFO Link -->
+  <a id="infoLink" href="https://info.discosuluulu.com" target="_blank" rel="noopener noreferrer">+INFO</a>
+
+  <!-- Explore Music Button -->
   <button id="exploreButton">Explore Music</button>
 
   <!-- Audio Player -->
@@ -27,30 +27,29 @@
         <h2 id="albumTitle">Album Title</h2>
         <h3 id="albumSubtitle">Album Subtitle</h3>
       </div>
-      <div class="top-buttons">
+      <div class="player-controls-top">
         <button id="nextAlbumButton">Next Album</button>
         <button id="minimizeButton">−</button>
       </div>
     </div>
 
-    <div id="trackList"></div>
+    <div id="trackList" class="tracklist"></div>
 
     <div class="controls">
-      <button id="prevButton" aria-label="Previous">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-          <polygon points="11,12 18,18 18,6"/>
-          <polygon points="6,12 13,18 13,6"/>
+      <!-- PREV SVG -->
+      <button id="prevButton" aria-label="Previous Track">
+        <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
+          <path d="M6 18V6h2v12H6zm3-6 9 6V6l-9 6z"/>
         </svg>
       </button>
-      <button id="playButton" aria-label="Play/Pause">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-          <polygon points="5,3 19,12 5,21"/>
-        </svg>
-      </button>
-      <button id="nextButton" aria-label="Next">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-          <polygon points="6,6 13,12 6,18"/>
-          <polygon points="11,6 18,12 11,18"/>
+
+      <!-- PLAY/PAUSE will be replaced by JS -->
+      <button id="playButton" aria-label="Play/Pause"></button>
+
+      <!-- NEXT SVG -->
+      <button id="nextButton" aria-label="Next Track">
+        <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
+          <path d="M16 6v12h-2V6h2zm-3 6-9 6V6l9 6z"/>
         </svg>
       </button>
     </div>
@@ -60,8 +59,6 @@
     </div>
   </div>
 
-  <!-- JavaScript -->
   <script type="module" src="script.js"></script>
-  <script type="module" src="audioPlayer.js"></script>
 </body>
 </html>
