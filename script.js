@@ -1,114 +1,110 @@
-import { gardenAlbum, otucanAlbum } from './audioPlayer.js';
-
 let currentAlbum = gardenAlbum;
 let currentTrackIndex = 0;
+let isPlaying = false;
 
 const audio = new Audio();
-const audioPlayer = document.getElementById('audioPlayer');
-const exploreButton = document.getElementById('exploreButton');
-const minimizeButton = document.getElementById('minimizePlayer');
-const nextAlbumButton = document.getElementById('nextAlbum');
-const playPause = document.getElementById('playPause');
-const prevTrack = document.getElementById('prevTrack');
-const nextTrack = document.getElementById('nextTrack');
-const progressBar = document.getElementById('progressFilled');
-const progressContainer = document.getElementById('progress');
+const albumTitle = document.getElementById('albumTitle');
+const albumSubtitle = document.getElementById('albumSubtitle');
 const tracklist = document.getElementById('tracklist');
+const playPauseBtn = document.getElementById('playPause');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
+const progress = document.getElementById('progress');
+const progressFilled = document.getElementById('progressFilled');
+const currentTimeDisplay = document.getElementById('currentTime');
+const durationDisplay = document.getElementById('duration');
+const audioPlayer = document.getElementById('audioPlayer');
+const maximizePlayer = document.getElementById('maximizePlayer');
+const minimizePlayer = document.getElementById('minimizePlayer');
 
 function loadAlbum(album) {
-  currentAlbum = album;
-  currentTrackIndex = 0;
-  document.getElementById('albumTitle').textContent = album.title;
-  document.getElementById('albumSubtitle').textContent = album.subtitle;
+  albumTitle.textContent = album.title;
+  albumSubtitle.textContent = album.subtitle;
   tracklist.innerHTML = '';
-
-  album.tracks.forEach((track, i) => {
-    const div = document.createElement('div');
-    div.className = 'track';
-    div.innerHTML = `
-      <span>${i + 1}. ${track.title}</span>
-      <span>${track.duration}</span>
-    `;
-    div.addEventListener('click', () => {
-      currentTrackIndex = i;
-      playTrack();
+  album.tracks.forEach((track, index) => {
+    const trackDiv = document.createElement('div');
+    trackDiv.innerHTML = `<span>${index + 1}. ${track.title}</span><span>${track.length}</span>`;
+    trackDiv.addEventListener('click', () => {
+      currentTrackIndex = index;
+      loadTrack();
+      playAudio();
     });
-    tracklist.appendChild(div);
+    tracklist.appendChild(trackDiv);
   });
-
-  loadTrack(currentTrackIndex);
+  loadTrack();
 }
 
-function loadTrack(index) {
-  audio.src = currentAlbum.tracks[index].url;
-  highlightTrack(index);
+function loadTrack() {
+  audio.src = currentAlbum.tracks[currentTrackIndex].url;
 }
 
-function highlightTrack(index) {
-  const tracks = document.querySelectorAll('.track');
-  tracks.forEach((track, i) => {
-    track.style.backgroundColor = i === index ? 'rgba(255,255,255,0.1)' : 'transparent';
-  });
-}
-
-function playTrack() {
-  loadTrack(currentTrackIndex);
+function playAudio() {
   audio.play();
-  updatePlayButton();
+  isPlaying = true;
+  playIcon.style.display = 'none';
+  pauseIcon.style.display = 'inline';
 }
 
-function togglePlayPause() {
-  if (audio.paused) audio.play();
-  else audio.pause();
-  updatePlayButton();
+function pauseAudio() {
+  audio.pause();
+  isPlaying = false;
+  playIcon.style.display = 'inline';
+  pauseIcon.style.display = 'none';
 }
 
-function updatePlayButton() {
-  playPause.innerHTML = audio.paused
-    ? `<svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`
-    : `<svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-}
+playPauseBtn.addEventListener('click', () => {
+  if (isPlaying) {
+    pauseAudio();
+  } else {
+    playAudio();
+  }
+});
 
-function playNext() {
+document.getElementById('nextTrack').addEventListener('click', () => {
   currentTrackIndex = (currentTrackIndex + 1) % currentAlbum.tracks.length;
-  playTrack();
-}
+  loadTrack();
+  playAudio();
+});
 
-function playPrev() {
+document.getElementById('prevTrack').addEventListener('click', () => {
   currentTrackIndex = (currentTrackIndex - 1 + currentAlbum.tracks.length) % currentAlbum.tracks.length;
-  playTrack();
-}
-
-// Events
-playPause.addEventListener('click', togglePlayPause);
-nextTrack.addEventListener('click', playNext);
-prevTrack.addEventListener('click', playPrev);
-nextAlbumButton.addEventListener('click', () => {
-  loadAlbum(currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum);
-});
-minimizeButton.addEventListener('click', () => {
-  audioPlayer.classList.add('minimized');
-  exploreButton.style.display = 'block';
-});
-exploreButton.addEventListener('click', () => {
-  audioPlayer.classList.remove('minimized');
-  exploreButton.style.display = 'none';
+  loadTrack();
+  playAudio();
 });
 
-// Progress bar
+document.getElementById('nextAlbum').addEventListener('click', () => {
+  currentAlbum = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
+  currentTrackIndex = 0;
+  loadAlbum(currentAlbum);
+});
+
 audio.addEventListener('timeupdate', () => {
   const percent = (audio.currentTime / audio.duration) * 100;
-  progressBar.style.width = `${percent}%`;
+  progressFilled.style.width = `${percent}%`;
+  currentTimeDisplay.textContent = formatTime(audio.currentTime);
+  durationDisplay.textContent = formatTime(audio.duration);
 });
 
-progressContainer.addEventListener('click', (e) => {
-  const rect = progressContainer.getBoundingClientRect();
-  const percent = (e.clientX - rect.left) / rect.width;
+progress.addEventListener('click', (e) => {
+  const clickX = e.offsetX;
+  const width = progress.clientWidth;
+  const percent = clickX / width;
   audio.currentTime = percent * audio.duration;
 });
 
-audio.addEventListener('ended', playNext);
+function formatTime(time) {
+  const minutes = Math.floor(time / 60) || 0;
+  const seconds = Math.floor(time % 60) || 0;
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
 
-// Initialize
-loadAlbum(gardenAlbum);
-updatePlayButton();
+// Maximize/Minimize toggle
+maximizePlayer.addEventListener('click', () => {
+  audioPlayer.classList.remove('hidden');
+});
+
+minimizePlayer.addEventListener('click', () => {
+  audioPlayer.classList.add('hidden');
+});
+
+loadAlbum(currentAlbum);
