@@ -1,139 +1,154 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const audio = document.getElementById('audio');
-  let currentAlbum = gardenAlbum;
-  let currentTrackIndex = 0;
+let currentAlbumIndex = 0;
+const albums = [gardenAlbum, otucanAlbum];
+let currentTrackIndex = 0;
+let isPlaying = false;
 
-  const albumTitleEl = document.getElementById('albumTitle');
-  const albumSubtitleEl = document.getElementById('albumSubtitle');
-  const tracklistEl = document.getElementById('trackList');
-  const playPauseBtn = document.getElementById('playPauseBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextAlbumBtn = document.getElementById('nextAlbum');
-  const progress = document.getElementById('progress');
-  const progressFilled = document.getElementById('progressFilled');
-  const currentTimeEl = document.getElementById('currentTime');
-  const durationEl = document.getElementById('duration');
+const albumTitle = document.getElementById("albumTitle");
+const albumSubtitle = document.getElementById("albumSubtitle");
+const tracklist = document.getElementById("tracklist");
+const playPauseBtn = document.getElementById("playPause");
+const prevBtn = document.getElementById("prevTrack");
+const nextBtn = document.getElementById("nextTrack");
+const progress = document.getElementById("progress");
+const progressFilled = document.getElementById("progressFilled");
+const currentTimeDisplay = document.getElementById("currentTime");
+const durationDisplay = document.getElementById("duration");
 
-  const audioPlayer = document.getElementById('audioPlayer');
-  const maximizePlayerBtn = document.getElementById('maximizePlayer');
-  const minimizePlayerBtn = document.getElementById('minimizePlayer');
-  const logo = document.getElementById('logo');
+const audio = new Audio();
 
-  const playIcon = document.getElementById('playIcon');
-  const pauseIcon = document.getElementById('pauseIcon');
+function loadAlbum(index) {
+  const album = albums[index];
+  albumTitle.textContent = album.title;
+  albumSubtitle.textContent = album.subtitle;
 
-  maximizePlayerBtn.addEventListener('click', () => {
-    audioPlayer.classList.add('show');
-    logo.classList.add('logo-small');
-    maximizePlayerBtn.style.display = 'none';
+  tracklist.innerHTML = "";
+  album.tracks.forEach((track, i) => {
+    const trackDiv = document.createElement("div");
+    trackDiv.classList.add("track");
+    trackDiv.dataset.index = i;
+    trackDiv.innerHTML = `<span>${i + 1}. ${track.title}</span><span>${track.length}</span>`;
+    tracklist.appendChild(trackDiv);
   });
 
-  minimizePlayerBtn.addEventListener('click', () => {
-    audioPlayer.classList.remove('show');
-    logo.classList.remove('logo-small');
-    maximizePlayerBtn.style.display = 'inline-block';
-  });
+  loadTrack(0);
+  updateTrackHighlight();
+}
 
-  function loadAlbum(album) {
-    currentAlbum = album;
+function loadTrack(index) {
+  const track = albums[currentAlbumIndex].tracks[index];
+  audio.src = track.url;
+  currentTrackIndex = index;
+}
+
+function updateTrackHighlight() {
+  document.querySelectorAll(".track").forEach(el => el.classList.remove("playing"));
+  const currentTrack = tracklist.querySelector(`[data-index="${currentTrackIndex}"]`);
+  if (currentTrack) currentTrack.classList.add("playing");
+}
+
+function playTrack() {
+  audio.play();
+  isPlaying = true;
+  updatePlayPauseIcon();
+}
+
+function pauseTrack() {
+  audio.pause();
+  isPlaying = false;
+  updatePlayPauseIcon();
+}
+
+function updatePlayPauseIcon() {
+  playPauseBtn.innerHTML = isPlaying
+    ? `<svg viewBox="0 0 24 24" width="24" height="24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`
+    : `<svg viewBox="0 0 24 24" width="24" height="24"><polygon points="5,3 19,12 5,21"/></svg>`;
+}
+
+function nextTrack() {
+  currentTrackIndex++;
+  if (currentTrackIndex >= albums[currentAlbumIndex].tracks.length) {
     currentTrackIndex = 0;
-    albumTitleEl.textContent = album.title;
-    albumSubtitleEl.textContent = album.subtitle;
-    renderTracklist();
-    loadTrack(currentTrackIndex);
   }
+  loadTrack(currentTrackIndex);
+  playTrack();
+  updateTrackHighlight();
+}
 
-  function renderTracklist() {
-    tracklistEl.innerHTML = '';
-    currentAlbum.tracks.forEach((track, index) => {
-      const trackEl = document.createElement('div');
-      trackEl.classList.add('track');
-      trackEl.innerHTML = `
-        <span class="track-title">${index + 1}. ${track.title}</span>
-        <span class="track-length">${track.length}</span>
-      `;
-      trackEl.addEventListener('click', () => {
-        currentTrackIndex = index;
-        loadTrack(currentTrackIndex);
-        playAudio();
-      });
-      tracklistEl.appendChild(trackEl);
-    });
+function prevTrack() {
+  currentTrackIndex--;
+  if (currentTrackIndex < 0) {
+    currentTrackIndex = albums[currentAlbumIndex].tracks.length - 1;
   }
+  loadTrack(currentTrackIndex);
+  playTrack();
+  updateTrackHighlight();
+}
 
-  function updateTrackHighlight() {
-    const trackEls = tracklistEl.querySelectorAll('.track');
-    trackEls.forEach(el => el.classList.remove('playing'));
-    if (trackEls[currentTrackIndex]) {
-      trackEls[currentTrackIndex].classList.add('playing');
-    }
-  }
+playPauseBtn.addEventListener("click", () => {
+  isPlaying ? pauseTrack() : playTrack();
+});
 
-  function loadTrack(index) {
-    const track = currentAlbum.tracks[index];
-    audio.src = track.url;
+nextBtn.addEventListener("click", nextTrack);
+prevBtn.addEventListener("click", prevTrack);
+
+tracklist.addEventListener("click", e => {
+  const trackEl = e.target.closest(".track");
+  if (trackEl) {
+    const index = parseInt(trackEl.dataset.index);
+    loadTrack(index);
+    playTrack();
     updateTrackHighlight();
   }
+});
 
-  function playAudio() {
-    audio.play();
-    playIcon.style.display = 'none';
-    pauseIcon.style.display = 'inline-block';
-  }
+document.getElementById("nextAlbum").addEventListener("click", () => {
+  currentAlbumIndex = (currentAlbumIndex + 1) % albums.length;
+  loadAlbum(currentAlbumIndex);
+  playTrack();
+  updateTrackHighlight();
+});
 
-  function pauseAudio() {
-    audio.pause();
-    pauseIcon.style.display = 'none';
-    playIcon.style.display = 'inline-block';
-  }
+audio.addEventListener("ended", nextTrack);
 
-  playPauseBtn.addEventListener('click', () => {
-    if (audio.paused) {
-      playAudio();
-    } else {
-      pauseAudio();
-    }
-  });
+audio.addEventListener("timeupdate", () => {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressFilled.style.width = percent + "%";
+  currentTimeDisplay.textContent = formatTime(audio.currentTime);
+  durationDisplay.textContent = formatTime(audio.duration);
+});
 
-  nextBtn.addEventListener('click', () => {
-    currentTrackIndex = (currentTrackIndex + 1) % currentAlbum.tracks.length;
-    loadTrack(currentTrackIndex);
-    playAudio();
-  });
+progress.addEventListener("click", (e) => {
+  const clickX = e.offsetX;
+  const width = progress.clientWidth;
+  const percent = clickX / width;
+  audio.currentTime = percent * audio.duration;
+});
 
-  prevBtn.addEventListener('click', () => {
-    currentTrackIndex = (currentTrackIndex - 1 + currentAlbum.tracks.length) % currentAlbum.tracks.length;
-    loadTrack(currentTrackIndex);
-    playAudio();
-  });
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60) || 0;
+  const secs = Math.floor(seconds % 60) || 0;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
 
-  nextAlbumBtn.addEventListener('click', () => {
-    currentAlbum = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
-    loadAlbum(currentAlbum);
-  });
+// Minimize/Maximize
+const audioPlayer = document.getElementById("audioPlayer");
+const maximizeBtn = document.getElementById("maximizePlayer");
+const minimizeBtn = document.getElementById("minimizePlayer");
+const logo = document.getElementById("logo");
+const infoLink = document.getElementById("infoLink");
 
-  audio.addEventListener('timeupdate', () => {
-    const percent = (audio.currentTime / audio.duration) * 100;
-    progressFilled.style.width = percent + '%';
-    currentTimeEl.textContent = formatTime(audio.currentTime);
-    durationEl.textContent = formatTime(audio.duration);
-  });
+maximizeBtn.addEventListener("click", () => {
+  audioPlayer.classList.add("show");
+  logo.classList.add("logo-small");
+  infoLink.style.display = "block";
+});
 
-  progress.addEventListener('click', (e) => {
-    const rect = progress.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left;
-    const percent = offsetX / rect.width;
-    audio.currentTime = percent * audio.duration;
-  });
+minimizeBtn.addEventListener("click", () => {
+  audioPlayer.classList.remove("show");
+  logo.classList.remove("logo-small");
+});
 
-  function formatTime(time) {
-    if (isNaN(time)) return '0:00';
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60).toString().padStart(2, '0');
-    return `${minutes}:${seconds}`;
-  }
-
-  // Load default album
-  loadAlbum(currentAlbum);
+// Initial Load
+window.addEventListener("DOMContentLoaded", () => {
+  loadAlbum(currentAlbumIndex);
 });
