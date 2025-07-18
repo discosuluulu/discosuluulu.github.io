@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sync Licensing – Discos Uluulu</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* Background Video */
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    /* Body and Typography */
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: 'Work Sans', sans-serif;
+      color: #fdfcf9;
+    }
+
+    /* Logo */
+    .logo-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .logo-container img {
+      width: 180px;
+      max-width: 80vw;
+    }
+
+    .underline {
+      width: 60%;
+      border: none;
+      border-top: 1px solid white;
+      margin: 1rem auto 2rem;
+    }
+
+    /* Form Styling */
+    .licensing-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 5vw;
+      box-sizing: border-box;
+      color: #fdfcf9;
+      font-size: 0.95em;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 8px;
+    }
+
+    .licensing-form h2 {
+      font-size: 1.6em;
+      margin-bottom: 2em;
+      text-align: left;
+    }
+
+    .licensing-form label {
+      margin-bottom: 0.25em;
+      font-weight: 500;
+      text-align: left;
+      display: block;
+    }
+
+    .licensing-form input,
+    .licensing-form textarea {
+      background: rgba(253, 252, 249, 0.05);
+      border: none;
+      border-bottom: 1px solid rgba(253, 252, 249, 0.4);
+      color: #fdfcf9;
+      padding: 0.6em 0.4em;
+      margin-bottom: 1.5em;
+      width: 100%;
+      font-size: 0.95em;
+      border-radius: 0;
+      outline: none;
+      font-family: 'Work Sans', sans-serif;
+    }
+
+    .licensing-form input::placeholder,
+    .licensing-form textarea::placeholder {
+      color: #fdfcf9aa;
+    }
+
+    .licensing-form button {
+      background-color: #fdfcf9;
+      color: #1c1c1c;
+      border: none;
+      padding: 0.9em 1.2em;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.95em;
+      width: fit-content;
+      transition: background 0.3s ease;
+      margin-top: 1em;
+      font-family: 'Work Sans', sans-serif;
+    }
+
+    .licensing-form button:hover {
+      background-color: #e6e3db;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bgVideo">
+    <source src="backgroundinfo.mp4" type="video/mp4">
+  </video>
+
+  <!-- Logo and underline -->
+  <div class="logo-container">
+    <img src="../logo.png" alt="Discos Uluulu Logo" />
+    <hr class="underline" />
+  </div>
+
+  <!-- Licensing Form -->
+  <form class="licensing-form" action="https://formspree.io/f/mdkdndog" method="POST">
+    <h2>Sync / Licensing</h2>
+
+    <label>Name of agency/brand/producer</label>
+    <input type="text" name="agency" required>
+
+    <label>Contact information (Email, WhatsApp)</label>
+    <input type="text" name="contact" required>
+
+    <label>Project title & description</label>
+    <textarea name="project" rows="3" required></textarea>
+
+    <label>Music Usage (song title(s) of interest, or request unreleased music)</label>
+    <textarea name="usage" rows="2" required></textarea>
+
+    <label>Media (TV, Film, Social, Web, Etc.)</label>
+    <input type="text" name="media" required>
+
+    <label>Territories (USA, México, Brasil, Worldwide, Etc.)</label>
+    <input type="text" name="territories" required>
+
+    <label>Duration (Length of usage)</label>
+    <input type="text" name="duration" required>
+
+    <label>Term (6 months, 1 year, perpetuity, etc.)</label>
+    <input type="text" name="term" required>
+
+    <label>Budget or licensing fee range</label>
+    <input type="text" name="budget">
+
+    <label>Additional comments</label>
+    <textarea name="comments" rows="3"></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>
