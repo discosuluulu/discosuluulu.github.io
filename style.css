@@ -213,6 +213,13 @@ body, html {
   transition: transform 0.2s ease;
 }
 
+.top-logos img:nth-child(2) {
+  margin-right: 15px;
+}
+.top-logos img:nth-child(3) {
+  margin-left: 15px;
+}
+
 .top-logos img:hover {
   transform: scale(1.05);
 }
