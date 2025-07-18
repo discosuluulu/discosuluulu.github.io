@@ -2,64 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sync Licensing – Discos Uluulu</title>
-
-  <!-- Google Font -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sync / Licensing – Discos Uluulu</title>
+  
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
+  
   <style>
     /* Background Video */
     #bgVideo {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      min-width: 100%;
+      min-height: 100%;
       object-fit: cover;
       z-index: -1;
     }
 
-    /* Body and Typography */
     body {
       margin: 0;
       padding: 0;
-      background: transparent;
       font-family: 'Work Sans', sans-serif;
       color: #fdfcf9;
+      background: transparent;
     }
 
-    /* Logo */
+    /* Centered Logo */
     .logo-container {
-      text-align: center;
-      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2em 0 1em;
     }
 
     .logo-container img {
-      width: 180px;
+      width: 150px;
       max-width: 80vw;
+      height: auto;
     }
 
-    .underline {
-      width: 60%;
-      border: none;
-      border-top: 1px solid white;
-      margin: 1rem auto 2rem;
+    /* Thin White Line */
+    .divider {
+      width: 80%;
+      max-width: 600px;
+      margin: 0 auto 2em;
+      border-bottom: 1px solid #fdfcf9cc;
     }
 
-    /* Form Styling */
+    /* Licensing Form */
     .licensing-form {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 5vw;
+      padding: 0 5vw 5vw;
       box-sizing: border-box;
       color: #fdfcf9;
       font-size: 0.95em;
-      background-color: rgba(0, 0, 0, 0.4);
-      border-radius: 8px;
+      max-width: 700px;
+      margin: 0 auto;
     }
 
     .licensing-form h2 {
@@ -119,14 +120,17 @@
 
   <!-- Background Video -->
   <video autoplay muted loop playsinline id="bgVideo">
-    <source src="backgroundinfo.mp4" type="video/mp4">
+    <source src="backgroundinfo.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
   </video>
 
-  <!-- Logo and underline -->
+  <!-- Centered Logo -->
   <div class="logo-container">
     <img src="../logo.png" alt="Discos Uluulu Logo" />
-    <hr class="underline" />
   </div>
+
+  <!-- Divider Line -->
+  <div class="divider"></div>
 
   <!-- Licensing Form -->
   <form class="licensing-form" action="https://formspree.io/f/mdkdndog" method="POST">
