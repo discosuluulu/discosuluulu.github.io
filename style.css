@@ -209,7 +209,6 @@ body, html {
 .top-logos img {
   height: 75px;
   width: auto;
-  max-height: 10vh;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
