@@ -13,8 +13,13 @@
     <source src="background.mp4" type="video/mp4">
   </video>
 
+  <!-- Logo -->
   <img src="logo.png" id="logo" alt="Discos Uluulu Logo" />
+
+  <!-- +INFO Link -->
   <a id="infoLink" href="https://info.discosuluulu.com" target="_blank">+INFO</a>
+
+  <!-- Explore Button -->
   <button id="maximizePlayer">Explore Music</button>
 
   <!-- Audio Player -->
@@ -50,7 +55,8 @@
       <svg id="playPause" viewBox="0 0 24 24">
         <polygon id="playIcon" points="5,3 19,12 5,21"/>
         <g id="pauseIcon" style="display: none;">
-          <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+          <rect x="6" y="4" width="4" height="16"/>
+          <rect x="14" y="4" width="4" height="16"/>
         </g>
       </svg>
       <svg id="nextTrack" viewBox="0 0 24 24">
@@ -67,14 +73,15 @@
   <script src="audioPlayer.js"></script>
   <script src="script.js"></script>
 
+  <!-- Mobile Video Autoplay Fix -->
   <script>
-    const bgVideo = document.getElementByID('bgVideo');
+    const bgVideo = document.getElementById('bgVideo');
     bgVideo.muted = true;
     bgVideo.playsInline = true;
     bgVideo.play().catch(e => {
       console.warn('Autoplay blocked on mobile:', e);
     });
-  <script>
-    
+  </script>
+
 </body>
 </html>
