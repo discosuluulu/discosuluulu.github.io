@@ -179,9 +179,9 @@ body, html {
 
 /* Scrollable Tracklist */
 .tracklist {
-  max-height: 20px;
+  max-height: 30px;
   overflow-y: auto;
-  padding: 60px 120px;
+  padding: 10px 20px;
 }
 
 .tracklist div {
