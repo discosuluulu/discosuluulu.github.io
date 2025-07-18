@@ -21,8 +21,8 @@ body, html {
   position: absolute;
   top: 40px;
   left: 5px;
-  width: 160px;
-  height: 100px;
+  width: 100px;
+  height: 80px;
   transition: all 1s ease-in-out;
   z-index: 5;
 }
@@ -212,12 +212,12 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   z-index: 10;
 }
 
 .top-logos img {
-  height: 55px;
+  height: 75px;
   width: auto;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -230,6 +230,6 @@ body, html {
 /* Make logos slightly larger on mobile */
 @media (max-width: 768px) {
   .top-logos img {
-    height: 70px;
+    height: 90px;
   }
 }
