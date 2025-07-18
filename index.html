@@ -66,5 +66,14 @@
   <!-- Scripts -->
   <script src="audioPlayer.js"></script>
   <script src="script.js"></script>
+
+  <script>
+    const bgVideo = document.getElementByID('bgVideo');
+    bgVideo.muted = true;
+    bgVideo.playsInline = true;
+    bgVideo.play().catch(e => {
+      console.warn('Autoplay blocked:', e);
+    });
+  <script>
 </body>
 </html>
