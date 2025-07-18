@@ -201,3 +201,35 @@ body, html {
 .tracklist div {
   border: none;
 }
+
+/* Dual Logo Styling — Consistent Row Layout */
+
+.top-logos {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  z-index: 10;
+}
+
+.top-logos img {
+  height: 55px;
+  width: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.top-logos img:hover {
+  transform: scale(1.05);
+}
+
+/* Make logos slightly larger on mobile */
+@media (max-width: 768px) {
+  .top-logos img {
+    height: 70px;
+  }
+}
