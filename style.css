@@ -21,7 +21,7 @@ body, html {
   position: absolute;
   top: 10px;
   left: 5px;
-  width: 170px;
+  width: 220px;
   height: 150px;
   transition: all 1s ease-in-out;
   z-index: 5;
