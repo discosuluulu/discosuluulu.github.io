@@ -1,21 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discos Uluulu - Vinyl Room</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: url('https://images.unsplash.com/photo-1545239351-ef35f43d514b') no-repeat center center fixed;
+      background-size: cover;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
 
-<div id="vinyl-room">
-  <audio id="ambient" autoplay loop muted>
-    <source src="ambient.mp3" type="audio/mp3" />
-  </audio>
+    .vinyl-room {
+      display: flex;
+      align-items: center;
+      height: 100vh;
+      padding: 0 5vw;
+    }
 
-  <div class="vinyl-carousel">
-    <div class="vinyl-item" id="vinyl1">
-      <video autoplay muted loop>
-        <source src="vinyl1-preview.mp4" type="video/mp4" />
-      </video>
+    .vinyl-item {
+      display: inline-block;
+      width: 300px;
+      margin: 0 40px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+
+    .vinyl-item:hover {
+      transform: scale(1.05);
+    }
+
+    .vinyl-cover {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .vinyl-info {
+      margin-top: 15px;
+    }
+
+    button {
+      background: #111;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="vinyl-room">
+    <!-- Vinyl 1 -->
+    <div class="vinyl-item">
+      <img src="https://via.placeholder.com/300x300.png?text=Vinyl+1" class="vinyl-cover" alt="Vinyl 1">
       <div class="vinyl-info">
-        <h2>Artist – Album Title</h2>
-        <p>Genre: Tropicalia, Psych-Funk, Lo-fi</p>
-        <p>Limited edition 180g, includes insert</p>
-        <button onclick="buyVinyl('vinyl1')">Buy Now</button>
+        <h2>Artist – Album One</h2>
+        <p>Genre: Tropicalia, Lo-fi Psych</p>
+        <button onclick="alert('Buy Vinyl 1')">Buy Now</button>
       </div>
     </div>
-    <!-- Repeat for Vinyl 2 -->
+
+    <!-- Vinyl 2 -->
+    <div class="vinyl-item">
+      <img src="https://via.placeholder.com/300x300.png?text=Vinyl+2" class="vinyl-cover" alt="Vinyl 2">
+      <div class="vinyl-info">
+        <h2>Artist – Album Two</h2>
+        <p>Genre: Cosmic Folk, Analog Funk</p>
+        <button onclick="alert('Buy Vinyl 2')">Buy Now</button>
+      </div>
+    </div>
   </div>
-</div>
+</body>
+</html>
