@@ -1,0 +1,69 @@
+/* Reset + base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background: url('madera.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+/* Each section takes up full screen and snaps */
+section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  scroll-snap-align: start;
+  background-color: rgba(0, 0, 0, 0.45); /* transparent overlay for readability */
+}
+
+/* Title styles */
+.collab-title {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.collab-title a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.collab-title a:hover {
+  text-decoration: underline;
+}
+
+/* Image styles */
+.collab-image {
+  max-width: 90%;
+  max-height: 70vh;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.collab-image:hover {
+  transform: scale(1.02);
+}
+
+@media (max-width: 600px) {
+  .collab-title {
+    font-size: 1.1rem;
+  }
+
+  .collab-image {
+    max-width: 95%;
+  }
+}
