@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Collaborations | Discos Suluulu</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      font-family: Montserrat, sans-serif;
+      background: #000;
+      color: #fff;
+    }
+    .video-section {
+      scroll-snap-align: start;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+    .video-container {
+      width: 320px; /* phone screen width */
+      max-width: 90vw;
+      aspect-ratio: 9 / 16; /* vertical phone video ratio */
+      border: 2px solid #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #111;
+      margin-bottom: 1rem;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: black;
+      border-radius: 12px;
+    }
+    .caption {
+      text-align: center;
+      font-size: 1rem;
+      max-width: 320px;
+    }
+    .caption a {
+      color: #1db954;
+      text-decoration: none;
+    }
+    /* Volume toggle button */
+    #volume-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
+    #volume-toggle:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    svg {
+      fill: white;
+      width: 28px;
+      height: 28px;
+    }
+  </style>
+</head>
+<body>
 
+  <section class="video-section">
+    <div class="video-container">
+      <iframe
+        src="https://www.instagram.com/reel/DK76po_Spz1/embed"
+        allowfullscreen
+        scrolling="no"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
+      ></iframe>
+    </div>
+    <div class="caption">
+      <strong>2025 Tavo Rio & The Orange Drone</strong><br />
+      <a href="https://www.instagram.com/reel/DK76po_Spz1/?igsh=MTRpMGsyYmZzc25tMw==" target="_blank" rel="noopener noreferrer">View on Instagram</a>
+    </div>
+  </section>
+
+  <!-- Volume toggle button (only affects self-hosted videos) -->
+  <div id="volume-toggle" title="Toggle Sound">
+    <svg id="volume-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.06c1.48-.73 2.5-2.26 2.5-4.03zM19 12c0 3.04-2.03 5.64-4.94 6.32l1.38 1.38C18.27 18.18 20 15.28 20 12c0-3.28-1.73-6.18-4.56-7.7l-1.38 1.38C16.97 6.36 19 8.96 19 12zM4 9v6h4l5 5V4L8 9H4z"/>
+    </svg>
+  </div>
+
+  <script>
+    // This button will control all self-hosted videos (if any)
+    const videos = document.querySelectorAll('video');
+    const volumeToggle = document.getElementById('volume-toggle');
+    const volumeIcon = document.getElementById('volume-icon');
+
+    let muted = true; // initial state
+
+    // Mute all videos initially and play (if any)
+    videos.forEach(video => {
+      video.muted = muted;
+      video.play();
+    });
+
+    volumeToggle.addEventListener('click', () => {
+      muted = !muted;
+      videos.forEach(video => {
+        video.muted = muted;
+      });
+
+      if (muted) {
+        volumeIcon.innerHTML = `
+          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.06c1.48-.73 2.5-2.26 2.5-4.03zM19 12c0 3.04-2.03 5.64-4.94 6.32l1.38 1.38C18.27 18.18 20 15.28 20 12c0-3.28-1.73-6.18-4.56-7.7l-1.38 1.38C16.97 6.36 19 8.96 19 12zM4 9v6h4l5 5V4L8 9H4z"/>
+        `;
+      } else {
+        volumeIcon.innerHTML = `
+          <path d="M7 9v6h4l5 5V4l-5 5H7z"/>
+          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.06c1.48-.73 2.5-2.26 2.5-4.03z"/>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>
