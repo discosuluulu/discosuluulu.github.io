@@ -1,1 +1,21 @@
 
+<div id="vinyl-room">
+  <audio id="ambient" autoplay loop muted>
+    <source src="ambient.mp3" type="audio/mp3" />
+  </audio>
+
+  <div class="vinyl-carousel">
+    <div class="vinyl-item" id="vinyl1">
+      <video autoplay muted loop>
+        <source src="vinyl1-preview.mp4" type="video/mp4" />
+      </video>
+      <div class="vinyl-info">
+        <h2>Artist – Album Title</h2>
+        <p>Genre: Tropicalia, Psych-Funk, Lo-fi</p>
+        <p>Limited edition 180g, includes insert</p>
+        <button onclick="buyVinyl('vinyl1')">Buy Now</button>
+      </div>
+    </div>
+    <!-- Repeat for Vinyl 2 -->
+  </div>
+</div>
