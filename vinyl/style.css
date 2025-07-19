@@ -1,0 +1,28 @@
+#vinyl-room {
+  background: url('bamboo-texture.jpg') no-repeat center center;
+  background-size: cover;
+  overflow-x: scroll;
+  display: flex;
+  height: 100vh;
+}
+
+.vinyl-item {
+  flex: 0 0 80vw;
+  margin: 2rem;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.vinyl-item:hover {
+  transform: scale(1.05);
+}
+
+.vinyl-info {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 1rem;
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  max-width: 70%;
+  border-radius: 8px;
+}
