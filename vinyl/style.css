@@ -1,28 +1,54 @@
-#vinyl-room {
-  background: url('bamboo-texture.jpg') no-repeat center center;
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: url('https://images.unsplash.com/photo-1545239351-ef35f43d514b') no-repeat center center fixed;
   background-size: cover;
-  overflow-x: scroll;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.vinyl-room {
   display: flex;
+  align-items: center;
   height: 100vh;
+  padding: 0 5vw;
 }
 
 .vinyl-item {
-  flex: 0 0 80vw;
-  margin: 2rem;
-  position: relative;
-  transition: transform 0.3s ease;
+  display: inline-block;
+  width: 300px;
+  margin: 0 40px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
 }
 
 .vinyl-item:hover {
   transform: scale(1.05);
 }
 
-.vinyl-info {
-  background: rgba(255, 255, 255, 0.8);
-  padding: 1rem;
-  position: absolute;
-  bottom: 10%;
-  left: 10%;
-  max-width: 70%;
+.vinyl-cover {
+  width: 100%;
   border-radius: 8px;
+}
+
+.vinyl-info {
+  margin-top: 15px;
+}
+
+button {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background: #333;
 }
