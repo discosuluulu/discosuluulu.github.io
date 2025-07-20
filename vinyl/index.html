@@ -2,148 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Vinyl Shop</title>
+  <title>Discos Uluulu Vinyl Shop</title>
   <style>
-      .shop-container {
-        position: relative;
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
+    .shop-container {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-      .shop-background {
-        width: 100%;
-        display: block;
-      }
+    .shop-background {
+      width: 100%;
+      display: block;
+    }
 
-      .hotspot {
-        position: absolute;
-        cursor: pointer;
-        background: rgba(255, 255, 255, 0.1);
-      }
+    .hotspot {
+      position: absolute;
+      cursor: pointer;
+      /* Optional: semi-transparent highlight for testing */
+      background: rgba(255, 255, 255, 0.1);
+    }
 
-      #gdls-hotspot {
-        top: 20%;
-        left: 10%;
-        width: 20%;
-        height: 30%;
-      }
-      #otucan-hotspot {
-        top: 20%;
-        left: 50%;
-        width: 20%;
-        height: 30%;
-      }
-      
-      .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        backdrop-filter: blur(5px);
-        background: rgba(0, 0, 0, 0.7);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-      }
-      
-      .modal.hidden {
-        display: none;
-      }
-      
-      .modal-content {
-        background: white;
-        padding: 2rem;
-        border-radius: 10px;
-        max-width: 800px;
-        width: 90%
-        overflow-y: auto;
-        max-height: 90vh;
-      }
-      
-      .close {
-        float: right;
-        cursor: pointer;
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-      }
-      
-      .modal-images img {
-        width: 100%;
-        margin-bottom: 1rem;
-      }
-     </style>             
-  </head>
-  <body>
-      
-  <div class="shop-container">
-    <img src="vinylshop2.jpg" alt="Vinyl Shop" class="shop-background" />
+    /* 🎯 Adjust these coordinates as needed */
+    #gdls-hotspot {
+      top: 20%;
+      left: 10%;
+      width: 20%;
+      height: 30%;
+    }
 
-    <div class="hotspot" id="gdls-hotspot"></div>
-    <div class="hotspot" id="otucan-hotspot"></div>
+    #otucan-hotspot {
+      top: 20%;
+      right: 10%;
+      width: 20%;
+      height: 30%;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(5px);
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      max-width: 800px;
+      width: 90%;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    .close {
+      float: right;
+      cursor: pointer;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-images img {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="shop-container">
+  <img src="vinylshop2.jpg" alt="Vinyl Shop" class="shop-background" />
+
+  <!-- Clickable Hotspots -->
+  <div class="hotspot" id="gdls-hotspot"></div>
+  <div class="hotspot" id="otucan-hotspot"></div>
+</div>
+
+<!-- Modal -->
+<div id="popup-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="modal-images" id="modal-images"></div>
+    <div id="stripe-button-container"></div>
   </div>
+</div>
 
-  <div id="popup-modal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <div class="modal-images" id="modal-images"></div>
-      <div id="stripe-button-container"></div>
-    </div>
-  </div>
+<!-- Stripe Buy Button SDK -->
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
 
-  <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+<script>
+  const gdlsImages = [
+    "Gardendelaselva.jpg",
+    "gdlsaside.jpg",
+    "gdlsbside.jpg",
+    "gdlsback.jpg"
+  ];
 
-  <script>
-    const gdlsImages = [
-      "Gardendelaselva.jpg",
-      "gdlsaside.jpg",
-      "gdlsbside.jpg",
-      "gdlsback.jpg"
-  ];  
-      
-    const otucanImages = [
-    "otucan.jpg",
+  const otucanImages = [
+    "Otucan.jpg",
     "otucanaside.jpg",
     "otucanbside.jpg",
     "otucanback.jpg"
   ];
-      
+
   const modal = document.getElementById("popup-modal");
   const imagesContainer = document.getElementById("modal-images");
   const stripeContainer = document.getElementById("stripe-button-container");
 
   document.getElementById("gdls-hotspot").addEventListener("click", () => {
-    openModal(gdlsImages,
-        <stripe-buy-button
-           buy-button-id="buy_btn_1RfmtwKOS6jarVmAZEcGpCiU"
-           publishable-key="pk_live_51RP7SwKOS6jarVmA2T08AsewL44IvEhHhiwPMJMPIUnr90eUgLc3ISmuHWnjOUWjU66w4Z03PLy5u8mQz29YZBG1m00FlZRi1lw">
-         </stripe-buy-button>
-        );
-    });
-      
-  document.getElementById("otucan-hotspot").addEventListerer("click", () => {
-    openModal(otucanImages,
-        <stripe-buy-button
-           buy-button-id="buy_btn_1RfmtwKOS6jarVmAZEcGpCiU"
-           publishable-key="pk_live_51RP7SwKOS6jarVmA2T08AsewL44IvEhHhiwPMJMPIUnr90eUgLc3ISmuHWnjOUWjU66w4Z03PLy5u8mQz29YZBG1m00FlZRi1lw">
-         </stripe-buy-button>
-        );
-    });
+    openModal(gdlsImages, `
+      <stripe-buy-button
+        buy-button-id="buy_btn_1RfmtwKOS6jarVmAZEcGpCiU"
+        publishable-key="pk_live_51RP7SwKOS6jarVmA2T08AsewL44IvEhHhiwPMJMPIUnr90eUgLc3ISmuHWnjOUWjU6w4ZO3PLy5u8mQz29YZBG1m00FlZRi1lw">
+      </stripe-buy-button>
+    `);
+  });
 
-    document.querySelector(".close").addEventListener("click", () => {
-        modal.classList.add("hidden");
-        imagesContainer.innerHTML = '';
-        stripeContainer.innerHTML = '';
-    });    
+  document.getElementById("otucan-hotspot").addEventListener("click", () => {
+    openModal(otucanImages, `
+      <stripe-buy-button
+        buy-button-id="buy_btn_1Rfn9bKOS6jarVmAljasKKpA"
+        publishable-key="pk_live_51RP7SwKOS6jarVmA2T08AsewL44IvEhHhiwPMJMPIUnr90eUgLc3ISmuHWnjOUWjU6w4ZO3PLy5u8mQz29YZBG1m00FlZRi1lw">
+      </stripe-buy-button>
+    `);
+  });
 
-    function openModal(images. stripeHTML) {
-      imagesContainer.innerHTML = images.map(img=> '<img src="${img}" alt="">').join("");
-      stripeContainer.innerHTML = stripeHTML;
-      modal.classList.remove("hidden");
-    }
-  </script>
-      
+  document.querySelector(".close").addEventListener("click", () => {
+    modal.classList.add("hidden");
+    imagesContainer.innerHTML = '';
+    stripeContainer.innerHTML = '';
+  });
+
+  function openModal(images, stripeHTML) {
+    imagesContainer.innerHTML = images.map(img => `<img src="${img}" alt="">`).join("");
+    stripeContainer.innerHTML = stripeHTML;
+    modal.classList.remove("hidden");
+  }
+</script>
+
 </body>
 </html>
