@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Vinyl Shop</title
-    <style>
+  <meta charset="UTF-8">
+  <title>Vinyl Shop</title>
+  <style>
       .shop-container {
         position: relative;
-        width: 100%
+        width: 100%;
         max-width: 1200px;
         margin: 0 auto;
       }
@@ -34,6 +34,7 @@
         width: 20%;
         height: 30%;
       }
+      
       .modal {
         position: fixed;
         top: 0;
@@ -42,14 +43,16 @@
         height: 100%;
         backdrop-filter: blur(5px);
         background: rgba(0, 0, 0, 0.7);
-        discplay: flex;
+        display: flex;
         justify-content: center;
         align-items: center;
         z-index: 1000;
       }
+      
       .modal.hidden {
         display: none;
       }
+      
       .modal-content {
         background: white;
         padding: 2rem;
@@ -59,12 +62,14 @@
         overflow-y: auto;
         max-height: 90vh;
       }
+      
       .close {
         float: right;
         cursor: pointer;
         font-size: 1.5rem;
         margin-bottom: 1rem;
       }
+      
       .modal-images img {
         width: 100%;
         margin-bottom: 1rem;
@@ -72,22 +77,23 @@
      </style>             
   </head>
   <body>
+      
   <div class="shop-container">
-    <img src="vinylshop2.jpg" alt="Vinyl Shop" class="shop-background' />
+    <img src="vinylshop2.jpg" alt="Vinyl Shop" class="shop-background" />
 
     <div class="hotspot" id="gdls-hotspot"></div>
     <div class="hotspot" id="otucan-hotspot"></div>
   </div>
 
-  <div id+"popup-modal" class+"modal hidden">
+  <div id="popup-modal" class="modal hidden">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <div class="modal-images" id+"modal-images"></div>
+      <div class="modal-images" id="modal-images"></div>
       <div id="stripe-button-container"></div>
     </div>
   </div>
 
-  <script async src="https://js.stripe.com/v3?buy-button.js"></script>
+  <script async src="https://js.stripe.com/v3/buy-button.js"></script>
 
   <script>
     const gdlsImages = [
@@ -100,14 +106,15 @@
     const otucanImages = [
     "otucan.jpg",
     "otucanaside.jpg",
-    "otucanbside.jpg"'
+    "otucanbside.jpg",
     "otucanback.jpg"
   ];
+      
   const modal = document.getElementById("popup-modal");
   const imagesContainer = document.getElementById("modal-images");
-  const stripeContainer = documet.getElementById("stripe-button-container");
+  const stripeContainer = document.getElementById("stripe-button-container");
 
-  document.getElementById("gdls-hotspot").addEventListerer("click", () => {
+  document.getElementById("gdls-hotspot").addEventListener("click", () => {
     openModal(gdlsImages,
         <stripe-buy-button
            buy-button-id="buy_btn_1RfmtwKOS6jarVmAZEcGpCiU"
@@ -115,6 +122,7 @@
          </stripe-buy-button>
         );
     });
+      
   document.getElementById("otucan-hotspot").addEventListerer("click", () => {
     openModal(otucanImages,
         <stripe-buy-button
@@ -124,6 +132,12 @@
         );
     });
 
+    document.querySelector(".close").addEventListener("click", () => {
+        modal.classList.add("hidden");
+        imagesContainer.innerHTML = '';
+        stripeContainer.innerHTML = '';
+    });    
+
     function openModal(images. stripeHTML) {
       imagesContainer.innerHTML = images.map(img=> '<img src="${img}" alt="">').join("");
       stripeContainer.innerHTML = stripeHTML;
@@ -131,5 +145,5 @@
     }
   </script>
       
-  </body>
+</body>
 </html>
