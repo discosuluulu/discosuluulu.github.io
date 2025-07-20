@@ -19,11 +19,9 @@
     .hotspot {
       position: absolute;
       cursor: pointer;
-      /* Optional: semi-transparent highlight for testing */
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.1); /* optional for testing */
     }
 
-    /* 🎯 Adjust these coordinates as needed */
     #gdls-hotspot {
       top: 20%;
       left: 10%;
@@ -36,6 +34,21 @@
       right: 10%;
       width: 20%;
       height: 30%;
+    }
+
+    /* Centered shop.png button */
+    .center-link {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    .center-image {
+      width: 200px;
+      max-width: 80vw;
+      cursor: pointer;
     }
 
     .modal {
@@ -72,84 +85,3 @@
       font-size: 1.5rem;
       margin-bottom: 1rem;
     }
-
-    .modal-images img {
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-  </style>
-</head>
-<body>
-
-<div class="shop-container">
-  <img src="vinylshop2.jpg" alt="Vinyl Shop" class="shop-background" />
-
-  <!-- Clickable Hotspots -->
-  <div class="hotspot" id="gdls-hotspot"></div>
-  <div class="hotspot" id="otucan-hotspot"></div>
-</div>
-
-<!-- Modal -->
-<div id="popup-modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <div class="modal-images" id="modal-images"></div>
-    <div id="stripe-button-container"></div>
-  </div>
-</div>
-
-<!-- Stripe Buy Button SDK -->
-<script async src="https://js.stripe.com/v3/buy-button.js"></script>
-
-<script>
-  const gdlsImages = [
-    "Gardendelaselva.jpg",
-    "gdlsaside.jpg",
-    "gdlsbside.jpg",
-    "gdlsback.jpg"
-  ];
-
-  const otucanImages = [
-    "Otucan.jpg",
-    "otucanaside.jpg",
-    "otucanbside.jpg",
-    "otucanback.jpg"
-  ];
-
-  const modal = document.getElementById("popup-modal");
-  const imagesContainer = document.getElementById("modal-images");
-  const stripeContainer = document.getElementById("stripe-button-container");
-
-  document.getElementById("gdls-hotspot").addEventListener("click", () => {
-    openModal(gdlsImages, `
-      <stripe-buy-button
-        buy-button-id="buy_btn_1RfmtwKOS6jarVmAZEcGpCiU"
-        publishable-key="pk_live_51RP7SwKOS6jarVmA2T08AsewL44IvEhHhiwPMJMPIUnr90eUgLc3ISmuHWnjOUWjU6w4ZO3PLy5u8mQz29YZBG1m00FlZRi1lw">
-      </stripe-buy-button>
-    `);
-  });
-
-  document.getElementById("otucan-hotspot").addEventListener("click", () => {
-    openModal(otucanImages, `
-      <stripe-buy-button
-        buy-button-id="buy_btn_1Rfn9bKOS6jarVmAljasKKpA"
-        publishable-key="pk_live_51RP7SwKOS6jarVmA2T08AsewL44IvEhHhiwPMJMPIUnr90eUgLc3ISmuHWnjOUWjU6w4ZO3PLy5u8mQz29YZBG1m00FlZRi1lw">
-      </stripe-buy-button>
-    `);
-  });
-
-  document.querySelector(".close").addEventListener("click", () => {
-    modal.classList.add("hidden");
-    imagesContainer.innerHTML = '';
-    stripeContainer.innerHTML = '';
-  });
-
-  function openModal(images, stripeHTML) {
-    imagesContainer.innerHTML = images.map(img => `<img src="${img}" alt="">`).join("");
-    stripeContainer.innerHTML = stripeHTML;
-    modal.classList.remove("hidden");
-  }
-</script>
-
-</body>
-</html>
