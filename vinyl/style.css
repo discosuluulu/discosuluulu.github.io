@@ -1,158 +1,80 @@
-/* Reset and base */
-* {
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-body, html {
-  height: 100%;
-  background: #222;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #eee;
-  overflow: hidden;
-  perspective: 800px;
-}
-
-/* Room container */
-.room {
-  position: relative;
-  width: 600px;
-  height: 400px;
-  margin: 60px auto;
-  transform-style: preserve-3d;
-  transition: transform 0.1s ease-out;
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
-  border-radius: 12px;
-  background: #2b1600;
-}
-
-/* Walls */
-.wall {
-  position: absolute;
-  width: 600px;
-  height: 400px;
-  background-image: url('bamboo-wall.jpg'); /* bamboo wall texture */
+  background: url('wood-floor.jpg') no-repeat center center fixed;
   background-size: cover;
-  background-repeat: no-repeat;
-  filter: brightness(0.85);
-  border: 2px solid #4a3200;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
+  font-family: 'Georgia', serif;
+  color: #222;
 }
 
-/* Back wall */
-.wall.back {
-  transform: translateZ(-300px);
-  top: 0;
-  left: 0;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
-/* Left wall */
-.wall.left {
-  transform: rotateY(90deg) translateZ(-300px);
-  top: 0;
-  left: 0;
-}
-
-/* Right wall */
-.wall.right {
-  transform: rotateY(-90deg) translateZ(-300px);
-  top: 0;
-  right: 0;
-}
-
-/* Top wall (ceiling) */
-.wall.top {
-  width: 600px;
-  height: 600px;
-  background-image: url('ceiling-weave.jpg'); /* ceiling texture */
-  transform: rotateX(90deg) translateZ(-200px);
-  top: 0;
-  left: 0;
-  background-size: cover;
-  filter: brightness(1);
-}
-
-/* Bottom wall (floor) */
-.wall.bottom {
-  width: 600px;
-  height: 600px;
-  background-image: url('wood-floor.jpg'); /* wood floor texture */
-  transform: rotateX(-90deg) translateZ(-200px);
-  bottom: 0;
-  left: 0;
-  background-size: cover;
-  filter: brightness(1);
-}
-
-/* Shop content */
-.shop-content {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
+h1 {
   text-align: center;
-  color: #fff;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  pointer-events: none;
-}
-
-.shop-content h1 {
-  margin-bottom: 20px;
-  font-weight: 700;
   font-size: 2.5rem;
-  text-shadow: 0 0 10px #aad39a;
+  margin-bottom: 40px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 10px;
+  border-radius: 6px;
+  display: inline-block;
 }
 
-/* Vinyl slider */
-.vinyl-slider {
+.grid {
   display: flex;
-  gap: 25px;
-  overflow-x: auto;
-  width: 100%;
-  max-width: 560px;
-  padding-bottom: 10px;
-  pointer-events: auto;
-  cursor: grab;
-}
-
-.vinyl-slider::-webkit-scrollbar {
-  height: 8px;
-}
-
-.vinyl-slider::-webkit-scrollbar-thumb {
-  background: #a88b56;
-  border-radius: 4px;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
 }
 
 .vinyl {
-  min-width: 150px;
-  height: 150px;
-  background: radial-gradient(circle at center, #222 45%, #000 80%);
-  border-radius: 50%;
-  box-shadow:
-    inset 0 0 30px #333,
-    0 6px 12px rgba(0,0,0,0.8);
-  position: relative;
-  color: #fff;
-  font-weight: 600;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-  font-size: 1.1rem;
-  text-shadow: 0 0 5px black;
-  transition: transform 0.3s ease;
+  width: 300px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .vinyl:hover {
-  transform: scale(1.1);
-  box-shadow:
-    inset 0 0 40px #557755,
-    0 8px 18px rgba(0,0,0,0.9);
-  cursor: pointer;
+  transform: scale(1.03);
+}
+
+.vinyl img {
+  width: 100%;
+  border: 6px solid #eee;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.details {
+  display: none;
+  margin-top: 40px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.details.active {
+  display: block;
+}
+
+.details h2 {
+  margin-top: 0;
+}
+
+.images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.images img {
+  width: 180px;
+  border: 4px solid #ddd;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+stripe-buy-button {
+  margin-top: 10px;
 }
