@@ -1,55 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title></title>
-  <link rel="stylesheet" href="style.css" />
-  <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-</head>
-<body>
-  <div class="container">
-    <h1></h1>
+let currentAlbum = gardenAlbum;
+let currentTrackIndex = 0;
+let isPlaying = false;
 
-    <div class="grid">
-      <div class="vinyl" onclick="showDetails('gdls')">
-        <img src="Gardendelaselva.jpg" alt="Garden de la Selva vinyl">
-      </div>
+const albumTitle = document.getElementById("albumTitle");
+const albumSubtitle = document.getElementById("albumSubtitle");
+const tracklist = document.getElementById("tracklist");
+const playPauseBtn = document.getElementById("playPause");
+const playIcon = document.getElementById("playIcon");
+const pauseIcon = document.getElementById("pauseIcon");
+const prevTrackBtn = document.getElementById("prevTrack");
+const nextTrackBtn = document.getElementById("nextTrack");
+const nextAlbumBtn = document.getElementById("nextAlbum");
+const minimizeBtn = document.getElementById("minimizePlayer");
+const maximizeBtn = document.getElementById("maximizePlayer");
+const playerContainer = document.getElementById("audioPlayer");
+const infoLink = document.getElementById("infoLink");
+const progressBar = document.getElementById("progress");
+const progressFilled = document.getElementById("progressFilled");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
 
-      <div class="vinyl" onclick="showDetails('otucan')">
-        <img src="otucan.jpg" alt="otucan vinyl">
-      </div>
-    </div>
+const audio = new Audio();
+audio.preload = "metadata";
 
-    <div id="details-gdls" class="details">
-      <h2>Garden de la Selva</h2>
-      <div class="images">
-        <img src="gdlsback.jpg" alt="Back cover">
-        <img src="gdlsaside.jpg" alt="A side">
-        <img src="gdlsbside.jpg" alt="B side">
-      </div>
-      <p>Experience Garden de la Selva — lush soundscapes rooted in analog warmth. Limited pressing.</p>
-      <stripe-buy-button
-        buy-button-id="buy_btn_1RfmtwKOS6jarVmAZEcGpCiU"
-        publishable-key="pk_live_51RP7SwKOS6jarVmA2T08AsewL44IvEhHhiwPMJMPIUnr90eUgLc3ISmuHWnjOUWjU6w4ZO3PLy5u8mQz29YZBG1m00FlZRi1lw">
-      </stripe-buy-button>
-    </div>
+function loadAlbum(album) {
+  albumTitle.textContent = album.title;
+  albumSubtitle.textContent = album.subtitle;
+  tracklist.innerHTML = "";
 
-    <div id="details-otucan" class="details">
-      <h2>Otucan</h2>
-      <div class="images">
-        <img src="otucanback.jpg" alt="Back cover">
-        <img src="otucanaside.jpg" alt="A side">
-        <img src="otucanbside.jpg" alt="B side">
-      </div>
-      <p>Otucan is an analog journey into mysticism and rhythm. Sustainably pressed, sonically rich.</p>
-      <stripe-buy-button
-        buy-button-id="buy_btn_1Rfn9bKOS6jarVmAljasKKpA"
-        publishable-key="pk_live_51RP7SwKOS6jarVmA2T08AsewL44IvEhHhiwPMJMPIUnr90eUgLc3ISmuHWnjOUWjU6w4ZO3PLy5u8mQz29YZBG1m00FlZRi1lw">
-      </stripe-buy-button>
-    </div>
-  </div>
+  album.tracks.forEach((track, index) => {
+    const div = document.createElement("div");
+    div.className = "track";
+    div.innerHTML = `
+      <span class="track-number">${index + 1}.</span>
+      <span class="track-title">${track.title}</span>
+      <span class="track-length">${track.length}</span>
+    `;
+    div.addEventListener("click", () => playTrack(index));
+    tracklist.appendChild(div);
+  });
 
-  <script src="script.js"></script>
-</body>
-</html>
+  playTrack(0);
+}
+
+function playTrack(index) {
+  currentTrackIndex = index;
+  audio.src = currentAlbum.tracks[index].url;
+  updateTracklistHighlight();
+  audio.play();
+  isPlaying = true;
+  showPauseIcon();
+}
+
+function updateTracklistHighlight() {
+  const allTracks = document.querySelectorAll(".track");
+  allTracks.forEach((track, i) => {
+    track.classList.toggle("playing", i === currentTrackIndex);
+  });
+}
+
+function togglePlayPause() {
+  if (isPlaying) {
+    audio.pause();
+    isPlaying = false;
+    showPlayIcon();
+  } else {
+    audio.play();
+    isPlaying = true;
+    showPauseIcon();
+  }
+}
+
+function showPlayIcon() {
+  playIcon.style.display = "block";
+  pauseIcon.style.display = "none";
+}
+
+function showPauseIcon() {
+  playIcon.style.display = "none";
+  pauseIcon.style.display = "block";
+}
+
+function playNextTrack() {
+  if (currentTrackIndex < currentAlbum.tracks.length - 1) {
+    playTrack(currentTrackIndex + 1);
+  }
+}
+
+function playPrevTrack() {
+  if (currentTrackIndex > 0) {
+    playTrack(currentTrackIndex - 1);
+  }
+}
+
+function switchAlbum() {
+  currentAlbum = currentAlbum === gardenAlbum ? otucanAlbum : gardenAlbum;
+  loadAlbum(currentAlbum);
+}
+
+function updateProgress() {
+  const progress = (audio.currentTime / audio.duration) * 100;
+  progressFilled.style.width = `${progress}%`;
+
+  currentTimeEl.textContent = formatTime(audio.currentTime);
+  durationEl.textContent = formatTime(audio.duration);
+}
+
+function seek(e) {
+  const rect = progressBar.getBoundingClientRect();
+  const percent = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = percent * audio.duration;
+}
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
+}
+
+audio.addEventListener("timeupdate", updateProgress);
+audio.addEventListener("ended", playNextTrack);
+progressBar.addEventListener("click", seek);
+
+playPauseBtn.addEventListener("click", togglePlayPause);
+prevTrackBtn.addEventListener("click", playPrevTrack);
+nextTrackBtn.addEventListener("click", playNextTrack);
+nextAlbumBtn.addEventListener("click", switchAlbum);
+minimizeBtn.addEventListener("click", () => {
+  playerContainer.classList.add("hidden");
+  maximizeBtn.style.display = "block";
+  infoLink.style.display = "block";
+});
+maximizeBtn.addEventListener("click", () => {
+  playerContainer.classList.remove("hidden");
+  maximizeBtn.style.display = "none";
+  infoLink.style.display = "block";
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadAlbum(currentAlbum);
+});
