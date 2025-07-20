@@ -1,87 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Discos Uluulu Vinyl Shop</title>
   <style>
-    .shop-container {
-      position: relative;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .shop-background {
-      width: 100%;
-      display: block;
-    }
-
-    .hotspot {
-      position: absolute;
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.1); /* optional for testing */
-    }
-
-    #gdls-hotspot {
-      top: 20%;
-      left: 10%;
-      width: 30%;
-      height: 2%;
-    }
-
-    #otucan-hotspot {
-      top: 20%;
-      right: 10%;
-      width: 20%;
-      height: 30%;
-    }
-
-    /* Centered shop.png button */
-    .center-link {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-    }
-
-    .center-image {
-      width: 200px;
-      max-width: 80vw;
-      cursor: pointer;
-    }
-
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+    /* Make body and html fill viewport with no margin */
+    html, body {
       height: 100%;
-      backdrop-filter: blur(5px);
-      background: rgba(0, 0, 0, 0.7);
+      margin: 0;
+    }
+
+    body {
+      /* Fullscreen background */
+      background: url('vinylshop2.jpg') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
     }
 
-    .modal.hidden {
-      display: none;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      max-width: 800px;
-      width: 90%;
-      overflow-y: auto;
-      max-height: 90vh;
-    }
-
-    .close {
-      float: right;
+    /* Centered clickable image */
+    a.center-link img {
+      width: 200px; /* adjust as needed */
+      max-width: 80vw;
       cursor: pointer;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      display: block;
     }
+  </style>
+</head>
+<body>
+
+  <a href="https://buy.stripe.com/3cIaEY4Jy9lx6WGbq04wM04" target="_blank" class="center-link">
+    <img src="shop.png" alt="Shop Now" />
+  </a>
+
+</body>
+</html>
