@@ -32,7 +32,7 @@ body, html {
   position: absolute;
   width: 600px;
   height: 400px;
-  background-image: url('https://i.imgur.com/ClTp8Bo.jpg'); /* bamboo texture */
+  background-image: url('bamboo-wall.jpg'); /* bamboo wall texture */
   background-size: cover;
   background-repeat: no-repeat;
   filter: brightness(0.85);
@@ -49,33 +49,23 @@ body, html {
 
 /* Left wall */
 .wall.left {
-  width: 600px;
-  height: 400px;
-  background-image: url('https://i.imgur.com/j5STytH.jpg'); /* bamboo vertical stripes */
   transform: rotateY(90deg) translateZ(-300px);
   top: 0;
   left: 0;
-  background-size: cover;
-  filter: brightness(0.9);
 }
 
 /* Right wall */
 .wall.right {
-  width: 600px;
-  height: 400px;
-  background-image: url('https://i.imgur.com/j5STytH.jpg'); /* bamboo vertical stripes */
   transform: rotateY(-90deg) translateZ(-300px);
   top: 0;
   right: 0;
-  background-size: cover;
-  filter: brightness(0.9);
 }
 
 /* Top wall (ceiling) */
 .wall.top {
   width: 600px;
   height: 600px;
-  background-image: url('https://i.imgur.com/2GgTb5q.jpg'); /* bamboo ceiling texture */
+  background-image: url('ceiling-weave.jpg'); /* ceiling texture */
   transform: rotateX(90deg) translateZ(-200px);
   top: 0;
   left: 0;
@@ -87,7 +77,7 @@ body, html {
 .wall.bottom {
   width: 600px;
   height: 600px;
-  background-image: url('https://i.imgur.com/dWmWPtC.jpg'); /* bamboo floor texture */
+  background-image: url('wood-floor.jpg'); /* wood floor texture */
   transform: rotateX(-90deg) translateZ(-200px);
   bottom: 0;
   left: 0;
@@ -108,7 +98,7 @@ body, html {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  pointer-events: none; /* So mouse events pass through */
+  pointer-events: none;
 }
 
 .shop-content h1 {
@@ -126,7 +116,7 @@ body, html {
   width: 100%;
   max-width: 560px;
   padding-bottom: 10px;
-  pointer-events: auto; /* enable interaction here */
+  pointer-events: auto;
   cursor: grab;
 }
 
