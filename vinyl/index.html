@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Disco Suluulu Vinyl Shop</title>
+  <title>Vinyl Shop</title>
   <link rel="stylesheet" href="style.css" />
   <script async src="https://js.stripe.com/v3/buy-button.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Disco Suluulu Vinyl Shop</h1>
+    <h1>Vinyl Shop</h1>
 
     <div class="grid">
       <div class="vinyl" onclick="showDetails('gdls')">
-        <img src="gardendelaselva vinyl.jpg" alt="Garden de la Selva vinyl">
+        <img src="gardendelaselva.jpg" alt="Garden de la Selva vinyl">
       </div>
 
       <div class="vinyl" onclick="showDetails('otucan')">
@@ -25,8 +25,8 @@
       <h2>Garden de la Selva</h2>
       <div class="images">
         <img src="gdlsback.jpg" alt="Back cover">
-        <img src="gdslaside.jpg" alt="A side label">
-        <img src="gdslbside.jpg" alt="B side label">
+        <img src="gdlsaside.jpg" alt="A side">
+        <img src="gdlsbside.jpg" alt="B side">
       </div>
       <p>Experience Garden de la Selva — lush soundscapes rooted in analog warmth. Limited pressing.</p>
       <stripe-buy-button
@@ -39,8 +39,8 @@
       <h2>Otucan</h2>
       <div class="images">
         <img src="otucanback.jpg" alt="Back cover">
-        <img src="otucanaside.jpg" alt="A side label">
-        <img src="otucanbside.jpg" alt="B side label">
+        <img src="otucanaside.jpg" alt="A side">
+        <img src="otucanbside.jpg" alt="B side">
       </div>
       <p>Otucan is an analog journey into mysticism and rhythm. Sustainably pressed, sonically rich.</p>
       <stripe-buy-button
