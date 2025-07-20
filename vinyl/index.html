@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Discos Uluulu - Vinyl Room</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bamboo Vinyl Room</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="vinyl-room">
-    <!-- Vinyl 1 -->
-    <div class="vinyl-item">
-      <img src="https://via.placeholder.com/300x300.png?text=Vinyl+1" class="vinyl-cover" alt="Vinyl 1">
-      <div class="vinyl-info">
-        <h2>Artist – Album One</h2>
-        <p>Genre: Tropicalia, Lo-fi Psych</p>
-        <button onclick="buyVinyl('vinyl1')">Buy Now</button>
-      </div>
-    </div>
+  <div class="room">
+    <div class="wall back"></div>
+    <div class="wall left"></div>
+    <div class="wall right"></div>
+    <div class="wall top"></div>
+    <div class="wall bottom"></div>
 
-    <!-- Vinyl 2 -->
-    <div class="vinyl-item">
-      <img src="https://via.placeholder.com/300x300.png?text=Vinyl+2" class="vinyl-cover" alt="Vinyl 2">
-      <div class="vinyl-info">
-        <h2>Artist – Album Two</h2>
-        <p>Genre: Cosmic Folk, Analog Funk</p>
-        <button onclick="buyVinyl('vinyl2')">Buy Now</button>
+    <div class="shop-content">
+      <h1>Vinyl Room</h1>
+      <div class="vinyl-slider">
+        <div class="vinyl">Vinyl 1</div>
+        <div class="vinyl">Vinyl 2</div>
+        <!-- Add more here -->
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    document.addEventListener('mousemove', (e) => {
+      const room = document.querySelector('.room');
+      const x = (e.clientX / window.innerWidth - 0.5) * 10;
+      const y = (e.clientY / window.innerHeight - 0.5) * -10;
+      room.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    });
+  </script>
 </body>
 </html>
