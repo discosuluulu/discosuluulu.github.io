@@ -128,7 +128,7 @@ nextTrackBtn.addEventListener("click", playNextTrack);
 nextAlbumBtn.addEventListener("click", switchAlbum);
 minimizeBtn.addEventListener("click", () => {
   playerContainer.classList.add("hidden");
-  maximizeBtn.style.display = "block";
+  exploreLogo.style.display = "block";
   infoLink.style.display = "block";
 });
 exploreLogo.addEventListener("click", () => {
