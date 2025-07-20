@@ -12,7 +12,7 @@ const prevTrackBtn = document.getElementById("prevTrack");
 const nextTrackBtn = document.getElementById("nextTrack");
 const nextAlbumBtn = document.getElementById("nextAlbum");
 const minimizeBtn = document.getElementById("minimizePlayer");
-const maximizeBtn = document.getElementById("maximizePlayer");
+const exploreLogo = document.getElementById("exploreLogo");
 const playerContainer = document.getElementById("audioPlayer");
 const infoLink = document.getElementById("infoLink");
 const progressBar = document.getElementById("progress");
@@ -128,12 +128,12 @@ nextTrackBtn.addEventListener("click", playNextTrack);
 nextAlbumBtn.addEventListener("click", switchAlbum);
 minimizeBtn.addEventListener("click", () => {
   playerContainer.classList.add("hidden");
-  maximizeBtn.style.display = "block";
+  exploreLogo.style.display = "block";
   infoLink.style.display = "block";
 });
-maximizeBtn.addEventListener("click", () => {
+exploreLogo.addEventListener("click", () => {
   playerContainer.classList.remove("hidden");
-  maximizeBtn.style.display = "none";
+  exploreLogo.style.display = "none";
   infoLink.style.display = "block";
 });
 
