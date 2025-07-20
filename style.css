@@ -218,9 +218,9 @@ body, html {
 }
 
 /* Make logos slightly larger on mobile */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .top-logos img {
-    gap: 40px;
+    gap: 30px;
   }
   .top-logos img {
     height: 90px;
